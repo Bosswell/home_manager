@@ -19,7 +19,7 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
@@ -29,18 +29,18 @@ class User implements UserInterface
      *      maxMessage = "Your email cannot be longer than {{ limit }} characters"
      * )
      */
-    private $email;
+    private string $email;
 
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private array $roles = [];
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
+    private string $password;
 
     /**
      * @Assert\Length(
@@ -48,7 +48,7 @@ class User implements UserInterface
      *      minMessage = "Your password must be at least {{ limit }} characters long"
      * )
      */
-    private $plainPassword;
+    private string $plainPassword;
 
     /**
      * @Assert\EqualTo(
@@ -56,7 +56,7 @@ class User implements UserInterface
      *     message = "Confirmed password is not the same as main"
      * )
      */
-    private $confirmPlainPassword;
+    private string $confirmPlainPassword;
 
     public function getId(): ?int
     {
