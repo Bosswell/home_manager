@@ -3,7 +3,7 @@
 namespace App\Message;
 
 
-final class CreateTransaction
+final class CreateTransactionMessage
 {
     private float $amount;
     private int $transactionTypeId;
