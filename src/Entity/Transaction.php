@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
@@ -19,6 +20,7 @@ class Transaction
 
     /**
      * @ORM\Column(type="float")
+     * @Assert\GreaterThan(0)
      */
     private float $amount;
 
@@ -34,12 +36,12 @@ class Transaction
         $this->transactionType = $transactionType;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getAmount(): ?float
+    public function getAmount(): float
     {
         return $this->amount;
     }

@@ -11,15 +11,14 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
-use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class UserManager
 {
     private EntityManagerInterface $em;
-    private ValidatorInterface $validator;
+    private ObjectValidator $validator;
     private UserPasswordEncoderInterface $encoder;
 
-    public function __construct(EntityManagerInterface $entityManager, ValidatorInterface $validator, UserPasswordEncoderInterface $encoder)
+    public function __construct(EntityManagerInterface $entityManager, ObjectValidator $validator, UserPasswordEncoderInterface $encoder)
     {
         $this->em = $entityManager;
         $this->validator = $validator;
@@ -38,13 +37,7 @@ class UserManager
             ->setConfirmPlainPassword($message->getConfirmPassword())
             ->setPlainPassword($message->getPassword());
 
-        $violations = $this->validator->validate($user);
-
-        if ($violations->count() !== 0) {
-            throw new UnprocessableEntityHttpException(
-                json_encode($this->getErrorMessagesFromViolations($violations))
-            );
-        }
+        $this->validator->validate($user);
 
         $this->em->persist($user);
         $this->em->flush();

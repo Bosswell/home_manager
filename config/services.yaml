@@ -28,6 +28,17 @@ services:
         tags: ['controller.service_arguments']
 
     message_converter:
-        class: App\Request\MessageConverter
+        class: App\Http\Request\MessageConverter
         tags:
             - { name: request.param_converter, priority: -2, converter: message_converter }
+
+    App\EventListener\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
+    App\Serializer\Normalizer\UnprocessableEntityNormalizer:
+        tags: ['serializer.normalizer']
+
+    App\Serializer\Normalizer\NormalizerFactory:
+        arguments: [!tagged serializer.normalizer]
+        public: true

@@ -1,12 +1,14 @@
 <?php
 
 
-namespace App\Request;
+namespace App\Http\Request;
 
-use App\SerializerFactory;
+use App\Serializer\SerializerFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class MessageConverter implements ParamConverterInterface
@@ -22,7 +24,14 @@ class MessageConverter implements ParamConverterInterface
     {
         $body = $request->getContent();
 
-        $message = $this->serializer->deserialize($body, $configuration->getClass(), 'JSON');
+        if ($request->getContentType() !== 'json') {
+            throw new HttpException(
+                Response::HTTP_NOT_ACCEPTABLE,
+                'Invalid request. Make sure that you are using application/json content type'
+            );
+        }
+
+        $message = $this->serializer->deserialize($body, $configuration->getClass(), 'json');
         $request->attributes->set($configuration->getName(), $message);
 
         return true;
