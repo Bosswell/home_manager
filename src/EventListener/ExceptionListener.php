@@ -44,10 +44,11 @@ class ExceptionListener
         }
 
         return new ApiResponse(
-            $this->env === 'dev' ? $this->buildDebugMessage($exception) : $exception->getMessage(),
+            $exception->getMessage(),
             $statusCode,
             null,
             $errors,
+            $this->buildDebugMessage($exception),
             [],
             false
         );
@@ -56,11 +57,10 @@ class ExceptionListener
     private function buildDebugMessage(Throwable $ex): string
     {
         return sprintf(
-            "%s has occurred in file [ %s ] on line %d with message [ %s ]. Stacktrace: %s",
+            "%s has occurred in file [ %s ] on line %d. Stacktrace: %s",
             get_class($ex),
             $ex->getFile(),
             $ex->getLine(),
-            $ex->getMessage(),
             $ex->getTraceAsString()
         );
     }

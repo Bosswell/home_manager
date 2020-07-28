@@ -1,13 +1,12 @@
 <?php
 
-
 namespace App\Service;
 
-
-use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+use App\ApiException;
 use Symfony\Component\Validator\ConstraintViolationInterface;
 use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 class ObjectValidator
 {
@@ -23,8 +22,8 @@ class ObjectValidator
         $violations = $this->validator->validate($object);
 
         if ($violations->count() !== 0) {
-            throw new UnprocessableEntityHttpException(
-                json_encode($this->getErrorMessagesFromViolations($violations))
+            throw ApiException::invalidEntity(
+                $this->getErrorMessagesFromViolations($violations)
             );
         }
     }

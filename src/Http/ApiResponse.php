@@ -12,19 +12,21 @@ class ApiResponse extends JsonResponse
         int $status = 200,
         ?array $data = null,
         ?array $errors = null,
+        string $debugMessage = '',
         array $headers = [],
         bool $json = false
     ) {
-        parent::__construct($this->format($data, $errors, $status, $message), $status, $headers, $json);
+        parent::__construct($this->format($message, $data, $errors, $status, $debugMessage), $status, $headers, $json);
     }
 
-    private function format(?array $data, ?array $errors, int $status, string $message): array
+    private function format(string $message, ?array $data, ?array $errors, int $status, string $debugMessage = ''): array
     {
         return [
             'message' => $message,
             'code' => $status,
             'data' => $data ?? [],
             'errors' => $errors ?? [],
+            'debug' => $debugMessage
         ];
     }
 }

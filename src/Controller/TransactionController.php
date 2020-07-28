@@ -18,7 +18,7 @@ class TransactionController extends ApiController
      * @Route("/transaction", name="create_transaction", methods={"POST"})
      * @ParamConverter("createTransaction", class="App\Message\CreateTransactionMessage", converter="message_converter")
      */
-    public function createTransaction(CreateTransactionMessage $message)
+    public function createAction(CreateTransactionMessage $message)
     {
         $em = $this
             ->getDoctrine()
@@ -46,7 +46,7 @@ class TransactionController extends ApiController
     /**
      * @Route("/transaction", name="get_transaction", methods={"GET"})
      */
-    public function getTransaction()
+    public function getAction()
     {
         return $this->json([
             'message' => 'Welcome to your new controller!',
