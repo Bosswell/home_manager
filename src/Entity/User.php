@@ -10,7 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity("email")
+ * @UniqueEntity(
+ *     fields = {"email"},
+ *     message = "You can't use this address email"
+ * )
  */
 class User implements UserInterface
 {
@@ -23,7 +26,12 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\Email
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email."
+     * )
+     * @Assert\NotBlank(
+     *     message = "Address email is empty"
+     * )
      * @Assert\Length(
      *      max = 180,
      *      maxMessage = "Your email cannot be longer than {{ limit }} characters"

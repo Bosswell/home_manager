@@ -6,18 +6,22 @@ namespace App\Http\Request;
 use App\Serializer\SerializerFactory;
 use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\SerializerInterface;
+use Throwable;
 
 class MessageConverter implements ParamConverterInterface
 {
     private SerializerInterface $serializer;
+    private string $env;
 
-    public function __construct(SerializerFactory $serializerFactory)
+    public function __construct(SerializerFactory $serializerFactory, ParameterBagInterface $bag)
     {
         $this->serializer = $serializerFactory->getInstance();
+        $this->env = $bag->get('kernel.environment');
     }
 
     public function apply(Request $request, ParamConverter $configuration)
@@ -31,8 +35,16 @@ class MessageConverter implements ParamConverterInterface
             );
         }
 
-        $message = $this->serializer->deserialize($body, $configuration->getClass(), 'json');
-        $request->attributes->set($configuration->getName(), $message);
+        try {
+            $message = $this->serializer->deserialize($body, $configuration->getClass(), 'json');
+            $request->attributes->set($configuration->getName(), $message);
+        } catch (\Throwable $ex) {
+            if ($this->env === 'dev') {
+                throw $ex;
+            }
+
+            throw new HttpException(Response::HTTP_BAD_REQUEST, 'Invalid request');
+        }
 
         return true;
     }
