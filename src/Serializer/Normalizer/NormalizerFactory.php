@@ -1,9 +1,9 @@
 <?php
 
-
 namespace App\Serializer\Normalizer;
 
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
+
 
 class NormalizerFactory
 {
