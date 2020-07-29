@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use App\ApiController;
-use App\Entity\Transaction;
-use App\Entity\TransactionType;
 use App\Http\ApiResponse;
 use App\Message\CreateTransactionMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -20,25 +18,7 @@ class TransactionController extends ApiController
      */
     public function createAction(CreateTransactionMessage $message)
     {
-        $em = $this
-            ->getDoctrine()
-            ->getManager();
-
-        /** @var TransactionType|null $transactionType */
-        $transactionType = $em
-            ->getRepository(TransactionType::class)
-            ->find($message->getTransactionTypeId());
-
-        if (is_null($transactionType)) {
-            throw new \InvalidArgumentException('Invalid transactionTypeId value', Response::HTTP_BAD_REQUEST);
-        }
-
-        $transaction = new Transaction(
-            $message->getAmount(),
-            $transactionType
-        );
-
-        $this->validator->validate($transaction);
+        $this->transactionFacade->createTransaction($message);
 
         return new ApiResponse('Transaction has been successfully created', Response::HTTP_CREATED);
     }

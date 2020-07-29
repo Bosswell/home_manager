@@ -3,12 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="eb3bcf03-548f-4579-8cfb-0dab2e18a83e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ApiController.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ApiException.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ApiException.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/TransactionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/TransactionController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/UserController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/UserController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/EventListener/ExceptionListener.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/EventListener/ExceptionListener.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Http/ApiResponse.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Http/ApiResponse.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Serializer/Normalizer/UnprocessableEntityNormalizer.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Serializer/Normalizer/ApiExceptionNormalizer.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/ObjectValidator.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/ObjectValidator.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -150,7 +148,8 @@
       <workItem from="1595676684705" duration="6973000" />
       <workItem from="1595760743430" duration="10612000" />
       <workItem from="1595847041750" duration="1641000" />
-      <workItem from="1595952439241" duration="4199000" />
+      <workItem from="1595952439241" duration="4816000" />
+      <workItem from="1596024073936" duration="1287000" />
     </task>
     <servers />
   </component>
@@ -174,14 +173,14 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595534286557" />
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1595769027871">
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1596025345202">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595769027871" />
-    <state x="751" y="243" key="NewPhpClassDialog" timestamp="1595963456851">
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596025345202" />
+    <state x="751" y="243" key="NewPhpClassDialog" timestamp="1596025091226">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="751" y="243" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1595963456851" />
+    <state x="751" y="243" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1596025091226" />
     <state x="794" y="443" key="NewPhpFileDialog" timestamp="1595762545678">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

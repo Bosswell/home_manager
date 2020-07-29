@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
-use App\ApiController;
 use App\Http\ApiResponse;
 use App\Message\CreateUserMessage;
 use App\Service\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class UserController extends ApiController
+class UserController extends AbstractController
 {
     /**
      * @Route("/user", name="create_user", methods={"POST"})

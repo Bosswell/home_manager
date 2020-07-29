@@ -2,15 +2,17 @@
 
 namespace App;
 
-use App\Service\ObjectValidator;
+use App\Service\TransactionFacade;
+use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ApiController extends AbstractController
-{
-    protected ObjectValidator $validator;
 
-    public function __construct(ObjectValidator $validator)
+abstract class ApiController extends AbstractController
+{
+    protected TransactionFacade $transactionFacade;
+
+    public function __construct(TransactionFacade $transactionFacade)
     {
-        $this->validator = $validator;
+        $this->transactionFacade = $transactionFacade;
     }
 }
