@@ -40,6 +40,24 @@ class User implements UserInterface
     private string $email;
 
     /**
+     * @ORM\Column(type="string", length=20)
+     * @Assert\Length(
+     *      max = 20,
+     *      maxMessage = "Your name cannot be longer than {{ limit }} characters"
+     * )
+     */
+    private string $name;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     * @Assert\Length(
+     *      max = 20,
+     *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
+     * )
+     */
+    private string $lastName;
+
+    /**
      * @ORM\Column(type="json")
      */
     private array $roles = [];
@@ -144,6 +162,22 @@ class User implements UserInterface
         $this->confirmPlainPassword = $confirmPlainPassword;
 
         return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->lastName;
     }
 
     /**
