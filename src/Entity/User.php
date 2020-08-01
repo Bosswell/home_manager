@@ -42,20 +42,11 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=20)
      * @Assert\Length(
-     *      max = 20,
+     *      max = 30,
      *      maxMessage = "Your name cannot be longer than {{ limit }} characters"
      * )
      */
-    private string $name;
-
-    /**
-     * @ORM\Column(type="string", length=20)
-     * @Assert\Length(
-     *      max = 20,
-     *      maxMessage = "Your last name cannot be longer than {{ limit }} characters"
-     * )
-     */
-    private string $lastName;
+    private string $fullName;
 
     /**
      * @ORM\Column(type="json")
@@ -167,17 +158,9 @@ class User implements UserInterface
     /**
      * @return string
      */
-    public function getName(): string
+    public function getFullName(): string
     {
-        return $this->name;
-    }
-
-    /**
-     * @return string
-     */
-    public function getLastName(): string
-    {
-        return $this->lastName;
+        return $this->fullName;
     }
 
     /**

@@ -23,7 +23,7 @@ class AuthenticationSuccessListener
         }
 
         $data['user'] = array(
-            'fullName' => $user->getName() . ' ' . $user->getLastName()
+            'fullName' => $user->getFullName()
         );
 
         $event->setData($data);
