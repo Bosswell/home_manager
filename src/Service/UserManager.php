@@ -26,6 +26,7 @@ class UserManager
         $user
             ->setEmail($message->getEmail())
             ->setRoles(['ROLE_USER'])
+            ->setFullName($message->getFullName())
             ->setConfirmPlainPassword($message->getConfirmPassword())
             ->setPlainPassword($message->getPassword());
 

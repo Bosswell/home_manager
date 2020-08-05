@@ -8,6 +8,7 @@ final class CreateUserMessage
     private string $email;
     private string $password;
     private string $confirmPassword;
+    private string $fullName;
 
     public function __construct(?array $data = null)
     {
@@ -31,27 +32,28 @@ final class CreateUserMessage
         return $this->confirmPassword;
     }
 
-    /**
-     * @param mixed $email
-     */
     public function setEmail($email): void
     {
         $this->email = (string)$email;
     }
 
-    /**
-     * @param mixed $password
-     */
     public function setPassword($password): void
     {
         $this->password = (string)$password;
     }
 
-    /**
-     * @param mixed $confirmPassword
-     */
     public function setConfirmPassword($confirmPassword): void
     {
         $this->confirmPassword = (string)$confirmPassword;
+    }
+
+    public function getFullName(): string
+    {
+        return $this->fullName;
+    }
+
+    public function setFullName(string $fullName): void
+    {
+        $this->fullName = $fullName;
     }
 }

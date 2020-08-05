@@ -164,6 +164,16 @@ class User implements UserInterface
     }
 
     /**
+     * @param string $fullName
+     */
+    public function setFullName(string $fullName): self
+    {
+        $this->fullName = $fullName;
+
+        return $this;
+    }
+
+    /**
      * @see UserInterface
      */
     public function getSalt()
