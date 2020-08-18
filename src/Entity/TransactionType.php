@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=TransactionTypeRepository::class)
  */
-class TransactionType
+class TransactionType implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -35,5 +35,13 @@ class TransactionType
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'label' => $this->name,
+            'value' => $this->id
+        ];
     }
 }

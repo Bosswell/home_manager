@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Doctrine\ORM\EntityNotFoundException;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 

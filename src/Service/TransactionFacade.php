@@ -37,7 +37,7 @@ class TransactionFacade
         if (is_null($transactionType)) {
             throw ApiException::entityNotFound(
                 $message->getTransactionTypeId(),
-                ['Invalid transactionTypeId value']
+                ['Invalid transaction type value']
             );
         }
 

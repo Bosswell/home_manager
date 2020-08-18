@@ -20,7 +20,10 @@ class Transaction
 
     /**
      * @ORM\Column(type="float")
-     * @Assert\GreaterThan(0)
+     * @Assert\GreaterThan(
+     *     value=0,
+     *     message="The amount should be greater then {{ compared_value }}"
+     * )
      */
     private float $amount;
 
@@ -30,10 +33,16 @@ class Transaction
      */
     private TransactionType $transactionType;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTime $createdAt;
+
     public function __construct(float $amount, TransactionType $transactionType)
     {
         $this->amount = $amount;
         $this->transactionType = $transactionType;
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): int
@@ -49,5 +58,17 @@ class Transaction
     public function getTransactionType(): ?TransactionType
     {
         return $this->transactionType;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\ApiController;
+use App\Entity\TransactionType;
 use App\Http\ApiResponse;
 use App\Message\CreateTransactionMessage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -32,5 +33,19 @@ class TransactionController extends ApiController
             'message' => 'Welcome to your new controller!',
             'path' => 'src/Controller/TransactionController.php',
         ]);
+    }
+
+    /**
+     * @Route("/transaction/types/list", name="list_transaction_types", methods={"GET"})
+     */
+    public function listTypesAction()
+    {
+        $transactionTypes = $this
+            ->getDoctrine()
+            ->getRepository(TransactionType::class)
+            ->findAll()
+        ;
+
+        return new ApiResponse('', Response::HTTP_CREATED, $transactionTypes);
     }
 }

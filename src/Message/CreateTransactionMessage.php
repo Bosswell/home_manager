@@ -23,4 +23,20 @@ final class CreateTransactionMessage
     {
         return $this->transactionTypeId;
     }
+
+    /**
+     * @param mixed $amount
+     */
+    public function setAmount($amount): void
+    {
+        $this->amount = (float)$amount;
+    }
+
+    /**
+     * @param mixed $transactionTypeId
+     */
+    public function setTransactionTypeId($transactionTypeId): void
+    {
+        $this->transactionTypeId = (int)$transactionTypeId;
+    }
 }
