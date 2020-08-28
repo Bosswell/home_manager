@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Transaction;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -19,32 +20,35 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
-    // /**
-    //  * @return TransactionFixtures[] Returns an array of TransactionFixtures objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findAllTransactionSummary(): array
     {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('t.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
+        $connection = $this->getEntityManager()->getConnection();
 
-    /*
-    public function findOneBySomeField($value): ?TransactionFixtures
-    {
-        return $this->createQueryBuilder('t')
-            ->andWhere('t.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
+        $qb = $connection->createQueryBuilder()
+            ->select('tt.id as `transactionTypeId`, tt.name, SUM(t.amount) AS `amount`')
+            ->from('transaction', 't')
+            ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')
+            ->groupBy('tt.id');
+
+        return $qb->execute()->fetchAll() ?? [];
     }
-    */
+
+    public function getTransactionListQuery(int $userId, ?int $transTypeId = null): QueryBuilder
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $qb = $connection->createQueryBuilder()
+            ->select('t.*')
+            ->from('transaction', 't')
+            ->innerJoin('t', 'user', 'u', 'u.id = t.user_id')
+            ->where('u.id = :id')
+            ->setParameter(':id', $userId);
+
+        if ($transTypeId) {
+            $qb->andWhere('t.transaction_type_id = :transId');
+            $qb->setParameter(':transId', $transTypeId);
+        }
+
+        return $qb;
+    }
 }

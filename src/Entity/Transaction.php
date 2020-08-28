@@ -4,12 +4,14 @@ namespace App\Entity;
 
 use App\Repository\TransactionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  */
-class Transaction
+class Transaction implements JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -38,11 +40,25 @@ class Transaction
      */
     private \DateTime $createdAt;
 
-    public function __construct(float $amount, TransactionType $transactionType)
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private string $description;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+
+    public function __construct(float $amount, string $description, TransactionType $transactionType, UserInterface $user)
     {
         $this->amount = $amount;
         $this->transactionType = $transactionType;
+        $this->description = $description;
         $this->createdAt = new \DateTime();
+        $this->user = $user;
     }
 
     public function getId(): int
@@ -70,5 +86,31 @@ class Transaction
         $this->createdAt = $createdAt;
 
         return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(UserInterface $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function jsonSerialize() 
+    {
+        return [
+            'id' => $this->id,
+            'amount' => $this->amount,
+            'description' => $this->description
+        ];
     }
 }

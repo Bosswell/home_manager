@@ -4,11 +4,17 @@ namespace App\Controller;
 
 use App\ApiController;
 use App\Entity\TransactionType;
+use App\Entity\User;
 use App\Http\ApiResponse;
 use App\Message\CreateTransactionMessage;
+use App\Repository\TransactionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Pagerfanta\Doctrine\DBAL\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 
 
 class TransactionController extends ApiController
@@ -25,14 +31,17 @@ class TransactionController extends ApiController
     }
 
     /**
-     * @Route("/transaction", name="get_transaction", methods={"GET"})
+     * @Route("/transaction/summary", name="get_transaction_summary", methods={"GET"})
      */
-    public function getAction()
+    public function getTransactionSummary(TransactionRepository $repository)
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/TransactionController.php',
-        ]);
+        $data = $repository->findAllTransactionSummary();
+
+        return new ApiResponse(
+            (bool)$data ? 'No results' : 'Found entries',
+            Response::HTTP_OK,
+            $data
+        );
     }
 
     /**
@@ -46,6 +55,35 @@ class TransactionController extends ApiController
             ->findAll()
         ;
 
-        return new ApiResponse('', Response::HTTP_CREATED, $transactionTypes);
+        return new ApiResponse('', Response::HTTP_OK, $transactionTypes);
+    }
+
+    /**
+     * @Route("/transaction/list", name="list_transaction", methods={"GET"})
+     */
+    public function listTransactionsAction(Request $request, TransactionRepository $repository)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $countQueryBuilderModifier = function (QueryBuilder $queryBuilder): void {
+            $queryBuilder->select('COUNT(DISTINCT t.id) AS total_results')
+                ->setMaxResults(1);
+        };
+
+        $qb = $repository->getTransactionListQuery($user->getId(), $request->get('transactionTypeId'));
+        $adapter = new QueryAdapter($qb, $countQueryBuilderModifier);
+        $pagerfanta = new Pagerfanta($adapter);
+
+        $nbPages = $pagerfanta->getNbPages();
+        $nbPage = $request->get('page') ?? 1;
+
+        $pagerfanta->setCurrentPage($nbPage > $nbPages ? $nbPages : $nbPage );
+        
+        return new ApiResponse('Found entries', Response::HTTP_OK, [
+            'pages' => $nbPages,
+            'currentPage' => $pagerfanta->getCurrentPage(),
+            'hasNextPage' => $pagerfanta->hasNextPage(),
+            'results' => $pagerfanta->getCurrentPageResults()
+        ]);
     }
 }

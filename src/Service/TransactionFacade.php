@@ -7,20 +7,24 @@ use App\Entity\Transaction;
 use App\Entity\TransactionType;
 use App\Message\CreateTransactionMessage;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
 class TransactionFacade
 {
     private EntityManagerInterface $em;
     private ObjectValidator $validator;
-    private UserPasswordEncoderInterface $encoder;
+    private ?TokenInterface $token;
 
-    public function __construct(EntityManagerInterface $entityManager, ObjectValidator $validator, UserPasswordEncoderInterface $encoder)
+    public function __construct(EntityManagerInterface $entityManager, ObjectValidator $validator, ContainerInterface $container)
     {
         $this->em = $entityManager;
         $this->validator = $validator;
-        $this->encoder = $encoder;
+        /** @var TokenStorageInterface $tokenStorage */
+        $tokenStorage = $container->get('security.token_storage');
+        $this->token = $tokenStorage ? $tokenStorage->getToken() : null;
     }
 
     /**
@@ -40,12 +44,16 @@ class TransactionFacade
                 ['Invalid transaction type value']
             );
         }
-
+        
         $transaction = new Transaction(
             $message->getAmount(),
-            $transactionType
+            $message->getDescription(),
+            $transactionType,
+            $this->token->getUser()
         );
 
         $this->validator->validate($transaction);
+        $this->em->persist($transaction);
+        $this->em->flush();
     }
 }

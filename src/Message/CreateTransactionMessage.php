@@ -7,11 +7,13 @@ final class CreateTransactionMessage
 {
     private float $amount;
     private int $transactionTypeId;
+    private ?string $description;
 
     public function __construct(?array $data = null)
     {
         $this->amount = $data['amount'] ?? 0;
         $this->transactionTypeId = $data['transactionTypeId'] ?? 0;
+        $this->description = $data['description'] ?? null;
     }
 
     public function getAmount(): float
@@ -38,5 +40,21 @@ final class CreateTransactionMessage
     public function setTransactionTypeId($transactionTypeId): void
     {
         $this->transactionTypeId = (int)$transactionTypeId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     */
+    public function setDescription($description): void
+    {
+        $this->description = (string)$description;
     }
 }
