@@ -7,10 +7,9 @@ use App\Message\CreateUserMessage;
 use App\Service\UserManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
 
 class UserController extends AbstractController
 {
@@ -23,16 +22,5 @@ class UserController extends AbstractController
         $userManager->createUser($message);
 
         return new ApiResponse('User has been crated successfully.', Response::HTTP_CREATED);
-    }
-
-    /**
-     * @Route("/user", name="get_user", methods={"GET"})
-     */
-    public function getAction(Request $request)
-    {
-//        print_r(->);die();
-//        $user = $this->getUser();
-
-        return new ApiResponse('User has been crated successfully.', Response::HTTP_CREATED, [$user->getUsername()]);
     }
 }

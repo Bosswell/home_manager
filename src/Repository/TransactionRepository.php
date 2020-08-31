@@ -25,7 +25,7 @@ class TransactionRepository extends ServiceEntityRepository
         $connection = $this->getEntityManager()->getConnection();
 
         $qb = $connection->createQueryBuilder()
-            ->select('tt.id as `transactionTypeId`, tt.name, SUM(t.amount) AS `amount`')
+            ->select('tt.id as `transactionTypeId`, tt.name, SUM(t.amount) AS `amount`, COUNT(t.id) AS `entries`')
             ->from('transaction', 't')
             ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')
             ->groupBy('tt.id');

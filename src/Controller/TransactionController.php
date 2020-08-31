@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\ApiController;
+use App\ApiException;
 use App\Entity\TransactionType;
 use App\Entity\User;
 use App\Http\ApiResponse;
@@ -15,15 +16,19 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Pagerfanta\Doctrine\DBAL\QueryAdapter;
 use Pagerfanta\Pagerfanta;
+use Tests\Controller\TransactionControllerTest;
 
-
+/**
+ * @see TransactionControllerTest
+ */
 class TransactionController extends ApiController
 {
     /**
      * @Route("/transaction", name="create_transaction", methods={"POST"})
      * @ParamConverter("createTransaction", class="App\Message\CreateTransactionMessage", converter="message_converter")
+     * @throws ApiException
      */
-    public function createAction(CreateTransactionMessage $message)
+    public function createTransactionAction(CreateTransactionMessage $message)
     {
         $this->transactionFacade->createTransaction($message);
 
@@ -38,7 +43,7 @@ class TransactionController extends ApiController
         $data = $repository->findAllTransactionSummary();
 
         return new ApiResponse(
-            (bool)$data ? 'No results' : 'Found entries',
+            (bool)$data ? 'Found entries' : 'No results',
             Response::HTTP_OK,
             $data
         );
@@ -47,7 +52,7 @@ class TransactionController extends ApiController
     /**
      * @Route("/transaction/types/list", name="list_transaction_types", methods={"GET"})
      */
-    public function listTypesAction()
+    public function listTransactionTypesAction()
     {
         $transactionTypes = $this
             ->getDoctrine()
