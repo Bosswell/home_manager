@@ -10,6 +10,7 @@ use App\Http\ApiResponse;
 use App\Message\CreateTransactionMessage;
 use App\Message\ListTransactionsMessage;
 use App\Repository\TransactionRepository;
+use App\Service\ObjectValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -66,9 +67,12 @@ class TransactionController extends ApiController
     /**
      * @Route("/transaction/list", name="list_transaction", methods={"GET"})
      * @ParamConverter("message", class="App\Message\ListTransactionsMessage", converter="query_message_converter")
+     * @throws ApiException
      */
-    public function listTransactionsAction(ListTransactionsMessage $message, TransactionRepository $repository)
+    public function listTransactionsAction(ListTransactionsMessage $message, TransactionRepository $repository, ObjectValidator $validator)
     {
+        $validator->validate($message);
+
         /** @var User $user */
         $user = $this->getUser();
         $countQueryBuilderModifier = function (QueryBuilder $queryBuilder): void {
@@ -76,8 +80,15 @@ class TransactionController extends ApiController
                 ->setMaxResults(1);
         };
 
-
-        $qb = $repository->getTransactionListQuery($user->getId(), $message->getFilterBy()->getTransactionTypeId());
+        $filterBy = $message->getFilterBy();
+        $sortBy = $message->getSortBy();
+        $qb = $repository->getTransactionListQuery(
+            $user->getId(),
+            $filterBy->getTransactionTypeId(),
+            $filterBy->getLastDays(),
+            $sortBy->getName(),
+            $sortBy->getDirection()
+        );
         $adapter = new QueryAdapter($qb, $countQueryBuilderModifier);
         $pagerfanta = new Pagerfanta($adapter);
 

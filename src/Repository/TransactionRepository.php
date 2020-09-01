@@ -33,8 +33,13 @@ class TransactionRepository extends ServiceEntityRepository
         return $qb->execute()->fetchAll() ?? [];
     }
 
-    public function getTransactionListQuery(int $userId, ?int $transTypeId = null): QueryBuilder
-    {
+    public function getTransactionListQuery(
+        int $userId,
+        ?int $transTypeId = null,
+        ?int $lastDays = null,
+        string $orderBy = 't.id',
+        string $orderDirection = 'DESC'
+    ): QueryBuilder {
         $connection = $this->getEntityManager()->getConnection();
 
         $qb = $connection->createQueryBuilder()
@@ -45,10 +50,17 @@ class TransactionRepository extends ServiceEntityRepository
             ->where('u.id = :id')
             ->setParameter(':id', $userId);
 
-        if ($transTypeId) {
+        if (!is_null($transTypeId)) {
             $qb->andWhere('t.transaction_type_id = :transId');
             $qb->setParameter(':transId', $transTypeId);
         }
+
+        if (!is_null($lastDays)) {
+            $qb->andWhere('t.created_at >= DATE_ADD(CURDATE(), INTERVAL -:lastDays DAY)');
+            $qb->setParameter(':lastDays', $lastDays);
+        }
+
+        $qb->orderBy($orderBy, $orderDirection);
 
         return $qb;
     }

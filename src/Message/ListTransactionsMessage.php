@@ -3,14 +3,17 @@
 
 namespace App\Message;
 
-
 use App\Message\Model\TransactionListFilterBy;
 use App\Message\Model\TransactionListSortBy;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 class ListTransactionsMessage
 {
     private int $page;
     private TransactionListFilterBy $filterBy;
+
+    /** @Assert\Valid */
     private TransactionListSortBy $sortBy;
 
     public function __construct()
@@ -25,13 +28,13 @@ class ListTransactionsMessage
         return $this->page;
     }
 
-    public function setPage($page): void
-    {
-        $this->page = (int)$page;
-    }
-
     public function getFilterBy(): TransactionListFilterBy
     {
         return $this->filterBy;
+    }
+
+    public function getSortBy(): TransactionListSortBy
+    {
+        return $this->sortBy;
     }
 }
