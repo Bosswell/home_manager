@@ -75,9 +75,8 @@ class TransactionControllerTest extends WebTestCase
 
         $this->assertEmpty($content['errors']);
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertArrayHasKey('pages', $content['data']);
+        $this->assertArrayHasKey('nbPages', $content['data']);
         $this->assertArrayHasKey('currentPage', $content['data']);
-        $this->assertArrayHasKey('hasNextPage', $content['data']);
         $this->assertArrayHasKey('results', $content['data']);
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
     }
@@ -96,7 +95,7 @@ class TransactionControllerTest extends WebTestCase
             ->getSingleScalarResult();
 
         $this->client->request('POST', '/transaction', [], [], [], json_encode([
-            'transactionTypeId' => $transactionTypeId,
+            'transactionTypeId' => (int)$transactionTypeId,
             'amount' => rand(20, 120),
             'description' => 'Hello world'
         ]));

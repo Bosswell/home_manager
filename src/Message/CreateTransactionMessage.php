@@ -9,12 +9,12 @@ final class CreateTransactionMessage
     private int $transactionTypeId;
     private ?string $description;
 
-    public function __construct(?array $data = null)
-    {
-        $this->amount = $data['amount'] ?? 0;
-        $this->transactionTypeId = $data['transactionTypeId'] ?? 0;
-        $this->description = $data['description'] ?? null;
-    }
+//    public function __construct(?array $data = null)
+//    {
+//        $this->amount = $data['amount'] ?? 0;
+//        $this->transactionTypeId = $data['transactionTypeId'] ?? 0;
+//        $this->description = $data['description'] ?? null;
+//    }
 
     public function getAmount(): float
     {

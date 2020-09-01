@@ -3,15 +3,16 @@
 namespace App\Http\Request;
 
 use App\Serializer\SerializerFactory;
-use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Request\ParamConverter\ParamConverterInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\Serializer\SerializerInterface;
 
-class MessageConverter implements ParamConverterInterface
+
+class QueryMessageConverter implements ParamConverterInterface
 {
     private SerializerInterface $serializer;
     private string $env;
@@ -24,17 +25,17 @@ class MessageConverter implements ParamConverterInterface
 
     public function apply(Request $request, ParamConverter $configuration)
     {
-        $body = $request->getContent();
-
-        if ($request->getContentType() !== 'json') {
-            throw new HttpException(
-                Response::HTTP_NOT_ACCEPTABLE,
-                'Invalid request. Make sure that you are using application/json content type'
-            );
-        }
+        $options = $request->query->get('options');
 
         try {
-            $message = $this->serializer->deserialize($body, $configuration->getClass(), 'json');
+            $class = $configuration->getClass();
+
+            if ($options) {
+                $message = $this->serializer->deserialize($options, $class, 'json');
+            } else {
+                $message = new $class();
+            }
+
             $request->attributes->set($configuration->getName(), $message);
         } catch (\Throwable $ex) {
             if ($this->env === 'dev') {
@@ -49,7 +50,7 @@ class MessageConverter implements ParamConverterInterface
 
     public function supports(ParamConverter $configuration)
     {
-        if ($configuration->getConverter() !== 'message_converter') {
+        if ($configuration->getConverter() !== 'query_message_converter') {
             return false;
         }
 

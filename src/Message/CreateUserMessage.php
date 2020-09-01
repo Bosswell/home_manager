@@ -32,28 +32,13 @@ final class CreateUserMessage
         return $this->confirmPassword;
     }
 
-    public function setEmail($email): void
-    {
-        $this->email = (string)$email;
-    }
-
     public function setPassword($password): void
     {
         $this->password = (string)$password;
     }
 
-    public function setConfirmPassword($confirmPassword): void
-    {
-        $this->confirmPassword = (string)$confirmPassword;
-    }
-
     public function getFullName(): string
     {
         return $this->fullName;
-    }
-
-    public function setFullName(string $fullName): void
-    {
-        $this->fullName = $fullName;
     }
 }

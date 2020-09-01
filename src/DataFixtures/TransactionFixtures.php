@@ -8,11 +8,14 @@ use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class TransactionFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $faker = Factory::create('pl');
+
         $transactionTypes = $manager
             ->getRepository(TransactionType::class)
             ->findAll();
@@ -24,7 +27,8 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
         /** @var TransactionType $transactionType */
         foreach ($transactionTypes as $transactionType) {
             for ($i = 0; $i < 20; $i++) {
-                $transaction = new Transaction(rand(5, 1000), '', $transactionType, $user);
+                $transaction = new Transaction($faker->randomFloat(2, 0, 300), $faker->text(20), $transactionType, $user);
+                $transaction->setCreatedAt($faker->dateTimeBetween('-2 months'));
                 $manager->persist($transaction);
             }
         }

@@ -8,9 +8,9 @@ use App\Entity\TransactionType;
 use App\Entity\User;
 use App\Http\ApiResponse;
 use App\Message\CreateTransactionMessage;
+use App\Message\ListTransactionsMessage;
 use App\Repository\TransactionRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -25,7 +25,7 @@ class TransactionController extends ApiController
 {
     /**
      * @Route("/transaction", name="create_transaction", methods={"POST"})
-     * @ParamConverter("createTransaction", class="App\Message\CreateTransactionMessage", converter="message_converter")
+     * @ParamConverter("message", class="App\Message\CreateTransactionMessage", converter="message_converter")
      * @throws ApiException
      */
     public function createTransactionAction(CreateTransactionMessage $message)
@@ -65,8 +65,9 @@ class TransactionController extends ApiController
 
     /**
      * @Route("/transaction/list", name="list_transaction", methods={"GET"})
+     * @ParamConverter("message", class="App\Message\ListTransactionsMessage", converter="query_message_converter")
      */
-    public function listTransactionsAction(Request $request, TransactionRepository $repository)
+    public function listTransactionsAction(ListTransactionsMessage $message, TransactionRepository $repository)
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -75,19 +76,18 @@ class TransactionController extends ApiController
                 ->setMaxResults(1);
         };
 
-        $qb = $repository->getTransactionListQuery($user->getId(), $request->get('transactionTypeId'));
+
+        $qb = $repository->getTransactionListQuery($user->getId(), $message->getFilterBy()->getTransactionTypeId());
         $adapter = new QueryAdapter($qb, $countQueryBuilderModifier);
         $pagerfanta = new Pagerfanta($adapter);
 
         $nbPages = $pagerfanta->getNbPages();
-        $nbPage = $request->get('page') ?? 1;
 
-        $pagerfanta->setCurrentPage($nbPage > $nbPages ? $nbPages : $nbPage );
+        $pagerfanta->setCurrentPage($message->getPage() > $nbPages ? $nbPages : $message->getPage() );
         
         return new ApiResponse('Found entries', Response::HTTP_OK, [
-            'pages' => $nbPages,
+            'nbPages' => $nbPages,
             'currentPage' => $pagerfanta->getCurrentPage(),
-            'hasNextPage' => $pagerfanta->hasNextPage(),
             'results' => $pagerfanta->getCurrentPageResults()
         ]);
     }
