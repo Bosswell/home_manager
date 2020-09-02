@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Message;
 
 use App\Message\Model\TransactionListFilterBy;
@@ -10,22 +9,24 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class ListTransactionsMessage
 {
-    private int $page;
+    private int $nbPage;
     private TransactionListFilterBy $filterBy;
 
-    /** @Assert\Valid */
+    /**
+     * @Assert\Valid
+     */
     private TransactionListSortBy $sortBy;
 
-    public function __construct()
+    public function __construct(?array $data = null)
     {
-        $this->page = 1;
-        $this->filterBy = new TransactionListFilterBy();
-        $this->sortBy = new TransactionListSortBy();
+        $this->nbPage = $data['nbPage'] ?? 1;
+        $this->filterBy = new TransactionListFilterBy($data['filterBy'] ?? null);
+        $this->sortBy = new TransactionListSortBy($data['sortBy'] ?? null);
     }
 
-    public function getPage(): int
+    public function getNbPage(): int
     {
-        return $this->page;
+        return $this->nbPage;
     }
 
     public function getFilterBy(): TransactionListFilterBy

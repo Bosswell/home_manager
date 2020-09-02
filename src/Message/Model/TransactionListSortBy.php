@@ -13,12 +13,21 @@ class TransactionListSortBy
      *     message="Invalid sorting name value."
      *)
      */
-    private string $name = 't.id';
+    private string $name;
 
     /**
-     * @Assert\Choice({"ASC", "DESC"})
+     * @Assert\Choice(
+     *     {"asc", "desc"},
+     *     message="Invalid sorting direction value."
+     * )
      */
-    private string $direction = 'DESC';
+    private string $direction;
+
+    public function __construct(?array $data = null)
+    {
+        $this->name = $data['name'] ?? 't.id';
+        $this->direction = $data['direction'] ?? 'desc';
+    }
 
     public function getName(): string
     {

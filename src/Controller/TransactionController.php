@@ -84,17 +84,17 @@ class TransactionController extends ApiController
         $sortBy = $message->getSortBy();
         $qb = $repository->getTransactionListQuery(
             $user->getId(),
-            $filterBy->getTransactionTypeId(),
-            $filterBy->getLastDays(),
-            $sortBy->getName(),
-            $sortBy->getDirection()
+            $filterBy ? $filterBy->getTransactionTypeId() : null,
+            $filterBy ? $filterBy->getLastDays() : null,
+            $sortBy ? $sortBy->getName() : 't.id',
+            $sortBy ? $sortBy->getDirection() : 'DESC'
         );
         $adapter = new QueryAdapter($qb, $countQueryBuilderModifier);
         $pagerfanta = new Pagerfanta($adapter);
 
         $nbPages = $pagerfanta->getNbPages();
 
-        $pagerfanta->setCurrentPage($message->getPage() > $nbPages ? $nbPages : $message->getPage() );
+        $pagerfanta->setCurrentPage($message->getNbPage() > $nbPages ? $nbPages : $message->getNbPage() );
         
         return new ApiResponse('Found entries', Response::HTTP_OK, [
             'nbPages' => $nbPages,
