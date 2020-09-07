@@ -10,6 +10,7 @@ use App\Http\ApiResponse;
 use App\Message\CreateTransactionMessage;
 use App\Message\GetTransactionSummaryMessage;
 use App\Message\ListTransactionsMessage;
+use App\Message\UpdateTransactionMessage;
 use App\Repository\TransactionRepository;
 use App\Service\ObjectValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -48,6 +49,21 @@ class TransactionController extends ApiController
         return new ApiResponse(
             'Transaction has been removed',
             Response::HTTP_OK
+        );
+    }
+
+    /**
+     * @Route("/transaction/update", name="update_transaction", methods={"PUT"})
+     * @ParamConverter("message", class="App\Message\UpdateTransactionMessage", converter="message_converter")
+     * @throws ApiException
+     */
+    public function updateTransactionAction(UpdateTransactionMessage $message)
+    {
+        $this->transactionFacade->updateTransaction($message);
+
+        return new ApiResponse(
+            'Transaction has been successfully updated',
+            Response::HTTP_CREATED
         );
     }
 

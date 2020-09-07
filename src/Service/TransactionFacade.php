@@ -6,6 +6,7 @@ use App\ApiException;
 use App\Entity\Transaction;
 use App\Entity\TransactionType;
 use App\Message\CreateTransactionMessage;
+use App\Message\UpdateTransactionMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -77,6 +78,41 @@ class TransactionFacade
         }
 
         $transaction->setIsDeleted(true);
+        $this->em->flush();
+    }
+
+    /**
+     * @throws ApiException
+     */
+    public function updateTransaction(UpdateTransactionMessage $message)
+    {
+        $user = $this->token->getUser();
+        /** @var Transaction $transaction */
+        $transaction = $this->em
+            ->getRepository(Transaction::class)
+            ->findOneBy(['id' => $message->getId(), 'user' => $user]);
+
+        if (is_null($transaction)) {
+            throw new ApiException(
+                'Transaction not found',
+                Response::HTTP_NOT_FOUND,
+                ['Transaction that you try to update does not exists']
+            );
+        }
+
+        /** @var TransactionType $transactionType */
+        $transactionType = $this->em
+            ->getRepository(TransactionType::class)
+            ->find($message->getTransactionTypeId());
+
+        if (is_null($transactionType)) {
+            throw ApiException::entityNotFound(
+                $message->getTransactionTypeId(),
+                ['Invalid transaction type value']
+            );
+        }
+
+        $transaction->update($message->getAmount(), $message->getDescription(), $transactionType);
         $this->em->flush();
     }
 }

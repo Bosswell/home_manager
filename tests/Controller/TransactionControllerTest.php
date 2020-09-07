@@ -17,6 +17,7 @@ class TransactionControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
     private EntityManagerInterface $entityManager;
+    private User $testUser;
 
     protected function setUp(): void
     {
@@ -34,6 +35,12 @@ class TransactionControllerTest extends WebTestCase
         $this->entityManager = $kernel->getContainer()
             ->get('doctrine')
             ->getManager();
+
+        /** @noinspection all */
+        $this->testUser = $this
+            ->entityManager
+            ->getRepository(User::class)
+            ->findOneBy(['email' => 'jakub@home.pl']);
     }
 
     public function testListTransactionTypesAction(): void
@@ -110,14 +117,9 @@ class TransactionControllerTest extends WebTestCase
 
     public function testDeleteTransaction()
     {
-        $testUser = $this
-            ->entityManager
-            ->getRepository(User::class)
-            ->findOneBy(['email' => 'jakub@home.pl']);
-
         $transRepository = $this->entityManager->getRepository(Transaction::class);
         /** @var Transaction $transaction */
-        $transaction = $transRepository->findOneBy(['isDeleted' => false, 'user' => $testUser]);
+        $transaction = $transRepository->findOneBy(['isDeleted' => false, 'user' => $this->testUser]);
 
         $this->client->request('DELETE', '/transaction/delete/' . $transaction->getId());
         $response = $this->client->getResponse();
@@ -127,5 +129,30 @@ class TransactionControllerTest extends WebTestCase
         $this->entityManager->clear();
         $transactionAfter = $transRepository->find($transaction->getId());
         $this->assertEquals(true, $transactionAfter->isDeleted());
+    }
+
+    public function testUpdateTransaction()
+    {
+        $transRepository = $this->entityManager->getRepository(Transaction::class);
+        /** @var Transaction $transaction */
+        $transaction = $transRepository->findOneBy(['isDeleted' => false, 'user' => $this->testUser]);
+
+        $this->client->request('PUT', '/transaction/update', [], [], [], json_encode([
+            'id' => $transaction->getId(),
+            'transactionTypeId' => $transaction->getTransactionType()->getId(),
+            'amount' => 100,
+            'description' => 'Hello world'
+        ]));
+
+        $response = $this->client->getResponse();
+
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $this->entityManager->clear();
+
+        /** @var Transaction $transactionAfter */
+        $transactionAfter = $transRepository->find($transaction->getId());
+        $this->assertEquals(100, $transactionAfter->getAmount());
+        $this->assertEquals('Hello world', $transactionAfter->getDescription());
     }
 }
