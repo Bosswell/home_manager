@@ -3,6 +3,7 @@
 namespace Tests\Controller;
 
 use App\Entity\TransactionType;
+use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

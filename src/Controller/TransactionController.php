@@ -8,6 +8,7 @@ use App\Entity\TransactionType;
 use App\Entity\User;
 use App\Http\ApiResponse;
 use App\Message\CreateTransactionMessage;
+use App\Message\GetTransactionSummaryMessage;
 use App\Message\ListTransactionsMessage;
 use App\Repository\TransactionRepository;
 use App\Service\ObjectValidator;
@@ -38,10 +39,17 @@ class TransactionController extends ApiController
 
     /**
      * @Route("/transaction/summary", name="get_transaction_summary", methods={"GET"})
+     * @ParamConverter("message", class="App\Message\GetTransactionSummaryMessage", converter="query_message_converter")
      */
-    public function getTransactionSummary(TransactionRepository $repository)
+    public function getTransactionSummary(TransactionRepository $repository, GetTransactionSummaryMessage $message)
     {
-        $data = $repository->findAllTransactionSummary();
+        /** @var User $user */
+        $user = $this->getUser();
+        $data = $repository->findAllTransactionSummary(
+            $user->getId(),
+            $message->getStartDate(),
+            $message->getEndDate()
+        );
 
         return new ApiResponse(
             (bool)$data ? 'Found entries' : 'No results',
@@ -89,13 +97,14 @@ class TransactionController extends ApiController
             $sortBy ? $sortBy->getName() : 't.id',
             $sortBy ? $sortBy->getDirection() : 'DESC'
         );
+
         $adapter = new QueryAdapter($qb, $countQueryBuilderModifier);
         $pagerfanta = new Pagerfanta($adapter);
-
+        $pagerfanta->setMaxPerPage(10);
         $nbPages = $pagerfanta->getNbPages();
 
-        $pagerfanta->setCurrentPage($message->getNbPage() > $nbPages ? $nbPages : $message->getNbPage() );
-        
+        $pagerfanta->setCurrentPage($message->getNbPage() > $nbPages ? $nbPages : $message->getNbPage());
+
         return new ApiResponse('Found entries', Response::HTTP_OK, [
             'nbPages' => $nbPages,
             'currentPage' => $pagerfanta->getCurrentPage(),

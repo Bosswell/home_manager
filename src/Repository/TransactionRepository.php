@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Transaction;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -20,7 +21,7 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
-    public function findAllTransactionSummary(): array
+    public function findAllTransactionSummary(int $userId, ?DateTime $dateStart = null, ?DateTime $dateEnd = null): array
     {
         $connection = $this->getEntityManager()->getConnection();
 
@@ -28,7 +29,19 @@ class TransactionRepository extends ServiceEntityRepository
             ->select('tt.id as `transactionTypeId`, tt.name, ROUND(SUM(t.amount), 2) AS `amount`, COUNT(t.id) AS `entries`')
             ->from('transaction', 't')
             ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')
+            ->where('t.user_id = :userId')
+            ->setParameter(':userId', $userId)
             ->groupBy('tt.id');
+
+        if (!is_null($dateStart)) {
+            $qb->andWhere('t.created_at >= :dateStart');
+            $qb->setParameter(':dateStart', $dateStart->format('Y/m/d'));
+        }
+
+        if (!is_null($dateEnd)) {
+            $qb->andWhere('t.created_at < :dateEnd');
+            $qb->setParameter(':dateEnd', $dateEnd->format('Y/m/d'));
+        }
 
         return $qb->execute()->fetchAll() ?? [];
     }
