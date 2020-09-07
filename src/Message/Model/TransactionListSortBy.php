@@ -9,7 +9,7 @@ class TransactionListSortBy
 {
     /**
      * @Assert\Choice(
-     *     {"t.id", "tt.name", "t.amount", "t.createdAt"},
+     *     {"t.id", "tt.name", "t.amount", "t.created_at"},
      *     message="Invalid sorting name value."
      *)
      */

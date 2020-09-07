@@ -8,6 +8,7 @@ use App\Entity\TransactionType;
 use App\Message\CreateTransactionMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
@@ -54,6 +55,28 @@ class TransactionFacade
 
         $this->validator->validate($transaction);
         $this->em->persist($transaction);
+        $this->em->flush();
+    }
+
+    /**
+     * @throws ApiException
+     */
+    public function deleteTransaction(int $id)
+    {
+        $user = $this->token->getUser();
+        $transaction = $this->em
+            ->getRepository(Transaction::class)
+            ->findOneBy(['id' => $id, 'user' => $user]);
+
+        if (is_null($transaction)) {
+            throw new ApiException(
+                'Transaction not found',
+                Response::HTTP_NOT_FOUND,
+                ['Transaction that you try to remove does not exists']
+            );
+        }
+
+        $transaction->setIsDeleted(true);
         $this->em->flush();
     }
 }

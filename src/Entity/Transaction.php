@@ -51,6 +51,11 @@ class Transaction implements JsonSerializable
      */
     private $user;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isDeleted;
+
 
     public function __construct(float $amount, string $description, TransactionType $transactionType, UserInterface $user)
     {
@@ -58,6 +63,7 @@ class Transaction implements JsonSerializable
         $this->transactionType = $transactionType;
         $this->description = $description;
         $this->createdAt = new \DateTime();
+        $this->isDeleted = false;
         $this->user = $user;
     }
 
@@ -112,5 +118,17 @@ class Transaction implements JsonSerializable
             'amount' => $this->amount,
             'description' => $this->description
         ];
+    }
+
+    public function isDeleted(): ?bool
+    {
+        return $this->isDeleted;
+    }
+
+    public function setIsDeleted(bool $isDeleted): self
+    {
+        $this->isDeleted = $isDeleted;
+
+        return $this;
     }
 }

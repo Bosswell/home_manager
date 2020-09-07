@@ -6,7 +6,7 @@ namespace App\Message;
 final class CreateTransactionMessage
 {
     private float $amount;
-    private int $transactionTypeId;
+    private ?int $transactionTypeId;
     private ?string $description;
 
     public function __construct(?array $data = null)

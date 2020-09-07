@@ -2,6 +2,7 @@
 
 namespace Tests\Controller;
 
+use App\Entity\Transaction;
 use App\Entity\TransactionType;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -105,5 +106,26 @@ class TransactionControllerTest extends WebTestCase
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
+    }
+
+    public function testDeleteTransaction()
+    {
+        $testUser = $this
+            ->entityManager
+            ->getRepository(User::class)
+            ->findOneBy(['email' => 'jakub@home.pl']);
+
+        $transRepository = $this->entityManager->getRepository(Transaction::class);
+        /** @var Transaction $transaction */
+        $transaction = $transRepository->findOneBy(['isDeleted' => false, 'user' => $testUser]);
+
+        $this->client->request('DELETE', '/transaction/delete/' . $transaction->getId());
+        $response = $this->client->getResponse();
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $this->entityManager->clear();
+        $transactionAfter = $transRepository->find($transaction->getId());
+        $this->assertEquals(true, $transactionAfter->isDeleted());
     }
 }

@@ -38,6 +38,20 @@ class TransactionController extends ApiController
     }
 
     /**
+     * @Route("/transaction/delete/{id}", name="delete_transaction", methods={"DELETE"})
+     * @throws ApiException
+     */
+    public function deleteTransactionAction(int $id)
+    {
+        $this->transactionFacade->deleteTransaction($id);
+
+        return new ApiResponse(
+            'Transaction has been removed',
+            Response::HTTP_OK
+        );
+    }
+
+    /**
      * @Route("/transaction/summary", name="get_transaction_summary", methods={"GET"})
      * @ParamConverter("message", class="App\Message\GetTransactionSummaryMessage", converter="query_message_converter")
      */
@@ -94,7 +108,7 @@ class TransactionController extends ApiController
             $user->getId(),
             $filterBy ? $filterBy->getTransactionTypeId() : null,
             $filterBy ? $filterBy->getLastDays() : null,
-            $sortBy ? $sortBy->getName() : 't.id',
+            $sortBy ? $sortBy->getName() : 't.created_at',
             $sortBy ? $sortBy->getDirection() : 'DESC'
         );
 
