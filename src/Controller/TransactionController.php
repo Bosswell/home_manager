@@ -42,9 +42,9 @@ class TransactionController extends ApiController
      * @Route("/transaction/delete/{id}", name="delete_transaction", methods={"DELETE"})
      * @throws ApiException
      */
-    public function deleteTransactionAction(int $id)
+    public function deleteTransactionAction(string $id)
     {
-        $this->transactionFacade->deleteTransaction($id);
+        $this->transactionFacade->deleteTransaction((int)$id);
 
         return new ApiResponse(
             'Transaction has been removed',

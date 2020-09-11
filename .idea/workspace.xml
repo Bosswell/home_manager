@@ -2,11 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb3bcf03-548f-4579-8cfb-0dab2e18a83e" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/commandlinetools/Symfony_11_09_2020__16_23.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/commandlinetools/schemas/frameworkDescriptionVersion1.1.4.xsd" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/TransactionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/TransactionController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Transaction.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Transaction.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/TransactionFacade.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/TransactionFacade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/tests/Controller/TransactionControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Controller/TransactionControllerTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Repository/TransactionRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/TransactionRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,12 +149,13 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$1/New Scratch File" value="HTML" />
     <property name="database.data.extractors.current.export.id" value="Comma-separated (CSV)_id" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/config/packages/prod" />
+    <property name="last_opened_file_path" value="D:/Projects/translator" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="php.override.implement.member.chooser.php.doc" value="NONE" />
     <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -183,6 +185,7 @@
       </list>
     </recent_temporary>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="project-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -230,12 +233,16 @@
       <workItem from="1599039768967" duration="9000" />
       <workItem from="1599039971819" duration="11680000" />
       <workItem from="1599145473734" duration="3490000" />
-      <workItem from="1599485743364" duration="8801000" />
+      <workItem from="1599485743364" duration="9436000" />
+      <workItem from="1599567767169" duration="19000" />
+      <workItem from="1599675738572" duration="870000" />
+      <workItem from="1599736517927" duration="37000" />
+      <workItem from="1599834206893" duration="1230000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
   </component>
   <component name="WindowStateProjectService">
     <state x="644" y="133" key="#AllTests" timestamp="1598862121682">
@@ -282,26 +289,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="855" y="270" key="EnvironmentVariablesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598861930557" />
-    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1599051444825">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1599567784167">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599051444825" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1599520796655">
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1599567784167" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1599521493587">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599520796655" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1599520796655">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1599521493587" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1599521493587">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599520796655" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1599520796655">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1599521493587" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1599521493587">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599520796655" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1599520796655">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1599521493587" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1599521493587">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599520796655" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1599521493587" />
     <state x="751" y="243" key="NewPhpClassDialog" timestamp="1599518801328">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -318,10 +325,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="859" y="397" key="com.intellij.database.actions.DdlActions$CreateObject$1/0.0.1920.1040@0.0.1920.1040" timestamp="1598906910367" />
-    <state x="858" y="407" width="316" height="244" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1596288367076">
+    <state x="858" y="407" width="316" height="244" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1" timestamp="1599521032052">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="858" y="407" width="316" height="244" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.0.1920.1040@0.0.1920.1040" timestamp="1596288367076" />
+    <state x="858" y="407" width="316" height="244" key="com.intellij.database.actions.DdlActions$DeleteProvider2$1/0.0.1920.1040@0.0.1920.1040" timestamp="1599521032052" />
     <state x="859" y="461" key="com.intellij.database.run.ParametersPanel.Standalone" timestamp="1599486870891">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

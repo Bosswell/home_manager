@@ -30,6 +30,7 @@ class TransactionRepository extends ServiceEntityRepository
             ->from('transaction', 't')
             ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')
             ->where('t.user_id = :userId')
+            ->andWhere('t.is_deleted = 0')
             ->setParameter(':userId', $userId)
             ->groupBy('tt.id');
 
@@ -56,11 +57,12 @@ class TransactionRepository extends ServiceEntityRepository
         $connection = $this->getEntityManager()->getConnection();
 
         $qb = $connection->createQueryBuilder()
-            ->select('t.amount, t.created_at, t.description, tt.name')
+            ->select('t.id, t.amount, t.created_at, t.description, tt.name')
             ->from('transaction', 't')
             ->innerJoin('t', 'user', 'u', 'u.id = t.user_id')
             ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')
             ->where('u.id = :id')
+            ->andWhere('t.is_deleted = 0')
             ->setParameter(':id', $userId);
 
         if (!is_null($transTypeId)) {
