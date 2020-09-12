@@ -15,6 +15,22 @@ final class CreateUserMessage
         $this->email = $data['email'] ?? '';
         $this->password = $data['password'] ?? '';
         $this->confirmPassword = $data['confirmPassword'] ?? '';
+        $this->fullName = $data['fullName'] ?? '';
+    }
+
+    public function setEmail($email): void
+    {
+        $this->email = $email;
+    }
+
+    public function setConfirmPassword($confirmPassword): void
+    {
+        $this->confirmPassword = $confirmPassword;
+    }
+
+    public function setFullName(string $fullName): void
+    {
+        $this->fullName = $fullName;
     }
 
     public function getEmail(): string

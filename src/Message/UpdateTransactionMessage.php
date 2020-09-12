@@ -65,11 +65,8 @@ class UpdateTransactionMessage
         return $this->id;
     }
 
-    /**
-     * @param int|null $id
-     */
     public function setId($id): void
     {
-        $this->id = $id;
+        $this->id = (int)$id;
     }
 }

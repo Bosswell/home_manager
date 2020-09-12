@@ -15,7 +15,7 @@ class UserController extends AbstractController
 {
     /**
      * @Route("/user", name="create_user", methods={"POST"})
-     * @ParamConverter("createTransaction", class="App\Message\CreateUserMessage", converter="message_converter")
+     * @ParamConverter("message", class="App\Message\CreateUserMessage", converter="message_converter")
      */
     public function createAction(CreateUserMessage $message, UserManager $userManager)
     {

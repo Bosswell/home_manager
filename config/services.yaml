@@ -35,7 +35,7 @@ services:
     query_message_converter:
         class: App\Http\Request\QueryMessageConverter
         tags:
-            - { name: request.param_converter, priority: -2, converter: query_message_converter }
+            - { name: request.param_converter, priority: -3, converter: query_message_converter }
 
     App\EventListener\ExceptionListener:
         tags:

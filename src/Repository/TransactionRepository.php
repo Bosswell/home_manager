@@ -40,7 +40,9 @@ class TransactionRepository extends ServiceEntityRepository
         }
 
         if (!is_null($dateEnd)) {
-            $qb->andWhere('t.created_at < :dateEnd');
+            // To include full day
+            $dateEnd->modify('+1 day');
+            $qb->andWhere('t.created_at <= :dateEnd');
             $qb->setParameter(':dateEnd', $dateEnd->format('Y/m/d'));
         }
 
@@ -57,7 +59,7 @@ class TransactionRepository extends ServiceEntityRepository
         $connection = $this->getEntityManager()->getConnection();
 
         $qb = $connection->createQueryBuilder()
-            ->select('t.id, t.amount, t.created_at, t.description, tt.name')
+            ->select('tt.id as `transactionTypeId`, t.id, t.amount, t.created_at, t.description, tt.name')
             ->from('transaction', 't')
             ->innerJoin('t', 'user', 'u', 'u.id = t.user_id')
             ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')

@@ -37,7 +37,7 @@ class MessageConverter implements ParamConverterInterface
             $message = $this->serializer->deserialize($body, $configuration->getClass(), 'json');
             $request->attributes->set($configuration->getName(), $message);
         } catch (\Throwable $ex) {
-            if ($this->env === 'dev') {
+            if (in_array($this->env, ['dev', 'test'])) {
                 throw $ex;
             }
 
