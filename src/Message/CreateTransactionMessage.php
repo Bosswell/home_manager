@@ -8,6 +8,7 @@ final class CreateTransactionMessage
     private float $amount;
     private ?int $transactionTypeId;
     private ?string $description;
+    private bool $isIncome = false;
 
     public function __construct(?array $data = null)
     {
@@ -56,5 +57,21 @@ final class CreateTransactionMessage
     public function setDescription($description): void
     {
         $this->description = (string)$description;
+    }
+
+    /**
+     * @param bool $isIncome
+     */
+    public function setIsIncome(bool $isIncome): void
+    {
+        $this->isIncome = $isIncome;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIncome(): bool
+    {
+        return $this->isIncome;
     }
 }

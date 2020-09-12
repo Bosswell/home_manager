@@ -48,6 +48,7 @@ class TransactionFacade
         }
         
         $transaction = new Transaction(
+            $message->isIncome(),
             $message->getAmount(),
             $message->getDescription(),
             $transactionType,
@@ -112,7 +113,7 @@ class TransactionFacade
             );
         }
 
-        $transaction->update($message->getAmount(), $message->getDescription(), $transactionType);
+        $transaction->update($message->isIncome(), $message->getAmount(), $message->getDescription(), $transactionType);
         $this->em->flush();
     }
 }

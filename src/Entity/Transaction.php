@@ -62,9 +62,15 @@ class Transaction implements JsonSerializable
      */
     private bool $isDeleted;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isIncome;
 
-    public function __construct(float $amount, string $description, TransactionType $transactionType, UserInterface $user)
+
+    public function __construct(bool $isIncome, float $amount, string $description, TransactionType $transactionType, UserInterface $user)
     {
+        $this->isIncome = $isIncome;
         $this->amount = $amount;
         $this->transactionType = $transactionType;
         $this->description = $description;
@@ -143,11 +149,24 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    public function update(float $amount, string $description, TransactionType $transactionType)
+    public function update(bool $isIncome, float $amount, string $description, TransactionType $transactionType)
     {
         $this->updatedAt = new DateTime();
         $this->amount = $amount;
+        $this->isIncome = $isIncome;
         $this->description = $description;
         $this->transactionType = $transactionType;
+    }
+
+    public function getIsIncome(): ?bool
+    {
+        return $this->isIncome;
+    }
+
+    public function setIsIncome(bool $isIncome): self
+    {
+        $this->isIncome = $isIncome;
+
+        return $this;
     }
 }

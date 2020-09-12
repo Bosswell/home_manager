@@ -59,7 +59,7 @@ class TransactionRepository extends ServiceEntityRepository
         $connection = $this->getEntityManager()->getConnection();
 
         $qb = $connection->createQueryBuilder()
-            ->select('tt.id as `transactionTypeId`, t.id, t.amount, t.created_at, t.description, tt.name')
+            ->select('tt.id as `transactionTypeId`, t.id, t.amount, t.created_at, t.description, tt.name, t.is_income as `isIncome`')
             ->from('transaction', 't')
             ->innerJoin('t', 'user', 'u', 'u.id = t.user_id')
             ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')

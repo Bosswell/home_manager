@@ -27,7 +27,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
         /** @var TransactionType $transactionType */
         foreach ($transactionTypes as $transactionType) {
             for ($i = 0; $i < 20; $i++) {
-                $transaction = new Transaction($faker->randomFloat(2, 0, 300), $faker->text(20), $transactionType, $user);
+                $transaction = new Transaction(random_int(0, 1), $faker->randomFloat(2, 0, 300), $faker->text(20), $transactionType, $user);
                 $transaction->setCreatedAt($faker->dateTimeBetween('-2 months'));
                 $manager->persist($transaction);
             }

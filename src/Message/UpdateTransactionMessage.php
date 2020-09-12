@@ -9,6 +9,7 @@ class UpdateTransactionMessage
     private float $amount;
     private ?int $transactionTypeId;
     private ?string $description;
+    private bool $isIncome;
 
     public function __construct(?array $data = null)
     {
@@ -68,5 +69,21 @@ class UpdateTransactionMessage
     public function setId($id): void
     {
         $this->id = (int)$id;
+    }
+
+    /**
+     * @param bool $isIncome
+     */
+    public function setIsIncome(bool $isIncome): void
+    {
+        $this->isIncome = $isIncome;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isIncome(): bool
+    {
+        return $this->isIncome;
     }
 }
