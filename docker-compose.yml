@@ -2,11 +2,11 @@ version: '3.4'
 
 services:
     app:
-        container_name: simple_dashboard
+        container_name: home_manager
         environment:
             - APACHE_DOCUMENT_ROOT=/var/www/html/public
         ports:
-            - 8080:80
+            - 80:80
         build:
             context: .
         volumes:
