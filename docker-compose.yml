@@ -1,0 +1,36 @@
+version: '3.4'
+
+services:
+    app:
+        container_name: simple_dashboard
+        environment:
+            - APACHE_DOCUMENT_ROOT=/var/www/html/public
+        ports:
+            - 8080:80
+        build:
+            context: .
+        volumes:
+            - .:/var/www/html
+            - ./docker/config/vhost.conf:/etc/apache2/sites-available/000-default.conf
+            - ./docker/config/my.cnf:/etc/my.cnf
+
+    mariadb:
+        image: mariadb:10.2.12
+        container_name: mariadb
+        restart: always
+        ports:
+            - 3306:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+        volumes:
+            - db-data:/var/lib/mysql
+
+    composer:
+        image: composer
+        working_dir: /var/www/html
+        command: ["composer", "install"]
+        volumes:
+            - $PWD:/var/www/html
+
+volumes:
+    db-data:
