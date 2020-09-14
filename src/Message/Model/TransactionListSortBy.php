@@ -25,7 +25,7 @@ class TransactionListSortBy
 
     public function __construct(?array $data = null)
     {
-        $this->name = $data['name'] ?? 't.id';
+        $this->name = $data['name'] ?? 't.created_at';
         $this->direction = $data['direction'] ?? 'desc';
     }
 

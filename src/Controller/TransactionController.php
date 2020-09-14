@@ -122,10 +122,11 @@ class TransactionController extends ApiController
         $sortBy = $message->getSortBy();
         $qb = $repository->getTransactionListQuery(
             $user->getId(),
-            $filterBy ? $filterBy->getTransactionTypeId() : null,
-            $filterBy ? $filterBy->getLastDays() : null,
-            $sortBy ? $sortBy->getName() : 't.created_at',
-            $sortBy ? $sortBy->getDirection() : 'DESC'
+            $filterBy->getTransactionTypeId(),
+            $filterBy->getLastDays(),
+            $filterBy->isIncome(),
+            $sortBy->getName(),
+            $sortBy->getDirection()
         );
 
         $adapter = new QueryAdapter($qb, $countQueryBuilderModifier);

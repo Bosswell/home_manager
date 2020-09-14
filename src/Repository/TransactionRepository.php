@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Transaction;
+use bar\baz\source_with_namespace;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
@@ -21,18 +22,17 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
-    public function findAllTransactionSummary(int $userId, ?DateTime $dateStart = null, ?DateTime $dateEnd = null): array
+    public function findTransactionsTypeSummary(string $transTypeAlias, int $userId, ?DateTime $dateStart = null, ?DateTime $dateEnd = null): QueryBuilder
     {
         $connection = $this->getEntityManager()->getConnection();
 
         $qb = $connection->createQueryBuilder()
-            ->select('tt.id as `transactionTypeId`, tt.name, ROUND(SUM(t.amount), 2) AS `amount`, COUNT(t.id) AS `entries`')
             ->from('transaction', 't')
-            ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')
+            ->innerJoin('t', 'transaction_type', $transTypeAlias, $transTypeAlias . '.id = t.transaction_type_id')
             ->where('t.user_id = :userId')
             ->andWhere('t.is_deleted = 0')
             ->setParameter(':userId', $userId)
-            ->groupBy('tt.id');
+            ->groupBy($transTypeAlias . '.id');
 
         if (!is_null($dateStart)) {
             $qb->andWhere('t.created_at >= :dateStart');
@@ -41,10 +41,26 @@ class TransactionRepository extends ServiceEntityRepository
 
         if (!is_null($dateEnd)) {
             // To include full day
+            $dateEnd = clone $dateEnd;
             $dateEnd->modify('+1 day');
             $qb->andWhere('t.created_at <= :dateEnd');
             $qb->setParameter(':dateEnd', $dateEnd->format('Y/m/d'));
         }
+
+        return $qb;
+    }
+
+    public function findAllTransactionSummary(int $userId, ?DateTime $dateStart = null, ?DateTime $dateEnd = null): array
+    {
+        $qb = $this->findTransactionsTypeSummary('tts', ...func_get_args());
+        $sql = $qb
+            ->select('ROUND(SUM(t.amount), 2)')
+            ->andWhere('tts.id = tt.id')
+            ->andWhere('t.is_income = 1')
+            ->getSQL();
+
+        $qb = $this->findTransactionsTypeSummary('tt', ...func_get_args());
+        $qb->select('tt.id as `transactionTypeId`, tt.name, ROUND(SUM(t.amount), 2) as `totalAmount`, ('. $sql .') AS `income`, COUNT(t.id) AS `entries`');
 
         return $qb->execute()->fetchAll() ?? [];
     }
@@ -53,6 +69,7 @@ class TransactionRepository extends ServiceEntityRepository
         int $userId,
         ?int $transTypeId = null,
         ?int $lastDays = null,
+        ?int $isIncome = null,
         string $orderBy = 't.id',
         string $orderDirection = 'DESC'
     ): QueryBuilder {
@@ -75,6 +92,11 @@ class TransactionRepository extends ServiceEntityRepository
         if (!is_null($lastDays)) {
             $qb->andWhere('t.created_at >= DATE_ADD(CURDATE(), INTERVAL -:lastDays DAY)');
             $qb->setParameter(':lastDays', $lastDays);
+        }
+
+        if (!is_null($isIncome)) {
+            $qb->andWhere('t.is_income = :isIncome');
+            $qb->setParameter(':isIncome', $isIncome);
         }
 
         $qb->orderBy($orderBy, $orderDirection);
