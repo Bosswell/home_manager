@@ -14,6 +14,9 @@ class TransactionTypeFixtures extends Fixture
         $manager->persist(new TransactionType('Paliwo'));
         $manager->persist(new TransactionType('Kosmetyki'));
         $manager->persist(new TransactionType('Rozrywka'));
+        $manager->persist(new TransactionType('Lekarz'));
+        $manager->persist(new TransactionType('Mechanik'));
+        $manager->persist(new TransactionType('Inne'));
 
         $manager->flush();
     }

@@ -22,7 +22,7 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
 
         $user = $manager
             ->getRepository(User::class)
-            ->findOneBy(['email' => 'jakub@home.pl']);
+            ->findOneBy(['email' => 'demo@demo.com']);
 
         /** @var TransactionType $transactionType */
         foreach ($transactionTypes as $transactionType) {
