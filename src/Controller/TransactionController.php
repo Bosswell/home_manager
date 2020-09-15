@@ -75,14 +75,24 @@ class TransactionController extends ApiController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $data = $repository->findAllTransactionSummary(
+        $data['entries'] = $repository->findAllTransactionSummary(
             $user->getId(),
             $message->getStartDate(),
             $message->getEndDate()
         );
 
+        $data['totalAmount'] = $data['totalIncome'] = 0;
+        foreach ($data['entries'] ?? [] as $datum) {
+            $data['totalAmount'] += $datum['totalAmount'];
+            $data['totalIncome'] += $datum['income'];
+        }
+
+        $data['totalOutcome'] = round($data['totalAmount'] - $data['totalIncome'], 2);
+        $data['totalSummary'] = round($data['totalIncome'] - $data['totalOutcome'], 2);
+        $data['totalIncome'] = round($data['totalIncome'], 2);
+
         return new ApiResponse(
-            (bool)$data ? 'Found entries' : 'No results',
+            (bool)$data['entries'] ? 'Found entries' : 'No results',
             Response::HTTP_OK,
             $data
         );
