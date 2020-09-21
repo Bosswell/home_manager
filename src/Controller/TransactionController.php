@@ -6,6 +6,7 @@ use App\ApiController;
 use App\ApiException;
 use App\Entity\TransactionType;
 use App\Entity\User;
+use App\Helper\TransactionSummaryCalculator;
 use App\Http\ApiResponse;
 use App\Message\CreateTransactionMessage;
 use App\Message\GetTransactionSummaryMessage;
@@ -81,17 +82,8 @@ class TransactionController extends ApiController
             $message->getEndDate()
         );
 
-        $data['totalAmount'] = $data['totalIncome'] = $data['totalDeductibleExpanses'] = 0;
-        foreach ($data['entries'] ?? [] as $datum) {
-            $data['totalAmount'] += $datum['totalAmount'];
-            $data['totalIncome'] += $datum['incomeAmount'] ?? 0;
-            $data['totalDeductibleExpanses'] += $datum['deductibleExpanses'] ?? 0;
-        }
-
-        $data['totalOutcome'] = round($data['totalAmount'] - $data['totalIncome'], 2);
-        $data['totalSummary'] = round($data['totalIncome'] - $data['totalOutcome'], 2);
-        $data['totalIncome'] = round($data['totalIncome'], 2);
-        $data['totalDeductibleExpanses'] = round($data['totalDeductibleExpanses'], 2);
+        $calculator = new TransactionSummaryCalculator($data['entries'] ?? []);
+        $data = array_merge($data, $calculator->getSummaryInfo());
 
         return new ApiResponse(
             (bool)$data['entries'] ? 'Found entries' : 'No results',
