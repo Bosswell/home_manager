@@ -51,6 +51,7 @@ class TransactionFacade
             $message->isIncome(),
             $message->getAmount(),
             $message->getDescription(),
+            $message->getTaxPercentage(),
             $transactionType,
             $this->token->getUser()
         );
@@ -113,7 +114,13 @@ class TransactionFacade
             );
         }
 
-        $transaction->update($message->isIncome(), $message->getAmount(), $message->getDescription(), $transactionType);
+        $transaction->update(
+            $message->isIncome(),
+            $message->getAmount(),
+            $message->getDescription(),
+            $message->getTaxPercentage(),
+            $transactionType
+        );
         $this->em->flush();
     }
 }

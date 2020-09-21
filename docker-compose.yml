@@ -25,12 +25,12 @@ services:
         volumes:
             - db-data:/var/lib/mysql
 
-    composer:
-        image: composer
-        working_dir: /var/www/html
-        command: ["composer", "install"]
-        volumes:
-            - $PWD:/var/www/html
+#    composer:
+#        image: composer
+#        working_dir: /var/www/html
+#        command: ["composer", "install"]
+#        volumes:
+#            - $PWD:/var/www/html
 
 volumes:
     db-data:

@@ -60,7 +60,13 @@ class TransactionRepository extends ServiceEntityRepository
             ->getSQL();
 
         $qb = $this->findTransactionsTypeSummary('tt', ...func_get_args());
-        $qb->select('tt.id as `transactionTypeId`, tt.name, ROUND(SUM(t.amount), 2) as `totalAmount`, ('. $sql .') AS `income`, COUNT(t.id) AS `entries`');
+        $qb->select(
+            'tt.id as `transactionTypeId`,
+             tt.name, ROUND(SUM(t.amount), 2) as `totalAmount`,
+             ('. $sql .') AS `incomeAmount`,
+             COUNT(t.id) AS `nbEntries`,
+             t.tax_percentage / 100 * t.amount as `deductibleExpanses`'
+        );
 
         return $qb->execute()->fetchAll() ?? [];
     }
@@ -76,7 +82,7 @@ class TransactionRepository extends ServiceEntityRepository
         $connection = $this->getEntityManager()->getConnection();
 
         $qb = $connection->createQueryBuilder()
-            ->select('tt.id as `transactionTypeId`, t.id, t.amount, t.created_at, t.description, tt.name, t.is_income as `isIncome`')
+            ->select('tt.id as `transactionTypeId`, t.id, t.amount, t.created_at, t.description, tt.name, t.is_income as `isIncome`, t.tax_percentage')
             ->from('transaction', 't')
             ->innerJoin('t', 'user', 'u', 'u.id = t.user_id')
             ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')

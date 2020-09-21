@@ -8,13 +8,16 @@ final class CreateTransactionMessage
     private float $amount;
     private ?int $transactionTypeId;
     private ?string $description;
-    private bool $isIncome = false;
+    private bool $isIncome;
+    private ?int $taxPercentage;
 
     public function __construct(?array $data = null)
     {
         $this->amount = $data['amount'] ?? 0;
         $this->transactionTypeId = $data['transactionTypeId'] ?? 0;
+        $this->isIncome = $data['isIncome'] ?? false;
         $this->description = $data['description'] ?? null;
+        $this->taxPercentage = $data['taxPercentage'] ?? null;
     }
 
     public function getAmount(): float
@@ -27,51 +30,43 @@ final class CreateTransactionMessage
         return $this->transactionTypeId;
     }
 
-    /**
-     * @param mixed $amount
-     */
     public function setAmount($amount): void
     {
         $this->amount = (float)$amount;
     }
 
-    /**
-     * @param mixed $transactionTypeId
-     */
     public function setTransactionTypeId($transactionTypeId): void
     {
         $this->transactionTypeId = (int)$transactionTypeId;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @param mixed $description
-     */
     public function setDescription($description): void
     {
         $this->description = (string)$description;
     }
 
-    /**
-     * @param bool $isIncome
-     */
     public function setIsIncome(bool $isIncome): void
     {
         $this->isIncome = $isIncome;
     }
 
-    /**
-     * @return bool
-     */
     public function isIncome(): bool
     {
         return $this->isIncome;
+    }
+
+    public function getTaxPercentage(): ?int
+    {
+        return $this->taxPercentage;
+    }
+
+    public function setTaxPercentage($taxPercentage): void
+    {
+        $this->taxPercentage = (int)$taxPercentage;
     }
 }

@@ -67,11 +67,19 @@ class TransactionControllerTest extends WebTestCase
 
         $this->assertEmpty($content['errors']);
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertArrayHasKey(0, $content['data']);
-        $this->assertArrayHasKey('transactionTypeId', $content['data'][0]);
-        $this->assertArrayHasKey('name', $content['data'][0]);
-        $this->assertArrayHasKey('amount', $content['data'][0]);
-        $this->assertArrayHasKey('entries', $content['data'][0]);
+        $this->assertArrayHasKey('entries', $data = $content['data']);
+
+        $this->assertArrayHasKey('totalOutcome', $data);
+        $this->assertArrayHasKey('totalSummary', $data);
+        $this->assertArrayHasKey('totalIncome', $data);
+        $this->assertArrayHasKey('totalDeductibleExpanses', $data);
+
+        $this->assertArrayHasKey(0, $entries = $data['entries']);
+        $this->assertArrayHasKey('transactionTypeId', $entries[0]);
+        $this->assertArrayHasKey('name', $entries[0]);
+        $this->assertArrayHasKey('totalAmount', $entries[0]);
+        $this->assertArrayHasKey('nbEntries', $entries[0]);
+        $this->assertArrayHasKey('incomeAmount', $entries[0]);
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
     }
 
@@ -141,7 +149,8 @@ class TransactionControllerTest extends WebTestCase
             'id' => $transaction->getId(),
             'transactionTypeId' => $transaction->getTransactionType()->getId(),
             'amount' => 100,
-            'description' => 'Hello world'
+            'description' => 'Hello world',
+            'taxPercentage' => 23
         ]));
 
         $response = $this->client->getResponse();
@@ -154,5 +163,6 @@ class TransactionControllerTest extends WebTestCase
         $transactionAfter = $transRepository->find($transaction->getId());
         $this->assertEquals(100, $transactionAfter->getAmount());
         $this->assertEquals('Hello world', $transactionAfter->getDescription());
+        $this->assertEquals(23, $transactionAfter->getTaxPercentage());
     }
 }

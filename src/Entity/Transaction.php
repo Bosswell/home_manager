@@ -67,9 +67,20 @@ class Transaction implements JsonSerializable
      */
     private bool $isIncome;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private ?int $taxPercentage;
 
-    public function __construct(bool $isIncome, float $amount, string $description, TransactionType $transactionType, UserInterface $user)
-    {
+
+    public function __construct(
+        bool $isIncome,
+        float $amount,
+        string $description,
+        ?int $taxPercentage,
+        TransactionType $transactionType,
+        UserInterface $user
+    ) {
         $this->isIncome = $isIncome;
         $this->amount = $amount;
         $this->transactionType = $transactionType;
@@ -77,6 +88,7 @@ class Transaction implements JsonSerializable
         $this->createdAt = new \DateTime();
         $this->isDeleted = false;
         $this->user = $user;
+        $this->taxPercentage = $taxPercentage;
     }
 
     public function getId(): int
@@ -149,13 +161,14 @@ class Transaction implements JsonSerializable
         return $this;
     }
 
-    public function update(bool $isIncome, float $amount, string $description, TransactionType $transactionType)
+    public function update(bool $isIncome, float $amount, string $description, ?int $taxPercentage, TransactionType $transactionType)
     {
         $this->updatedAt = new DateTime();
         $this->amount = $amount;
         $this->isIncome = $isIncome;
         $this->description = $description;
         $this->transactionType = $transactionType;
+        $this->taxPercentage = $taxPercentage;
     }
 
     public function getIsIncome(): ?bool
@@ -168,5 +181,10 @@ class Transaction implements JsonSerializable
         $this->isIncome = $isIncome;
 
         return $this;
+    }
+
+    public function getTaxPercentage(): ?int
+    {
+        return $this->taxPercentage;
     }
 }
