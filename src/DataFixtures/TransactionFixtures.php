@@ -29,11 +29,13 @@ class TransactionFixtures extends Fixture implements DependentFixtureInterface
         /** @var TransactionType $transactionType */
         foreach ($transactionTypes as $transactionType) {
             for ($i = 0; $i < 20; $i++) {
+                $isIncome = random_int(0, 1);
+
                 $transaction = new Transaction(
-                    random_int(0, 1),
+                    $isIncome,
                     $faker->randomFloat(2, 0, 300),
                     $faker->text(20),
-                    $fakeTaxPercentages[random_int(0,3)],
+                    !$isIncome ? $fakeTaxPercentages[random_int(0,3)] : null,
                     $transactionType,
                     $user
                 );

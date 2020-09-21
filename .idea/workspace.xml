@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="eb3bcf03-548f-4579-8cfb-0dab2e18a83e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Repository/TransactionRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/TransactionRepository.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataFixtures/TransactionFixtures.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataFixtures/TransactionFixtures.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -240,7 +240,7 @@
       <workItem from="1600118658985" duration="3288000" />
       <workItem from="1600157836854" duration="7069000" />
       <workItem from="1600263486204" duration="187000" />
-      <workItem from="1600685787105" duration="6085000" />
+      <workItem from="1600685787105" duration="7387000" />
     </task>
     <servers />
   </component>
