@@ -8,10 +8,10 @@ use App\Entity\TransactionType;
 use App\Entity\User;
 use App\Helper\TransactionSummaryCalculator;
 use App\Http\ApiResponse;
-use App\Message\CreateTransactionMessage;
-use App\Message\GetTransactionSummaryMessage;
-use App\Message\ListTransactionsMessage;
-use App\Message\UpdateTransactionMessage;
+use App\Message\Transaction\CreateTransactionMessage;
+use App\Message\Transaction\GetTransactionSummaryMessage;
+use App\Message\Transaction\ListTransactionsMessage;
+use App\Message\Transaction\UpdateTransactionMessage;
 use App\Repository\TransactionRepository;
 use App\Service\ObjectValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -29,12 +29,12 @@ class TransactionController extends ApiController
 {
     /**
      * @Route("/transaction", name="create_transaction", methods={"POST"})
-     * @ParamConverter("message", class="App\Message\CreateTransactionMessage", converter="message_converter")
+     * @ParamConverter("message", class=CreateTransactionMessage::class, converter="message_converter")
      * @throws ApiException
      */
     public function createTransactionAction(CreateTransactionMessage $message)
     {
-        $this->transactionFacade->createTransaction($message);
+        $this->transactionService->createTransaction($message);
 
         return new ApiResponse('Transaction has been successfully created', Response::HTTP_CREATED);
     }
@@ -45,7 +45,7 @@ class TransactionController extends ApiController
      */
     public function deleteTransactionAction(string $id)
     {
-        $this->transactionFacade->deleteTransaction((int)$id);
+        $this->transactionService->deleteTransaction((int)$id);
 
         return new ApiResponse(
             'Transaction has been removed',
@@ -55,12 +55,12 @@ class TransactionController extends ApiController
 
     /**
      * @Route("/transaction/update", name="update_transaction", methods={"PUT"})
-     * @ParamConverter("message", class="App\Message\UpdateTransactionMessage", converter="message_converter")
+     * @ParamConverter("message", class=UpdateTransactionMessage::class, converter="message_converter")
      * @throws ApiException
      */
     public function updateTransactionAction(UpdateTransactionMessage $message)
     {
-        $this->transactionFacade->updateTransaction($message);
+        $this->transactionService->updateTransaction($message);
 
         return new ApiResponse(
             'Transaction has been successfully updated',
@@ -70,7 +70,7 @@ class TransactionController extends ApiController
 
     /**
      * @Route("/transaction/summary", name="get_transaction_summary", methods={"GET"})
-     * @ParamConverter("message", class="App\Message\GetTransactionSummaryMessage", converter="query_message_converter")
+     * @ParamConverter("message", class=GetTransactionSummaryMessage::class, converter="query_message_converter")
      */
     public function getTransactionSummary(TransactionRepository $repository, GetTransactionSummaryMessage $message)
     {
@@ -108,7 +108,7 @@ class TransactionController extends ApiController
 
     /**
      * @Route("/transaction/list", name="list_transaction", methods={"GET"})
-     * @ParamConverter("message", class="App\Message\ListTransactionsMessage", converter="query_message_converter")
+     * @ParamConverter("message", class=ListTransactionsMessage::class, converter="query_message_converter")
      * @throws ApiException
      */
     public function listTransactionsAction(ListTransactionsMessage $message, TransactionRepository $repository, ObjectValidator $validator)

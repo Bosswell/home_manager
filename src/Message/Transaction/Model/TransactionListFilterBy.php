@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message\Model;
+namespace App\Message\Transaction\Model;
 
 
 class TransactionListFilterBy

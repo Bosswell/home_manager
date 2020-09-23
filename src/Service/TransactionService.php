@@ -14,7 +14,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
-class TransactionFacade
+class TransactionService
 {
     private EntityManagerInterface $em;
     private ObjectValidator $validator;

@@ -2,17 +2,16 @@
 
 namespace App;
 
-use App\Service\TransactionFacade;
-use App\Service\UserManager;
+use App\Service\TransactionService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 
 abstract class ApiController extends AbstractController
 {
-    protected TransactionFacade $transactionFacade;
+    protected TransactionService $transactionService;
 
-    public function __construct(TransactionFacade $transactionFacade)
+    public function __construct(TransactionService $transactionService)
     {
-        $this->transactionFacade = $transactionFacade;
+        $this->transactionService = $transactionService;
     }
 }

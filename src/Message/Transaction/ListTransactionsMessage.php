@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Message;
+namespace App\Message\Transaction;
 
-use App\Message\Model\TransactionListFilterBy;
-use App\Message\Model\TransactionListSortBy;
+use App\Message\Transaction\Model\TransactionListFilterBy;
+use App\Message\Transaction\Model\TransactionListSortBy;
 use Symfony\Component\Validator\Constraints as Assert;
 
 
