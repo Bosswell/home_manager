@@ -12,9 +12,6 @@ use App\Message\Recipe\ListRecipesMessage;
 use App\Message\Recipe\UpdateRecipeMessage;
 use App\Repository\RecipeRepository;
 use App\Service\ObjectValidator;
-use Doctrine\DBAL\Query\QueryBuilder;
-use Pagerfanta\Doctrine\DBAL\QueryAdapter;
-use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,11 +19,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class RecipeController extends ApiController
 {
     /**
+     * @Route("/recipe/{id}", name="get_recipe", methods={"GET"})
+     * @throws ApiException
+     */
+    public function getRecipeAction(string $id, RecipeRepository $recipeRepository)
+    {
+        $recipe = $recipeRepository->findOneBy(['id' => $id, 'user' => $this->getUser()]);
+
+        if (is_null($recipe)) {
+            throw new ApiException(
+                'Recipe not found',
+                Response::HTTP_NOT_FOUND,
+                ['Recipe that you try to get does not exists']
+            );
+        }
+
+        return new ApiResponse('Recipe has been found', Response::HTTP_OK, $recipe->toArray());
+    }
+
+    /**
      * @Route("/recipe", name="create_recipe", methods={"POST"})
      * @ParamConverter("message", class=CreateRecipeMessage::class, converter="message_converter")
      * @throws ApiException
      */
-    public function createTransactionAction(CreateRecipeMessage $message)
+    public function createRecipeAction(CreateRecipeMessage $message)
     {
         $this->recipeService->createRecipe($message);
 
@@ -37,7 +53,7 @@ class RecipeController extends ApiController
      * @Route("/recipe/delete/{id}", name="delete_recipe", methods={"DELETE"})
      * @throws ApiException
      */
-    public function deleteTransactionAction(string $id)
+    public function deleteRecipeAction(string $id)
     {
         $this->recipeService->deleteRecipe((int)$id);
 
@@ -52,7 +68,7 @@ class RecipeController extends ApiController
      * @ParamConverter("message", class=UpdateRecipeMessage::class, converter="message_converter")
      * @throws ApiException
      */
-    public function updateTransactionAction(UpdateRecipeMessage $message)
+    public function updateRecipeAction(UpdateRecipeMessage $message)
     {
         $this->recipeService->updateRecipe($message);
 
@@ -63,7 +79,7 @@ class RecipeController extends ApiController
     }
 
     /**
-     * @Route("/recipe/list", name="list_recipes", methods={"GET"})
+     * @Route("/recipe/action/list", name="list_recipes", methods={"GET"})
      * @ParamConverter("message", class=ListRecipesMessage::class, converter="query_message_converter")
      * @throws ApiException
      */
@@ -75,7 +91,7 @@ class RecipeController extends ApiController
         $user = $this->getUser();
 
         $qb = $repository->getRecipesListQuery($user->getId());
-        $pagerfanta = PagerfantaFactory::build($qb);
+        $pagerfanta = PagerfantaFactory::build($qb, 'r');
         $nbPages = $pagerfanta->getNbPages();
 
         $pagerfanta->setCurrentPage($message->getNbPage() > $nbPages ? $nbPages : $message->getNbPage());

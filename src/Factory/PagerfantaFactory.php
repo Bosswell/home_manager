@@ -9,10 +9,10 @@ use Pagerfanta\Pagerfanta;
 
 class PagerfantaFactory
 {
-    public static function build(QueryBuilder $builder): Pagerfanta
+    public static function build(QueryBuilder $builder, string $alias): Pagerfanta
     {
-        $countQueryBuilderModifier = function (QueryBuilder $queryBuilder): void {
-            $queryBuilder->select('COUNT(DISTINCT t.id) AS total_results')
+        $countQueryBuilderModifier = function (QueryBuilder $queryBuilder) use ($alias) : void {
+            $queryBuilder->select(sprintf('COUNT(DISTINCT %s.id) AS total_results', $alias))
                 ->setMaxResults(1);
         };
 

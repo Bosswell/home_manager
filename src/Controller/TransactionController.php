@@ -126,7 +126,7 @@ class TransactionController extends ApiController
             $sortBy->getName(),
             $sortBy->getDirection()
         );
-        $pagerfanta = PagerfantaFactory::build($qb);
+        $pagerfanta = PagerfantaFactory::build($qb, 't');
 
         $nbPages = $pagerfanta->getNbPages();
         $pagerfanta->setCurrentPage($message->getNbPage() > $nbPages ? $nbPages : $message->getNbPage());

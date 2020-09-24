@@ -70,7 +70,7 @@ class RecipeControllerTest extends FunctionalTestCase
 
     public function testListTRecipesAction(): void
     {
-        $this->client->request('GET', '/recipe/list');
+        $this->client->request('GET', '/recipe/action/list');
 
         $response = $this->client->getResponse();
         $content = json_decode($response->getContent(), true);
@@ -81,5 +81,21 @@ class RecipeControllerTest extends FunctionalTestCase
         $this->assertArrayHasKey('currentPage', $content['data']);
         $this->assertArrayHasKey('results', $content['data']);
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
+    }
+
+    public function testGetRecipeAction(): void
+    {
+        $recipeRepository = $this->entityManager->getRepository(Recipe::class);
+        $recipe = $recipeRepository->findBy([], ['id' => 'DESC'],1,0)[0];
+
+        $this->client->request('GET', '/recipe/' . $recipe->getId());
+
+        $response = $this->client->getResponse();
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertArrayHasKey('id', $content['data']);
+        $this->assertArrayHasKey('name', $content['data']);
+        $this->assertArrayHasKey('content', $content['data']);
     }
 }

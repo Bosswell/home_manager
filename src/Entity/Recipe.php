@@ -115,4 +115,13 @@ class Recipe
     {
         return $this->user;
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id'        => $this->id,
+            'name'      => $this->name,
+            'content'   => $this->content
+        ];
+    }
 }
