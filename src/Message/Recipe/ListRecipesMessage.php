@@ -10,7 +10,7 @@ class ListRecipesMessage
 
     public function __construct(?array $data = null)
     {
-        $this->nbPage = $data['nbPage'] ?? 0;
+        $this->nbPage = $data['nbPage'] ?? 1;
     }
 
     public function getNbPage(): int

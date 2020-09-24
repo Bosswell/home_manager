@@ -18,8 +18,8 @@ class FunctionalTestCase extends WebTestCase
     {
         $this->client = static::createClient([], ['CONTENT_TYPE' => 'application/json']);
         $this->client->request('POST', '/login_check', [] , [], [], json_encode([
-            'username' => 'jakub@home.pl',
-            'password' => 'zaq1@WSX'
+            'username' => 'demo@demo.com',
+            'password' => 'demo1234'
         ]));
 
         $content = json_decode($this->client->getResponse()->getContent(), true);
@@ -35,6 +35,6 @@ class FunctionalTestCase extends WebTestCase
         $this->testUser = $this
             ->entityManager
             ->getRepository(User::class)
-            ->findOneBy(['email' => 'jakub@home.pl']);
+            ->findOneBy(['email' => 'demo@demo.com']);
     }
 }

@@ -67,4 +67,19 @@ class RecipeControllerTest extends FunctionalTestCase
         $recipeAfter = $recipeRepository->find($recipe->getId());
         $this->assertEquals(true, $recipeAfter->isDeleted());
     }
+
+    public function testListTRecipesAction(): void
+    {
+        $this->client->request('GET', '/recipe/list');
+
+        $response = $this->client->getResponse();
+        $content = json_decode($response->getContent(), true);
+
+        $this->assertEmpty($content['errors']);
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertArrayHasKey('nbPages', $content['data']);
+        $this->assertArrayHasKey('currentPage', $content['data']);
+        $this->assertArrayHasKey('results', $content['data']);
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+    }
 }
