@@ -21,7 +21,9 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             ->findOneBy(['email' => 'demo@demo.com']);
 
         for ($i = 0; $i < 30; $i++) {
-            $manager->persist(new Recipe($faker->name, $faker->text(400), $user));
+            $recipe = new Recipe($faker->name, $faker->text(400), $user);
+            $recipe->setCreatedAt($faker->dateTimeBetween('-2 months'));
+            $manager->persist($recipe);
         }
 
         $manager->flush();

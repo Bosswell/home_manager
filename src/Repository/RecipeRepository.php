@@ -25,7 +25,7 @@ class RecipeRepository extends ServiceEntityRepository
         $connection = $this->getEntityManager()->getConnection();
 
         return $connection->createQueryBuilder()
-            ->select('r.id, r.name')
+            ->select('r.id, r.name, r.created_at')
             ->from('recipe', 'r')
             ->innerJoin('r', 'user', 'u', 'u.id = r.user_id')
             ->where('u.id = :id')

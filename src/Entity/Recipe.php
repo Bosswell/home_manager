@@ -116,6 +116,14 @@ class Recipe
         return $this->user;
     }
 
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt(\DateTime $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
     public function toArray(): array
     {
         return [
