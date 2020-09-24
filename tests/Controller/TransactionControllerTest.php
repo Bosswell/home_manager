@@ -73,6 +73,8 @@ class TransactionControllerTest extends FunctionalTestCase
      */
     public function testCreateTransactionAction(): void
     {
+        $transRepository = $this->entityManager->getRepository(Transaction::class);
+
         $qb = $this->entityManager->createQueryBuilder();
         $transactionTypeId = $qb->select('tt.id')
             ->from(TransactionType::class, 'tt')
@@ -82,30 +84,19 @@ class TransactionControllerTest extends FunctionalTestCase
 
         $this->client->request('POST', '/transaction', [], [], [], json_encode([
             'transactionTypeId' => (int)$transactionTypeId,
-            'amount' => rand(20, 120),
+            'amount' => 22.3,
             'description' => 'Hello world'
         ]));
-
         $response = $this->client->getResponse();
 
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
-    }
 
-    public function testDeleteTransaction()
-    {
-        $transRepository = $this->entityManager->getRepository(Transaction::class);
-        /** @var Transaction $transaction */
-        $transaction = $transRepository->findOneBy(['isDeleted' => false, 'user' => $this->testUser]);
+        $transaction = $transRepository->findBy([], ['id' => 'DESC'],1,0)[0];
 
-        $this->client->request('DELETE', '/transaction/delete/' . $transaction->getId());
-        $response = $this->client->getResponse();
-
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
-        $this->assertResponseHeaderSame('Content-Type', 'application/json');
-        $this->entityManager->clear();
-        $transactionAfter = $transRepository->find($transaction->getId());
-        $this->assertEquals(true, $transactionAfter->isDeleted());
+        $this->assertEquals($transactionTypeId, $transaction->getTransactionType()->getId());
+        $this->assertEquals(22.3, $transaction->getAmount());
+        $this->assertEquals('Hello world', $transaction->getDescription());
     }
 
     public function testUpdateTransaction()
@@ -133,5 +124,21 @@ class TransactionControllerTest extends FunctionalTestCase
         $this->assertEquals(100, $transactionAfter->getAmount());
         $this->assertEquals('Hello world', $transactionAfter->getDescription());
         $this->assertEquals(23, $transactionAfter->getTaxPercentage());
+    }
+
+    public function testDeleteTransaction()
+    {
+        $transRepository = $this->entityManager->getRepository(Transaction::class);
+        /** @var Transaction $transaction */
+        $transaction = $transRepository->findOneBy(['isDeleted' => false, 'user' => $this->testUser]);
+
+        $this->client->request('DELETE', '/transaction/delete/' . $transaction->getId());
+        $response = $this->client->getResponse();
+
+        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+        $this->entityManager->clear();
+        $transactionAfter = $transRepository->find($transaction->getId());
+        $this->assertEquals(true, $transactionAfter->isDeleted());
     }
 }

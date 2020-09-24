@@ -79,7 +79,7 @@ class TransactionService
             );
         }
 
-        $transaction->setIsDeleted(true);
+        $transaction->delete();
         $this->em->flush();
     }
 
@@ -121,6 +121,7 @@ class TransactionService
             $message->getTaxPercentage(),
             $transactionType
         );
+        $this->validator->validate($transaction);
         $this->em->flush();
     }
 }

@@ -3,13 +3,15 @@
 namespace App\Message\Recipe;
 
 
-class CreateRecipeMessage
+class UpdateRecipeMessage
 {
+    private int $id;
     private string $name;
     private string $content;
 
     public function __construct(?array $data = null)
     {
+        $this->id = $data['id'] ?? 0;
         $this->name = $data['name'] ?? '';
         $this->content = $data['content'] ?? '';
     }
@@ -32,5 +34,15 @@ class CreateRecipeMessage
     public function setContent($content): void
     {
         $this->content = (string)$content;
+    }
+
+    public function setId($id): void
+    {
+        $this->id = (int)$id;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }

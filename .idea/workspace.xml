@@ -3,7 +3,15 @@
   <component name="ChangeListManager">
     <list default="true" id="eb3bcf03-548f-4579-8cfb-0dab2e18a83e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Controller/TransactionController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/TransactionController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/ApiController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ApiController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Controller/RecipeController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/RecipeController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Recipe.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Recipe.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Transaction.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Transaction.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Message/Recipe/CreateRecipeMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/Recipe/CreateRecipeMessage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Service/TransactionService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/TransactionService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Controller/RecipeControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Controller/RecipeControllerTest.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/Controller/TransactionControllerTest.php" beforeDir="false" afterPath="$PROJECT_DIR$/tests/Controller/TransactionControllerTest.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,7 +25,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="PhpWorkspaceProjectConfiguration">
+  <component name="MacroExpansionManager">
+    <option name="directoryName" value="mh41lce4" />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration" interpreter_name="PHP 7.4">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/symfony/console" />
       <path value="$PROJECT_DIR$/vendor/symfony/yaml" />
@@ -154,35 +165,47 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\cash_manager\src\Message\Transaction" />
+      <recent name="C:\xampp\htdocs\cash_manager\tests" />
+      <recent name="C:\xampp\htdocs\cash_manager\src\Serializer\Normalizer" />
+      <recent name="C:\xampp\htdocs\cash_manager\src\Http" />
+      <recent name="C:\xampp\htdocs\cash_manager\src\Serializer" />
+    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\cash_manager\config\packages\prod" />
       <recent name="C:\xampp\htdocs\cash_manager" />
       <recent name="C:\xampp\htdocs\cash_manager\config\packages\test" />
     </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\cash_manager\src\Serializer\Normalizer" />
-      <recent name="C:\xampp\htdocs\cash_manager\src\Http" />
-      <recent name="C:\xampp\htdocs\cash_manager\src\Serializer" />
-    </key>
   </component>
-  <component name="RunManager" selected="PHPUnit.TransactionSummaryCalculatorTest">
-    <configuration name="FunctionalTests" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" singleton="false" temporary="true">
-      <CommandLine>
-        <PhpTestInterpreterSettings>
-          <option name="interpreterName" value="PHP 7.4" />
-        </PhpTestInterpreterSettings>
-      </CommandLine>
-      <TestRunner bootstrap_file="$PROJECT_DIR$/tests/bootstrap.php" class="Tests\Controller\TransactionControllerTest" configuration_file="$PROJECT_DIR$/phpunit.xml" directory="$PROJECT_DIR$/tests/Controller" file="$PROJECT_DIR$/tests/Controller/TransactionControllerTest.php" use_alternative_bootstrap_file="true" use_alternative_configuration_file="true" />
+  <component name="RunManager" selected="PHPUnit.Controller">
+    <configuration name="Controller" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" directory="$PROJECT_DIR$/tests/Controller" />
       <method v="2" />
     </configuration>
-    <configuration name="TransactionSummaryCalculatorTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner class="Tests\Helper\TransactionSummaryCalculatorTest" file="$PROJECT_DIR$/tests/Helper/TransactionSummaryCalculatorTest.php" scope="Class" />
+    <configuration name="RecipeControllerTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Controller\RecipeControllerTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Controller/RecipeControllerTest.php" scope="Class" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TransactionControllerTest.testCreateTransactionAction" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Controller\TransactionControllerTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Controller/TransactionControllerTest.php" method="testCreateTransactionAction" scope="Method" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TransactionControllerTest.testListTransactionsAction" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Controller\TransactionControllerTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Controller/TransactionControllerTest.php" method="testListTransactionsAction" scope="Method" />
+      <method v="2" />
+    </configuration>
+    <configuration name="TransactionControllerTest.testUpdateTransaction" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Controller\TransactionControllerTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Controller/TransactionControllerTest.php" method="testUpdateTransaction" scope="Method" />
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="PHPUnit.TransactionSummaryCalculatorTest" />
-        <item itemvalue="PHPUnit.FunctionalTests" />
+        <item itemvalue="PHPUnit.Controller" />
+        <item itemvalue="PHPUnit.RecipeControllerTest" />
+        <item itemvalue="PHPUnit.TransactionControllerTest.testUpdateTransaction" />
+        <item itemvalue="PHPUnit.TransactionControllerTest.testCreateTransactionAction" />
+        <item itemvalue="PHPUnit.TransactionControllerTest.testListTransactionsAction" />
       </list>
     </recent_temporary>
   </component>
@@ -245,7 +268,9 @@
       <workItem from="1600118658985" duration="3288000" />
       <workItem from="1600157836854" duration="7069000" />
       <workItem from="1600263486204" duration="187000" />
-      <workItem from="1600685787105" duration="9627000" />
+      <workItem from="1600685787105" duration="9763000" />
+      <workItem from="1600891467006" duration="2364000" />
+      <workItem from="1600946056017" duration="4833000" />
     </task>
     <servers />
   </component>
@@ -261,6 +286,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="644" y="133" key="#Controller/0.0.1920.1040@0.0.1920.1040" timestamp="1598860247915" />
+    <state x="674" y="163" key="#PHP" timestamp="1600892583090">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="674" y="163" key="#PHP/0.0.1920.1040@0.0.1920.1040" timestamp="1600892583090" />
     <state x="568" y="175" key="#Test_Frameworks" timestamp="1598861958446">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -281,22 +310,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="726" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1600118858073" />
-    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1600689162004">
+    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1600947109188">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1600689162004" />
-    <state x="729" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1600700611713">
+    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1600947109188" />
+    <state x="729" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1600893747723">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="729" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600700611713" />
+    <state x="729" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600893747723" />
     <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1598861606872">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="690" y="267" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598861606872" />
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1600700584288">
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog" timestamp="1600948255637">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600700584288" />
+    <state x="690" y="275" key="#com.jetbrains.php.actions.copyPaste.importReferences.PhpImportReferencesDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600948255637" />
     <state x="855" y="270" key="EnvironmentVariablesDialog" timestamp="1598861930557">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -305,26 +334,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1600105967806" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1600700734561">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1600951781128">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600700734561" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1600700734561">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1600951781128" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1600951781128">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600700734561" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1600700734561">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1600951781128" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1600951781128">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600700734561" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1600700734561">
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1600951781128" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1600951781128">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600700734561" />
-    <state x="751" y="243" key="NewPhpClassDialog" timestamp="1600700218327">
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1600951781128" />
+    <state x="751" y="243" key="NewPhpClassDialog" timestamp="1600947043962">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="751" y="243" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600700218327" />
+    <state x="751" y="243" key="NewPhpClassDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600947043962" />
     <state x="794" y="443" key="NewPhpFileDialog" timestamp="1595762545678">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -357,6 +386,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="761" y="308" key="git4idea.merge.GitMergeDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1598614740169" />
+    <state x="616" y="240" key="run.anything.popup" timestamp="1600948353214">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="616" y="240" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1600948353214" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1598959596855">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

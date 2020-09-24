@@ -2,49 +2,55 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\ApiController;
+use App\ApiException;
+use App\Http\ApiResponse;
+use App\Message\Recipe\CreateRecipeMessage;
+use App\Message\Recipe\UpdateRecipeMessage;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class RecipeController extends AbstractController
+class RecipeController extends ApiController
 {
-//    /**
-//     * @Route("/transaction", name="create_transaction", methods={"POST"})
-//     * @ParamConverter("message", class="App\Message\CreateTransactionMessage", converter="message_converter")
-//     * @throws ApiException
-//     */
-//    public function createTransactionAction(CreateTransactionMessage $message)
-//    {
-//        $this->transactionFacade->createTransaction($message);
-//
-//        return new ApiResponse('Transaction has been successfully created', Response::HTTP_CREATED);
-//    }
-//
-//    /**
-//     * @Route("/transaction/delete/{id}", name="delete_transaction", methods={"DELETE"})
-//     * @throws ApiException
-//     */
-//    public function deleteTransactionAction(string $id)
-//    {
-//        $this->transactionFacade->deleteTransaction((int)$id);
-//
-//        return new ApiResponse(
-//            'Transaction has been removed',
-//            Response::HTTP_OK
-//        );
-//    }
-//
-//    /**
-//     * @Route("/transaction/update", name="update_transaction", methods={"PUT"})
-//     * @ParamConverter("message", class="App\Message\UpdateTransactionMessage", converter="message_converter")
-//     * @throws ApiException
-//     */
-//    public function updateTransactionAction(UpdateTransactionMessage $message)
-//    {
-//        $this->transactionFacade->updateTransaction($message);
-//
-//        return new ApiResponse(
-//            'Transaction has been successfully updated',
-//            Response::HTTP_CREATED
-//        );
-//    }
+    /**
+     * @Route("/recipe", name="create_recipe", methods={"POST"})
+     * @ParamConverter("message", class=CreateRecipeMessage::class, converter="message_converter")
+     * @throws ApiException
+     */
+    public function createTransactionAction(CreateRecipeMessage $message)
+    {
+        $this->recipeService->createRecipe($message);
+
+        return new ApiResponse('Recipe has been successfully created', Response::HTTP_CREATED);
+    }
+
+    /**
+     * @Route("/recipe/delete/{id}", name="delete_recipe", methods={"DELETE"})
+     * @throws ApiException
+     */
+    public function deleteTransactionAction(string $id)
+    {
+        $this->recipeService->deleteRecipe((int)$id);
+
+        return new ApiResponse(
+            'Recipe has been removed',
+            Response::HTTP_OK
+        );
+    }
+
+    /**
+     * @Route("/recipe/update", name="update_recipe", methods={"PUT"})
+     * @ParamConverter("message", class=UpdateRecipeMessage::class, converter="message_converter")
+     * @throws ApiException
+     */
+    public function updateTransactionAction(UpdateRecipeMessage $message)
+    {
+        $this->recipeService->updateRecipe($message);
+
+        return new ApiResponse(
+            'Recipe has been successfully updated',
+            Response::HTTP_CREATED
+        );
+    }
 }

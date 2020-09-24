@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=RecipeRepository::class)
@@ -15,27 +17,64 @@ class Recipe
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(
+     *     min= 1,
+     *     max = 255,
+     *     maxMessage = "Recipe name cannot be longer than {{ limit }} characters",
+     *     minMessage = "Recipe name cannot be empty"
+     * )
      */
-    private $name;
+    private string $name;
 
     /**
      * @ORM\Column(type="text")
+     * * @Assert\Length(
+     *     min= 1,
+     *     minMessage = "Recipe content cannot be empty"
+     * )
      */
-    private $content;
+    private string $content;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $createdAt;
+    private \DateTime $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private $updatedAt;
+    private \DateTime $updatedAt;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isDeleted;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="recipes")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private UserInterface $user;
+
+    public function __construct(string $name, string $content, UserInterface $user)
+    {
+        $this->name = $name;
+        $this->content = $content;
+        $this->user = $user;
+        $this->isDeleted = false;
+        $this->createdAt = new \DateTime();
+    }
+
+    public function update(string $name, string $content)
+    {
+        $this->name = $name;
+        $this->content = $content;
+        $this->updatedAt = new \DateTime();
+    }
 
     public function getId(): ?int
     {
@@ -47,23 +86,9 @@ class Recipe
         return $this->name;
     }
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getContent(): ?string
     {
         return $this->content;
-    }
-
-    public function setContent(string $content): self
-    {
-        $this->content = $content;
-
-        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -71,22 +96,23 @@ class Recipe
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
     public function getUpdatedAt(): ?\DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function isDeleted(): ?bool
     {
-        $this->updatedAt = $updatedAt;
+        return $this->isDeleted;
+    }
 
-        return $this;
+    public function delete(): void
+    {
+        $this->isDeleted = true;
+    }
+
+    public function getUser(): UserInterface
+    {
+        return $this->user;
     }
 }

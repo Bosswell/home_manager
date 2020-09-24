@@ -154,11 +154,9 @@ class Transaction implements JsonSerializable
         return $this->isDeleted;
     }
 
-    public function setIsDeleted(bool $isDeleted): self
+    public function delete(): void
     {
-        $this->isDeleted = $isDeleted;
-
-        return $this;
+        $this->isDeleted = true;
     }
 
     public function update(bool $isIncome, float $amount, string $description, ?int $taxPercentage, TransactionType $transactionType)

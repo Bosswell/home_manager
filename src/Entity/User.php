@@ -82,9 +82,15 @@ class User implements UserInterface
      */
     private $transactions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Recipe::class, mappedBy="user")
+     */
+    private $recipes;
+
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -227,6 +233,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($transaction->getUser() === $this) {
                 $transaction->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Recipe[]
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    public function addRecipe(Recipe $recipe): self
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes[] = $recipe;
+            $recipe->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRecipe(Recipe $recipe): self
+    {
+        if ($this->recipes->contains($recipe)) {
+            $this->recipes->removeElement($recipe);
+            // set the owning side to null (unless already changed)
+            if ($recipe->getUser() === $this) {
+                $recipe->setUser(null);
             }
         }
 
