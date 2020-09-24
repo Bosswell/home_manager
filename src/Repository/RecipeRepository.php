@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Recipe;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,5 +18,28 @@ class RecipeRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Recipe::class);
+    }
+
+    public function getRecipesListQuery(int $userId): QueryBuilder
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        return $connection->createQueryBuilder()
+            ->select('
+                tt.id as `transactionTypeId`,
+                t.id,
+                t.amount,
+                t.created_at,
+                t.description,
+                tt.name, 
+                t.is_income as `isIncome`,
+                t.tax_percentage as `taxPercentage`
+            ')
+            ->from('transaction', 't')
+            ->innerJoin('t', 'user', 'u', 'u.id = t.user_id')
+            ->innerJoin('t', 'transaction_type', 'tt', 'tt.id = t.transaction_type_id')
+            ->where('u.id = :id')
+            ->andWhere('t.is_deleted = 0')
+            ->setParameter(':id', $userId);
     }
 }

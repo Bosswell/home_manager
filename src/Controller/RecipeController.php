@@ -4,9 +4,17 @@ namespace App\Controller;
 
 use App\ApiController;
 use App\ApiException;
+use App\Entity\User;
+use App\Factory\PagerfantaFactory;
 use App\Http\ApiResponse;
 use App\Message\Recipe\CreateRecipeMessage;
+use App\Message\Recipe\ListRecipesMessage;
 use App\Message\Recipe\UpdateRecipeMessage;
+use App\Repository\RecipeRepository;
+use App\Service\ObjectValidator;
+use Doctrine\DBAL\Query\QueryBuilder;
+use Pagerfanta\Doctrine\DBAL\QueryAdapter;
+use Pagerfanta\Pagerfanta;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -52,5 +60,30 @@ class RecipeController extends ApiController
             'Recipe has been successfully updated',
             Response::HTTP_CREATED
         );
+    }
+
+    /**
+     * @Route("/recipe/list", name="list_recipes", methods={"GET"})
+     * @ParamConverter("message", class=ListRecipesMessage::class, converter="query_message_converter")
+     * @throws ApiException
+     */
+    public function listRecipesAction(ListRecipesMessage $message, RecipeRepository $repository, ObjectValidator $validator)
+    {
+        $validator->validate($message);
+
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $qb = $repository->getRecipesListQuery($user->getId());
+        $pagerfanta = PagerfantaFactory::build($qb);
+        $nbPages = $pagerfanta->getNbPages();
+
+        $pagerfanta->setCurrentPage($message->getNbPage() > $nbPages ? $nbPages : $message->getNbPage());
+
+        return new ApiResponse('Found entries', Response::HTTP_OK, [
+            'nbPages' => $nbPages,
+            'currentPage' => $pagerfanta->getCurrentPage(),
+            'results' => $pagerfanta->getCurrentPageResults()
+        ]);
     }
 }

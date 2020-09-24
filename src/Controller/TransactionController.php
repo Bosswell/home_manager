@@ -6,6 +6,7 @@ use App\ApiController;
 use App\ApiException;
 use App\Entity\TransactionType;
 use App\Entity\User;
+use App\Factory\PagerfantaFactory;
 use App\Helper\TransactionSummaryCalculator;
 use App\Http\ApiResponse;
 use App\Message\Transaction\CreateTransactionMessage;
@@ -17,9 +18,6 @@ use App\Service\ObjectValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\DBAL\Query\QueryBuilder;
-use Pagerfanta\Doctrine\DBAL\QueryAdapter;
-use Pagerfanta\Pagerfanta;
 use Tests\Controller\TransactionControllerTest;
 
 /**
@@ -107,7 +105,7 @@ class TransactionController extends ApiController
     }
 
     /**
-     * @Route("/transaction/list", name="list_transaction", methods={"GET"})
+     * @Route("/transaction/list", name="list_transactions", methods={"GET"})
      * @ParamConverter("message", class=ListTransactionsMessage::class, converter="query_message_converter")
      * @throws ApiException
      */
@@ -117,10 +115,6 @@ class TransactionController extends ApiController
 
         /** @var User $user */
         $user = $this->getUser();
-        $countQueryBuilderModifier = function (QueryBuilder $queryBuilder): void {
-            $queryBuilder->select('COUNT(DISTINCT t.id) AS total_results')
-                ->setMaxResults(1);
-        };
 
         $filterBy = $message->getFilterBy();
         $sortBy = $message->getSortBy();
@@ -132,12 +126,9 @@ class TransactionController extends ApiController
             $sortBy->getName(),
             $sortBy->getDirection()
         );
+        $pagerfanta = PagerfantaFactory::build($qb);
 
-        $adapter = new QueryAdapter($qb, $countQueryBuilderModifier);
-        $pagerfanta = new Pagerfanta($adapter);
-        $pagerfanta->setMaxPerPage(10);
         $nbPages = $pagerfanta->getNbPages();
-
         $pagerfanta->setCurrentPage($message->getNbPage() > $nbPages ? $nbPages : $message->getNbPage());
 
         return new ApiResponse('Found entries', Response::HTTP_OK, [
