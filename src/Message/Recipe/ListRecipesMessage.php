@@ -4,13 +4,19 @@
 namespace App\Message\Recipe;
 
 
+use App\Message\Recipe\Model\RecipeListSortBy;
+
 class ListRecipesMessage
 {
     private int $nbPage;
+    private ?string $searchBy;
+    private RecipeListSortBy $sortBy;
 
     public function __construct(?array $data = null)
     {
         $this->nbPage = $data['nbPage'] ?? 1;
+        $this->searchBy = $data['searchBy'] ?? null;
+        $this->sortBy = new RecipeListSortBy($data['sortBy'] ?? null);
     }
 
     public function getNbPage(): int
@@ -18,8 +24,13 @@ class ListRecipesMessage
         return $this->nbPage;
     }
 
-    public function setNbPage($nbPage): void
+    public function getSearchBy(): ?string
     {
-        $this->nbPage = (int)$nbPage;
+        return $this->searchBy;
+    }
+
+    public function getSortBy(): RecipeListSortBy
+    {
+        return $this->sortBy;
     }
 }

@@ -90,7 +90,14 @@ class RecipeController extends ApiController
         /** @var User $user */
         $user = $this->getUser();
 
-        $qb = $repository->getRecipesListQuery($user->getId());
+        $sortBy = $message->getSortBy();
+        $qb = $repository->getRecipesListQuery(
+            $user->getId(),
+            $message->getSearchBy(),
+            $sortBy->getName(),
+            $sortBy->getDirection()
+        );
+
         $pagerfanta = PagerfantaFactory::build($qb, 'r');
         $nbPages = $pagerfanta->getNbPages();
 
