@@ -2,18 +2,17 @@
 
 namespace App\Service;
 
-
 use App\ApiException;
-use App\Entity\Recipe;
-use App\Message\Recipe\CreateRecipeMessage;
-use App\Message\Recipe\UpdateRecipeMessage;
+use App\Entity\Exam;
+use App\Message\Exam\CreateExamMessage;
+use App\Message\Exam\UpdateExamMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-class RecipeService
+
+class ExamService
 {
     private EntityManagerInterface $em;
     private ObjectValidator $validator;
@@ -29,66 +28,64 @@ class RecipeService
     }
 
     /**
-     * @param CreateRecipeMessage $message
      * @throws ApiException
      */
-    public function createRecipe(CreateRecipeMessage $message): void
+    public function createExam(CreateExamMessage $message): void
     {
-        $transaction = new Recipe(
+        $exam = new Exam(
             $message->getName(),
-            $message->getContent(),
+            $message->getCode(),
             $this->token->getUser()
         );
 
-        $this->validator->validate($transaction);
-        $this->em->persist($transaction);
+        $this->validator->validate($exam);
+        $this->em->persist($exam);
         $this->em->flush();
     }
 
     /**
-     * @param UpdateRecipeMessage $message
      * @throws ApiException
      */
-    public function updateRecipe(UpdateRecipeMessage $message): void
+    public function updateExam(UpdateExamMessage $message): void
     {
         $user = $this->token->getUser();
-        /** @var Recipe $recipe */
-        $recipe = $this->em
-            ->getRepository(Recipe::class)
+        /** @var Exam $recipe */
+        $exam = $this->em
+            ->getRepository(Exam::class)
             ->findOneBy(['id' => $message->getId(), 'user' => $user]);
 
-        if (is_null($recipe)) {
+        if (is_null($exam)) {
             throw ApiException::entityNotFound(
                 $message->getId(),
                 get_class($this),
-                ['Recipe that you try to update does not exists']
+                ['Exam that you try to update does not exists']
             );
         }
 
-        $recipe->update($message->getName(), $message->getContent());
-        $this->validator->validate($recipe);
+        $exam->update($message->getName(), $message->getCode());
+        $this->validator->validate($exam);
         $this->em->flush();
     }
 
     /**
      * @throws ApiException
      */
-    public function deleteRecipe(int $id)
+    public function deleteExam(int $id)
     {
         $user = $this->token->getUser();
-        $recipe = $this->em
-            ->getRepository(Recipe::class)
+        $exam = $this->em
+            ->getRepository(Exam::class)
             ->findOneBy(['id' => $id, 'user' => $user]);
 
-        if (is_null($recipe)) {
+        if (is_null($exam)) {
             throw ApiException::entityNotFound(
                 $id,
                 get_class($this),
-                ['Recipe that you try to update does not exists']
+                ['Exam that you try to update does not exists']
             );
         }
 
-        $recipe->delete();
+        $exam->delete();
         $this->em->flush();
     }
 }

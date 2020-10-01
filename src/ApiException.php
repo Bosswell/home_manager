@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 class ApiException extends Exception
 {
     const INVALID_ENTITY_MESS = 'Invalid entity';
-    const ENTITY_NOT_FOUND_MESS = 'Entity with [id = %d] has not been found';
+    const ENTITY_NOT_FOUND_MESS = 'Entity %s with [id = %d] has not been found';
 
     private array $errors = [];
 
@@ -33,10 +33,10 @@ class ApiException extends Exception
         );
     }
 
-    public static function entityNotFound(int $id, array $errors = []): self
+    public static function entityNotFound(int $id, string $name, array $errors = []): self
     {
         return new self(
-            sprintf(self::ENTITY_NOT_FOUND_MESS, $id),
+            sprintf(self::ENTITY_NOT_FOUND_MESS, $name, $id),
             Response::HTTP_UNPROCESSABLE_ENTITY,
             $errors
         );

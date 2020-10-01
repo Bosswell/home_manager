@@ -43,6 +43,7 @@ class TransactionService
         if (is_null($transactionType)) {
             throw ApiException::entityNotFound(
                 $message->getTransactionTypeId(),
+                get_class($this),
                 ['Invalid transaction type value']
             );
         }
@@ -72,9 +73,9 @@ class TransactionService
             ->findOneBy(['id' => $id, 'user' => $user]);
 
         if (is_null($transaction)) {
-            throw new ApiException(
-                'Transaction not found',
-                Response::HTTP_NOT_FOUND,
+            throw ApiException::entityNotFound(
+                $id,
+                get_class($this),
                 ['Transaction that you try to remove does not exists']
             );
         }
@@ -95,9 +96,9 @@ class TransactionService
             ->findOneBy(['id' => $message->getId(), 'user' => $user]);
 
         if (is_null($transaction)) {
-            throw new ApiException(
-                'Transaction not found',
-                Response::HTTP_NOT_FOUND,
+            throw ApiException::entityNotFound(
+                $message->getId(),
+                get_class($this),
                 ['Transaction that you try to update does not exists']
             );
         }
@@ -110,6 +111,7 @@ class TransactionService
         if (is_null($transactionType)) {
             throw ApiException::entityNotFound(
                 $message->getTransactionTypeId(),
+                get_class($this),
                 ['Invalid transaction type value']
             );
         }
