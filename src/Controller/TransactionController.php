@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\ApiController;
 use App\ApiException;
 use App\Entity\TransactionType;
 use App\Entity\User;
@@ -15,16 +14,26 @@ use App\Message\Transaction\ListTransactionsMessage;
 use App\Message\Transaction\UpdateTransactionMessage;
 use App\Repository\TransactionRepository;
 use App\Service\ObjectValidator;
+use App\Service\TransactionService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Tests\Controller\TransactionControllerTest;
 
+
 /**
  * @see TransactionControllerTest
  */
-class TransactionController extends ApiController
+class TransactionController extends AbstractController
 {
+    private TransactionService $transactionService;
+
+    public function __construct(TransactionService $transactionService)
+    {
+        $this->transactionService = $transactionService;
+    }
+
     /**
      * @Route("/transaction", name="create_transaction", methods={"POST"})
      * @ParamConverter("message", class=CreateTransactionMessage::class, converter="message_converter")

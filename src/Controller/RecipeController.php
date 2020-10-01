@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\ApiController;
 use App\ApiException;
 use App\Entity\User;
 use App\Factory\PagerfantaFactory;
@@ -12,12 +11,22 @@ use App\Message\Recipe\ListRecipesMessage;
 use App\Message\Recipe\UpdateRecipeMessage;
 use App\Repository\RecipeRepository;
 use App\Service\ObjectValidator;
+use App\Service\RecipeService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class RecipeController extends ApiController
+
+class RecipeController extends AbstractController
 {
+    private RecipeService $recipeService;
+
+    public function __construct(RecipeService $recipeService)
+    {
+        $this->recipeService = $recipeService;
+    }
+
     /**
      * @Route("/recipe/{id}", name="get_recipe", methods={"GET"})
      * @throws ApiException
