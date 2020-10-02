@@ -22,15 +22,16 @@ class QuestionFixtures extends Fixture implements DependentFixtureInterface
             ->getRepository(Exam::class)
             ->findAll();
 
+        /** @var Exam $exam */
         foreach ($exams as $exam) {
             for ($i = 0; $i < 5; $i++) {
                 $question = new Question($faker->text(200));
                 $manager->persist($question);
-                $question->setExam($exam);
+                $exam->addQuestion($question);
             }
-        }
 
-        $manager->flush();
+            $manager->flush();
+        }
     }
 
     public function getDependencies()

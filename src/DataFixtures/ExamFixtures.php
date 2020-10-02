@@ -22,7 +22,7 @@ class ExamFixtures extends Fixture implements DependentFixtureInterface
             ->getRepository(User::class)
             ->findOneBy(['email' => 'demo@demo.com']);
 
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 3; $i++) {
             $exam = new Exam($faker->name, uniqid(), true, 20, $user);
             $manager->persist($exam);
         }

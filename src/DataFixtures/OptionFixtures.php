@@ -3,6 +3,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Exam;
 use App\Entity\Option;
 use App\Entity\Question;
 use Doctrine\Bundle\FixturesBundle\Fixture;
@@ -17,24 +18,26 @@ class OptionFixtures extends Fixture implements DependentFixtureInterface
     {
         $faker = Factory::create('pl');
 
-        /** @var Question[] $questions */
-        $questions = $manager->getRepository(Question::class)
+        /** @var Exam $exams */
+        $questions = $manager
+            ->getRepository(Question::class)
             ->findAll();
 
-        for ($i = 0; $i < 35; $i++) {
-            $option = new Option($faker->text(200), (bool)rand(0, 1));
-            $manager->persist($option);
+        /** @var Question $question */
+        foreach ($questions as $question) {
+            for ($i = 0; $i < rand(5, 7); $i++) {
+                $option = new Option($faker->text(200), $i == 0 ? true : (bool)rand(0, 1));
+                $manager->persist($option);
+                $question->addOption($option);
+            }
 
-            $option->setQuestion($questions[$i % 5]);
+            $manager->flush();
         }
-
-        $manager->flush();
     }
 
     public function getDependencies()
     {
         return array(
-            ExamFixtures::class,
             QuestionFixtures::class
         );
     }
