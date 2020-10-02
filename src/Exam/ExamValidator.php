@@ -13,10 +13,7 @@ class ExamValidator
 
     /** @var QuestionSnippet[] */
     private array $questionsSnippets;
-
-    private int $totalPoints = 0;
-    private int $correctPoints = 0;
-    private int $incorrectPoints = 0;
+    private ExamResult $examResult;
 
     public function setUserQuestionsSnippets(array $userQuestionsSnippets): self
     {
@@ -32,12 +29,18 @@ class ExamValidator
         return $this;
     }
 
+    public function getExamResult(): ExamResult
+    {
+        return $this->examResult;
+    }
+
     public function validate(): void
     {
         if (!isset($this->userQuestionsSnippets, $this->questionsSnippets)) {
             throw new \LogicException('Before you make a validation, you need to set questions snippets');
         }
 
+        $correctPoints = $totalPoints = 0;
         foreach ($this->userQuestionsSnippets as $question) {
             if (!$snippet = $this->questionsSnippets[$question->getQuestionId()] ?? null) {
                 throw new \LogicException(
@@ -45,27 +48,12 @@ class ExamValidator
                 );
             }
 
-            $this->correctPoints += count(
+            $correctPoints += count(
                 array_intersect($question->getCheckedOptions(), $snippet->getCorrectOptions())
             );
-            $this->totalPoints += $snippet->getNbOptions();
+            $totalPoints += $snippet->getNbOptions();
         }
 
-        $this->incorrectPoints = $this->totalPoints - $this->correctPoints;
-    }
-
-    public function getTotalPoints(): int
-    {
-        return $this->totalPoints;
-    }
-
-    public function getCorrectPoints(): int
-    {
-        return $this->correctPoints;
-    }
-
-    public function getInCorrectPoints(): int
-    {
-        return $this->incorrectPoints;
+        $this->examResult = new ExamResult($correctPoints, $totalPoints);
     }
 }

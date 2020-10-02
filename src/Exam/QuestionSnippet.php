@@ -4,7 +4,7 @@
 namespace App\Exam;
 
 
-class QuestionSnippet
+class QuestionSnippet implements \JsonSerializable
 {
     private int $nbOptions;
     private array $correctOptions;
@@ -23,5 +23,13 @@ class QuestionSnippet
     public function getCorrectOptions(): array
     {
         return $this->correctOptions;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            'correctOptions' => $this->correctOptions,
+            'nbOptions' => $this->nbOptions,
+        ];
     }
 }
