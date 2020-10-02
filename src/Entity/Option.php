@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\AnswerRepository;
+use App\Repository\OptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=AnswerRepository::class)
+ * @ORM\Entity(repositoryClass=OptionRepository::class)
  */
-class Answer
+class Option
 {
     /**
      * @ORM\Id()
@@ -57,5 +57,10 @@ class Answer
     public function getQuestion(): ?Question
     {
         return $this->question;
+    }
+
+    public function setQuestion(Question $question): void
+    {
+        $this->question = $question;
     }
 }

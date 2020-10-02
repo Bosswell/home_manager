@@ -30,14 +30,14 @@ class Question
     private Exam $exam;
 
     /**
-     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question")
+     * @ORM\OneToMany(targetEntity=Option::class, mappedBy="question")
      */
-    private ArrayCollection $answers;
+    private Collection $options;
 
     public function __construct(string $query)
     {
         $this->query = $query;
-        $this->answers = new ArrayCollection();
+        $this->options = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -56,33 +56,38 @@ class Question
     }
 
     /**
-     * @return Collection|Answer[]
+     * @return Collection|Option[]
      */
-    public function getAnswers(): Collection
+    public function getOptions(): Collection
     {
-        return $this->answers;
+        return $this->options;
     }
 
-    public function addAnswer(Answer $answer): self
+    public function addOption(Option $option): self
     {
-        if (!$this->answers->contains($answer)) {
-            $this->answers[] = $answer;
-            $answer->setQuestion($this);
+        if (!$this->options->contains($option)) {
+            $this->options[] = $option;
+            $option->setQuestion($this);
         }
 
         return $this;
     }
 
-    public function removeAnswer(Answer $answer): self
+    public function removeOption(Option $option): self
     {
-        if ($this->answers->contains($answer)) {
-            $this->answers->removeElement($answer);
+        if ($this->options->contains($option)) {
+            $this->options->removeElement($option);
             // set the owning side to null (unless already changed)
-            if ($answer->getQuestion() === $this) {
-                $answer->setQuestion(null);
+            if ($option->getQuestion() === $this) {
+                $option->setQuestion(null);
             }
         }
 
         return $this;
+    }
+
+    public function setExam(Exam $exam): void
+    {
+        $this->exam = $exam;
     }
 }

@@ -64,7 +64,7 @@ class Exam
     /**
      * @ORM\OneToMany(targetEntity=Question::class, mappedBy="exam")
      */
-    private ArrayCollection $questions;
+    private Collection $questions;
 
     public function __construct(string $name, string $code, bool $isAvailable, int $timeout, UserInterface $user)
     {
