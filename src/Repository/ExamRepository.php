@@ -37,7 +37,18 @@ class ExamRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    public function getCorrectQuestions(int $examId)
+    /**
+     * Output:
+     * [
+     *     [
+     *         'questionId' => 1,
+     *         'correctOptions' => '1, 2',
+     *         'nbOptions' => 5
+     *     ],
+     *     ....
+     * ]
+     */
+    public function getQuestionsSnippets(int $examId): array
     {
         $connection = $this->getEntityManager()->getConnection();
 

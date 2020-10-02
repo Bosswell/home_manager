@@ -2,66 +2,32 @@
 
 namespace Tests\Exam;
 
-use App\Entity\Exam;
-use App\Entity\Question;
 use App\Exam\ExamValidator;
+use App\Exam\QuestionSnippet;
+use App\Exam\QuestionSnippetNormalizer;
+use App\Message\Exam\Model\UserQuestionSnippet;
 use App\Message\Exam\ValidateExamMessage;
 use PHPUnit\Framework\TestCase;
-use Tests\FunctionalTestCase;
 
 
-class ExamValidatorTest extends FunctionalTestCase
+class ExamValidatorTest extends TestCase
 {
     private static ExamValidator $examValidator;
 
     public static function setUpBeforeClass(): void
     {
-        $testExam = [
-            'questions' => [
-                [
-                    'questionId' => 1,
-                    'checkedOptions' => [
-                        2, 5
-                    ]
-                ],
-                [
-                    'questionId' => 2,
-                    'checkedOptions' => [
-                        2, 3
-                    ]
-                ],
-                [
-                    'questionId' => 3,
-                    'checkedOptions' => [
-                        1
-                    ]
-                ]
-            ]
-        ];
-
-        $correctOptions = [
-            [
-                'questionId' => 1,
-                'correctOptions' => '1, 2',
-                'nbOptions' => 5
-            ],
-            [
-                'questionId' => 2,
-                'correctOptions' => '1, 4',
-                'nbOptions' => 3
-            ],
-            [
-                'questionId' => 3,
-                'correctOptions' => '1',
-                'nbOptions' => 2
-            ]
-        ];
-
         $examValidator = new ExamValidator();
-
         $examValidator
-            ->setExam(new ValidateExamMessage($testExam))
-            ->setCorrectQuestions($correctOptions)
+            ->setUserQuestionsSnippets([
+                new UserQuestionSnippet(['questionId' => 1, 'checkedOptions' => [2, 5]]),
+                new UserQuestionSnippet(['questionId' => 2, 'checkedOptions' => [2, 3]]),
+                new UserQuestionSnippet(['questionId' => 3, 'checkedOptions' => [1]]),
+            ])
+            ->setQuestionSnippets([
+                1 => new QuestionSnippet(5, [1, 2]),
+                2 => new QuestionSnippet(3, [1, 4]),
+                3 => new QuestionSnippet(2, [1]),
+            ])
             ->validate();
 
         self::$examValidator = $examValidator;
@@ -80,47 +46,5 @@ class ExamValidatorTest extends FunctionalTestCase
     public function testGetInCorrectPoints(): void
     {
         $this->assertEquals(8, self::$examValidator->getInCorrectPoints());
-    }
-
-    public function testSetCorrectQuestionsQuestionIdFailure(): void
-    {
-        $validator = new ExamValidator();
-
-        $this->expectException(\InvalidArgumentException::class);
-        $validator->setCorrectQuestions([
-            [
-                'question' => 3,
-                'correctOptions' => '1',
-                'nbOptions' => 2
-            ]
-        ]);
-    }
-
-    public function testSetCorrectQuestionsCorrectOptionsFailure(): void
-    {
-        $validator = new ExamValidator();
-
-        $this->expectException(\InvalidArgumentException::class);
-        $validator->setCorrectQuestions([
-            [
-                'questionId' => 3,
-                'correctOption' => '1',
-                'nbOptions' => 2
-            ]
-        ]);
-    }
-
-    public function testSetCorrectQuestionsNbOptionsFailure(): void
-    {
-        $validator = new ExamValidator();
-
-        $this->expectException(\InvalidArgumentException::class);
-        $validator->setCorrectQuestions([
-            [
-                'questionId' => 3,
-                'correctOptions' => '1',
-                'options' => 2
-            ]
-        ]);
     }
 }

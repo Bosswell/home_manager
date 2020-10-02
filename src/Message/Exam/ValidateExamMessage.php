@@ -2,26 +2,26 @@
 
 namespace App\Message\Exam;
 
-use App\Message\Exam\Model\ValidateQuestionModel;
+use App\Message\Exam\Model\UserQuestionSnippet;
 
 
 class ValidateExamMessage
 {
-    /** @var ValidateQuestionModel[] */
-    private ?array $questionModels = null;
+    /** @var UserQuestionSnippet[] */
+    private ?array $snippets = null;
 
     public function __construct(?array $data = null)
     {
         foreach ($data['questions'] ?? [] as $question) {
-            $this->questionModels[] = new ValidateQuestionModel($question);
+            $this->snippets[] = new UserQuestionSnippet($question);
         }
     }
 
     /**
-     * @return ValidateQuestionModel[]
+     * @return UserQuestionSnippet[]
      */
-    public function getQuestionModels(): array
+    public function getUserQuestionsSnippets(): array
     {
-        return $this->questionModels;
+        return $this->snippets;
     }
 }

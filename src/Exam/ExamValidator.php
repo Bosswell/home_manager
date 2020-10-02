@@ -3,53 +3,52 @@
 
 namespace App\Exam;
 
-use App\Message\Exam\ValidateExamMessage;
+use App\Message\Exam\Model\UserQuestionSnippet;
 
 
 class ExamValidator
 {
-    private ValidateExamMessage $exam;
-    private array $correctQuestions;
+    /** @var UserQuestionSnippet[] */
+    private array $userQuestionsSnippets;
+
+    /** @var QuestionSnippet[] */
+    private array $questionsSnippets;
+
     private int $totalPoints = 0;
     private int $correctPoints = 0;
     private int $incorrectPoints = 0;
 
-    public function setExam(ValidateExamMessage $message): self
+    public function setUserQuestionsSnippets(array $userQuestionsSnippets): self
     {
-        $this->exam = $message;
+        $this->userQuestionsSnippets = $userQuestionsSnippets;
 
         return $this;
     }
 
-    public function setCorrectQuestions(array $correctQuestions): self
+    public function setQuestionSnippets(array $questionsSnippets): self
     {
-        foreach ($correctQuestions as $question) {
-            if (
-                !key_exists('questionId', $question) ||
-                !key_exists('correctOptions', $question) ||
-                !key_exists('nbOptions', $question)
-            ) {
-                throw new \InvalidArgumentException('Invalid correct questions signature');
-            }
-
-            $this->correctQuestions[$question['questionId']] = [
-                'correctOptions' => array_map('intval', explode(',', $question['correctOptions'])),
-                'nbOptions' => $question['nbOptions'],
-            ];
-        }
+        $this->questionsSnippets = $questionsSnippets;
 
         return $this;
     }
 
     public function validate(): void
     {
-        foreach ($this->exam->getQuestionModels() as $question) {
-            if ($correctQuestion = $this->correctQuestions[$question->getQuestionId()] ?? null) {
-                $this->correctPoints += count(
-                    array_intersect($question->getCheckedOptions(), $correctQuestion['correctOptions'])
+        if (!isset($this->userQuestionsSnippets, $this->questionsSnippets)) {
+            throw new \LogicException('Before you make a validation, you need to set questions snippets');
+        }
+
+        foreach ($this->userQuestionsSnippets as $question) {
+            if (!$snippet = $this->questionsSnippets[$question->getQuestionId()] ?? null) {
+                throw new \LogicException(
+                    sprintf('Snippet for question with [ id = %d ] does not exist', $question->getQuestionId())
                 );
-                $this->totalPoints += $correctQuestion['nbOptions'];
             }
+
+            $this->correctPoints += count(
+                array_intersect($question->getCheckedOptions(), $snippet->getCorrectOptions())
+            );
+            $this->totalPoints += $snippet->getNbOptions();
         }
 
         $this->incorrectPoints = $this->totalPoints - $this->correctPoints;

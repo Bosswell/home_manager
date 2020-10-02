@@ -4,7 +4,7 @@
 namespace App\Message\Exam\Model;
 
 
-class ValidateQuestionModel
+class UserQuestionSnippet
 {
     private int $questionId;
 
