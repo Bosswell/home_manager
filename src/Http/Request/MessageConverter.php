@@ -9,16 +9,17 @@ use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 class MessageConverter implements ParamConverterInterface
 {
-    private SerializerInterface $serializer;
+    private Serializer $serializer;
     private string $env;
 
-    public function __construct(SerializerFactory $serializerFactory, ParameterBagInterface $bag)
+    public function __construct(Serializer $serializer, ParameterBagInterface $bag)
     {
-        $this->serializer = $serializerFactory->getInstance();
+        $this->serializer = $serializer;
         $this->env = $bag->get('kernel.environment');
     }
 
