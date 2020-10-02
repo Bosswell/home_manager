@@ -7,6 +7,7 @@ use App\Message\Exam\Model\UserQuestionSnippet;
 
 class ValidateExamMessage
 {
+    private ?string $userId;
     private int $examId;
 
     /** @var UserQuestionSnippet[] */
@@ -15,6 +16,7 @@ class ValidateExamMessage
     public function __construct(?array $data = null)
     {
         $this->examId = $data['examId'] ?? 0;
+        $this->userId = $data['userId'] ?? null;
 
         foreach ($data['questions'] ?? [] as $question) {
             $this->snippets[] = new UserQuestionSnippet($question);
@@ -32,5 +34,10 @@ class ValidateExamMessage
     public function getUserQuestionsSnippets(): array
     {
         return $this->snippets;
+    }
+
+    public function getUserId(): ?string
+    {
+        return $this->userId;
     }
 }

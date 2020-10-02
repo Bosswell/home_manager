@@ -19,18 +19,8 @@ class CreateExamMessage
         return $this->name;
     }
 
-    public function setName($name): void
-    {
-        $this->name = (string)$name;
-    }
-
     public function getCode(): string
     {
         return $this->code;
-    }
-
-    public function setCode($code): void
-    {
-        $this->code = $code;
     }
 }

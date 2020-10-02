@@ -92,11 +92,13 @@ class User implements UserInterface
      */
     private $exams;
 
+
     public function __construct()
     {
         $this->transactions = new ArrayCollection();
         $this->recipes = new ArrayCollection();
         $this->exams = new ArrayCollection();
+        $this->yes = new ArrayCollection();
     }
 
     public function getId(): ?int

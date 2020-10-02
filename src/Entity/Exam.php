@@ -66,6 +66,11 @@ class Exam
      */
     private Collection $questions;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ExamHistory::class, mappedBy="exam")
+     */
+    private Collection $examHistories;
+
     public function __construct(string $name, string $code, bool $isAvailable, int $timeout, UserInterface $user)
     {
         $this->name = $name;
@@ -82,6 +87,7 @@ class Exam
         $this->isAvailable = $isAvailable;
         $this->timeout = $timeout;
         $this->questions = new ArrayCollection();
+        $this->examHistories = new ArrayCollection();
     }
 
     public function update(string $name, string $code, bool $isAvailable, int $timeout)
@@ -172,5 +178,41 @@ class Exam
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection|ExamHistory[]
+     */
+    public function getExamHistories(): Collection
+    {
+        return $this->examHistories;
+    }
+
+    public function addExamHistory(ExamHistory $examHistory): self
+    {
+        if (!$this->examHistories->contains($examHistory)) {
+            $this->examHistories[] = $examHistory;
+            $examHistory->setExam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExamHistory(ExamHistory $examHistory): self
+    {
+        if ($this->examHistories->contains($examHistory)) {
+            $this->examHistories->removeElement($examHistory);
+            // set the owning side to null (unless already changed)
+            if ($examHistory->getExam() === $this) {
+                $examHistory->setExam(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function setUser(UserInterface $user): void
+    {
+        $this->user = $user;
     }
 }

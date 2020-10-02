@@ -19,7 +19,7 @@ class ExamResult
         $this->correctPoints = $correctPoints;
         $this->totalPoints = $totalPoints;
         $this->incorrectPoints = $totalPoints - $correctPoints;
-        $this->percentage = round($this->correctPoints / $this->totalPoints * 100, 2);
+        $this->percentage = $this->totalPoints ? round($this->correctPoints / $this->totalPoints * 100, 2) : 0;
     }
 
     public function setQuestionsSnippets($questionsSnippets): void

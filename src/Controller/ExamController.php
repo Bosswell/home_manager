@@ -9,6 +9,7 @@ use App\Factory\PagerfantaFactory;
 use App\Http\ApiResponse;
 use App\Message\Exam\CreateExamMessage;
 use App\Message\Exam\ListExamsMessage;
+use App\Message\Exam\StartExamMessage;
 use App\Message\Exam\UpdateExamMessage;
 use App\Message\Exam\ValidateExamMessage;
 use App\Repository\ExamRepository;
@@ -101,6 +102,22 @@ class ExamController extends AbstractController
             'currentPage' => $pagerfanta->getCurrentPage(),
             'results' => $pagerfanta->getCurrentPageResults()
         ]);
+    }
+
+    /**
+     * @Route("/exam/action/start", name="start_exam", methods={"GET"})
+     * @ParamConverter("message", class=StartExamMessage::class, converter="message_converter")
+     * @throws ApiException
+     */
+    public function startExamAction(StartExamMessage $message)
+    {
+        $exam = $this->examFacade->startExam($message);
+
+        return new ApiResponse(
+            'Exam has been started',
+            Response::HTTP_OK,
+            $exam
+        );
     }
 
     /**
