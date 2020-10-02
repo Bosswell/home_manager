@@ -4,9 +4,7 @@ namespace Tests\Exam;
 
 use App\Exam\ExamValidator;
 use App\Exam\QuestionSnippet;
-use App\Exam\QuestionSnippetNormalizer;
 use App\Message\Exam\Model\UserQuestionSnippet;
-use App\Message\Exam\ValidateExamMessage;
 use PHPUnit\Framework\TestCase;
 
 
@@ -33,18 +31,13 @@ class ExamValidatorTest extends TestCase
         self::$examValidator = $examValidator;
     }
 
-    public function testGetTotalPoints(): void
+    public function testGetExamResult(): void
     {
-        $this->assertEquals(10, self::$examValidator->getTotalPoints());
-    }
+        $result = self::$examValidator->getExamResult()->toArray();
 
-    public function testGetCorrectPoints(): void
-    {
-        $this->assertEquals(2, self::$examValidator->getCorrectPoints());
-    }
-
-    public function testGetInCorrectPoints(): void
-    {
-        $this->assertEquals(8, self::$examValidator->getInCorrectPoints());
+        $this->assertEquals(10, $result['totalPoints']);
+        $this->assertEquals(2, $result['correctPoints']);
+        $this->assertEquals(8, $result['inCorrectPoint']);
+        $this->assertEquals(20, $result['percentage']);
     }
 }
