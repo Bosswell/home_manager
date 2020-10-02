@@ -121,4 +121,9 @@ class ExamHistory
 
         return $this;
     }
+
+    public function setExam(Exam $exam): void
+    {
+        $this->exam = $exam;
+    }
 }

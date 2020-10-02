@@ -7,11 +7,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=ExamRepository::class)
  */
-class Exam
+class Exam implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -22,6 +24,7 @@ class Exam
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"default"})
      */
     private string $name;
 
@@ -38,7 +41,7 @@ class Exam
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
-    private \DateTime $updatedAt;
+    private ?\DateTime $updatedAt;
 
     /**
      * @ORM\Column(type="boolean")
@@ -58,11 +61,13 @@ class Exam
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"default"})
      */
     private int $timeout;
 
     /**
      * @ORM\OneToMany(targetEntity=Question::class, mappedBy="exam")
+     * @Groups({"default"})
      */
     private Collection $questions;
 
@@ -214,5 +219,12 @@ class Exam
     public function setUser(UserInterface $user): void
     {
         $this->user = $user;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+
+        ];
     }
 }

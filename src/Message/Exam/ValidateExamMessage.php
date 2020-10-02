@@ -18,8 +18,8 @@ class ValidateExamMessage
         $this->examId = $data['examId'] ?? 0;
         $this->userId = $data['userId'] ?? null;
 
-        foreach ($data['questions'] ?? [] as $question) {
-            $this->snippets[] = new UserQuestionSnippet($question);
+        foreach ($data['snippets'] ?? [] as $snippet) {
+            $this->snippets[] = new UserQuestionSnippet($snippet);
         }
     }
 
@@ -39,5 +39,25 @@ class ValidateExamMessage
     public function getUserId(): ?string
     {
         return $this->userId;
+    }
+
+    public function setUserId($userId): void
+    {
+        $this->userId = (string)$userId;
+    }
+
+    public function setExamId($examId): void
+    {
+        $this->examId = (int)$examId;
+    }
+
+    /**
+     * @param UserQuestionSnippet[] $snippets
+     */
+    public function setSnippets(array $snippets): void
+    {
+        foreach ($snippets as $snippet) {
+            $this->snippets[] = new UserQuestionSnippet($snippet);
+        }
     }
 }

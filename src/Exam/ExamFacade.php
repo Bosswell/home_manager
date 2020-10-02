@@ -68,7 +68,7 @@ class ExamFacade
     /**
      * @throws ApiException
      */
-    public function startExam(StartExamMessage $message): array
+    public function startExam(StartExamMessage $message): ExamHistory
     {
         $exam = $this->examRepository->findOneBy([
             'id' => $message->getExamId(),
@@ -83,9 +83,6 @@ class ExamFacade
         $this->entityManager->persist($history);
         $this->entityManager->flush();
 
-        return [
-            'userId' => $history->getUserId(),
-            'exam' => $exam
-        ];
+        return $history;
     }
 }

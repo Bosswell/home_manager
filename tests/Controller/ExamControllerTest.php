@@ -82,4 +82,28 @@ class ExamControllerTest extends FunctionalTestCase
         $this->assertArrayHasKey('results', $content['data']);
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
     }
+
+    public function testStartExam(): void
+    {
+        $examRepository = $this->entityManager->getRepository(Exam::class);
+        $exam = $examRepository->findBy([], ['id' => 'DESC'],1,0)[0];
+
+        $this->client->request('GET', '/exam/action/start', [], [], [], json_encode([
+            'examId' => $exam->getId(),
+            'code' => $exam->getCode(),
+            'username' => 'John Doe',
+            'userNumber' => 1
+        ]));
+
+        $response = $this->client->getResponse();
+        $content = json_decode($response->getContent(), true);
+dump($content);
+        $this->assertEmpty($content['errors']);
+        $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
+        $this->assertArrayHasKey('userId', $content['data']);
+        $this->assertArrayHasKey('exam', $content['data']);
+
+        $this->assertArrayHasKey('results', $content['data']);
+        $this->assertResponseHeaderSame('Content-Type', 'application/json');
+    }
 }

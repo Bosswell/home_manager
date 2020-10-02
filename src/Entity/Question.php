@@ -6,6 +6,8 @@ use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 /**
  * @ORM\Entity(repositoryClass=QuestionRepository::class)
@@ -16,11 +18,13 @@ class Question
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"default"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"default"})
      */
     private string $query;
 
@@ -31,6 +35,7 @@ class Question
 
     /**
      * @ORM\OneToMany(targetEntity=Option::class, mappedBy="question")
+     * @Groups({"default"})
      */
     private Collection $options;
 

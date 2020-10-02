@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OptionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=OptionRepository::class)
@@ -14,13 +15,15 @@ class Option
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"default"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"default"})
      */
-    private string $text;
+    private string $content;
 
     /**
      * @ORM\Column(type="boolean")
@@ -32,9 +35,9 @@ class Option
      */
     private Question $question;
 
-    public function __construct(string $text, bool $isCorrect)
+    public function __construct(string $content, bool $isCorrect)
     {
-        $this->text = $text;
+        $this->content = $content;
         $this->isCorrect = $isCorrect;
     }
 
@@ -43,9 +46,9 @@ class Option
         return $this->id;
     }
 
-    public function getText(): ?string
+    public function getContent(): ?string
     {
-        return $this->text;
+        return $this->content;
     }
 
 

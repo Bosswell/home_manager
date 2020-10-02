@@ -23,4 +23,14 @@ class CreateExamMessage
     {
         return $this->code;
     }
+
+    public function setName($name): void
+    {
+        $this->name = $name;
+    }
+
+    public function setCode($code): void
+    {
+        $this->code = $code;
+    }
 }
