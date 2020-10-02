@@ -36,4 +36,30 @@ class ExamRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
+    public function getCorrectQuestions(int $examId)
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $subQuery = $connection->createQueryBuilder()
+            ->select('GROUP_CONCAT(oo.id SEPARATOR ",")')
+            ->from('option', 'oo')
+            ->where('oo.is_correct = 1')
+            ->andWhere('oo.question_id = q.id');
+
+        $qb = $connection->createQueryBuilder()
+            ->select('q.id, COUNT(o.id) as `nbOptions`, ('. $subQuery->getSQL() .') as `correctOptions`')
+            ->from('exam', 'e')
+            ->innerJoin('e', 'question', 'q', 'e.id = q.exam_id')
+            ->innerJoin('q', 'option', 'o', 'o.question_id = q.id')
+            ->where('e.id = :id')
+            ->andWhere('e.is_deleted = 0')
+            ->setParameter(':id', $examId)
+            ->groupBy('q.id')
+        ;
+
+        return $qb
+            ->execute()
+            ->fetchAll();
+    }
 }

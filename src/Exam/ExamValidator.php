@@ -27,14 +27,14 @@ class ExamValidator
             if (
                 !key_exists('questionId', $question) ||
                 !key_exists('correctOptions', $question) ||
-                !key_exists('optionsNb', $question)
+                !key_exists('nbOptions', $question)
             ) {
                 throw new \InvalidArgumentException('Invalid correct questions signature');
             }
 
             $this->correctQuestions[$question['questionId']] = [
-                'correctOptions' => $question['correctOptions'],
-                'optionsNb' => $question['optionsNb'],
+                'correctOptions' => array_map('intval', explode(',', $question['correctOptions'])),
+                'nbOptions' => $question['nbOptions'],
             ];
         }
 
@@ -44,11 +44,11 @@ class ExamValidator
     public function validate(): void
     {
         foreach ($this->exam->getQuestionModels() as $question) {
-            if ($correctQuestion = $this->correctQuestions[$question->getQuestionId()] ?? null){
+            if ($correctQuestion = $this->correctQuestions[$question->getQuestionId()] ?? null) {
                 $this->correctPoints += count(
                     array_intersect($question->getCheckedOptions(), $correctQuestion['correctOptions'])
                 );
-                $this->totalPoints += $correctQuestion['optionsNb'];
+                $this->totalPoints += $correctQuestion['nbOptions'];
             }
         }
 
