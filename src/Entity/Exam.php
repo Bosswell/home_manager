@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ExamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -49,7 +51,22 @@ class Exam
      */
     private UserInterface $user;
 
-    public function __construct(string $name, string $code, UserInterface $user)
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $isAvailable;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $timeout;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="exam")
+     */
+    private ArrayCollection $questions;
+
+    public function __construct(string $name, string $code, bool $isAvailable, int $timeout, UserInterface $user)
     {
         $this->name = $name;
         $this->code = $code;
@@ -62,6 +79,17 @@ class Exam
     {
         $this->name = $name;
         $this->code = $code;
+        $this->isAvailable = $isAvailable;
+        $this->timeout = $timeout;
+        $this->questions = new ArrayCollection();
+    }
+
+    public function update(string $name, string $code, bool $isAvailable, int $timeout)
+    {
+        $this->name = $name;
+        $this->code = $code;
+        $this->isAvailable = $isAvailable;
+        $this->timeout = $timeout;
         $this->updatedAt = new \DateTime();
     }
 
@@ -103,5 +131,46 @@ class Exam
     public function getUser(): ?UserInterface
     {
         return $this->user;
+    }
+
+    public function getIsAvailable(): ?bool
+    {
+        return $this->isAvailable;
+    }
+
+    public function getTimeout(): ?int
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @return Collection|Question[]
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Question $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setExam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Question $question): self
+    {
+        if ($this->questions->contains($question)) {
+            $this->questions->removeElement($question);
+            // set the owning side to null (unless already changed)
+            if ($question->getExam() === $this) {
+                $question->setExam(null);
+            }
+        }
+
+        return $this;
     }
 }
