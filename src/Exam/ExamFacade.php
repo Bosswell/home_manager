@@ -3,7 +3,6 @@
 namespace App\Exam;
 
 use App\ApiException;
-use App\Entity\Exam;
 use App\Entity\ExamHistory;
 use App\Message\Exam\StartExamMessage;
 use App\Message\Exam\ValidateExamMessage;
@@ -42,22 +41,21 @@ class ExamFacade
             throw new ApiException('Exam has already be validated', Response::HTTP_BAD_REQUEST);
         }
 
-        $normalizer = new QuestionSnippetNormalizer();
-        $snippets = $normalizer->normalizeArray(
-            $this->examRepository->getQuestionsSnippets($message->getExamId())
+        $normalizer = new CorrectOptionsNormalizer();
+        $correctOptions = $normalizer->normalizeArray(
+            $this->examRepository->getCorrectOptions($message->getExamId())
         );
 
-        $examValidator = new ExamValidator();
-        $examValidator->setQuestionSnippets($snippets);
+        $examValidator = new StandardValidator();
+        $examValidator->setCorrectOptions($correctOptions);
         $examValidator->setUserQuestionsSnippets($message->getUserQuestionsSnippets());
-        $examValidator->validate();
+        $result = $examValidator->validate();
 
-        $result = $examValidator->getExamResult();
-        $result->setQuestionsSnippets($snippets);
+        $result->setCorrectOptions($correctOptions);
 
         $history
             ->setResult($result->toArray())
-            ->setSnippet($snippets)
+            ->setSnippet($message->getUserQuestionsSnippets())
             ->deactivate();
 
         $this->entityManager->flush();

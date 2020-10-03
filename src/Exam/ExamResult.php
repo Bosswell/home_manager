@@ -9,22 +9,20 @@ class ExamResult
     private int $totalPoints;
     private int $correctPoints;
     private int $incorrectPoints;
-    private int $percentage;
+    private float $percentage;
+    private array $correctOptions = [];
 
-    /** @var QuestionSnippet[] */
-    private array $questionsSnippets;
-
-    public function __construct(int $correctPoints, int $totalPoints)
+    public function __construct(int $correctPoints, int $totalPoints, int $incorrectPoints, float $percentage)
     {
         $this->correctPoints = $correctPoints;
         $this->totalPoints = $totalPoints;
-        $this->incorrectPoints = $totalPoints - $correctPoints;
-        $this->percentage = $this->totalPoints ? round($this->correctPoints / $this->totalPoints * 100, 2) : 0;
+        $this->incorrectPoints = $incorrectPoints;
+        $this->percentage = round($percentage, 2);
     }
 
-    public function setQuestionsSnippets($questionsSnippets): void
+    public function setCorrectOptions($correctOptions): void
     {
-        $this->questionsSnippets = $questionsSnippets;
+        $this->correctOptions = $correctOptions;
     }
 
     public function toArray(): array
@@ -32,9 +30,9 @@ class ExamResult
         return [
             'totalPoints'       => $this->totalPoints,
             'correctPoints'     => $this->correctPoints,
-            'inCorrectPoint'    => $this->incorrectPoints,
+            'inCorrectPoints'    => $this->incorrectPoints,
             'percentage'        => $this->percentage,
-            'questionsSnippets' => $this->questionsSnippets ?? [],
+            'correctOptions'    => $this->correctOptions,
         ];
     }
 }
