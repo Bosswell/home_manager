@@ -48,7 +48,7 @@ class ExamRepository extends ServiceEntityRepository
      *     ....
      * ]
      */
-    public function getQuestionsSnippets(int $examId): array
+    public function getCorrectOptions(int $examId): array
     {
         $connection = $this->getEntityManager()->getConnection();
 
@@ -59,7 +59,7 @@ class ExamRepository extends ServiceEntityRepository
             ->andWhere('oo.question_id = q.id');
 
         $qb = $connection->createQueryBuilder()
-            ->select('q.id, COUNT(o.id) as `nbOptions`, ('. $subQuery->getSQL() .') as `correctOptions`')
+            ->select('q.id, ('. $subQuery->getSQL() .') as `correctOptions`')
             ->from('exam', 'e')
             ->innerJoin('e', 'question', 'q', 'e.id = q.exam_id')
             ->innerJoin('q', 'option', 'o', 'o.question_id = q.id')

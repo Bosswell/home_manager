@@ -19,6 +19,7 @@ class Exam implements \JsonSerializable
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"default"})
      */
     private int $id;
 

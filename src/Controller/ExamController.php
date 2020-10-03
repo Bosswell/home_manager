@@ -120,7 +120,7 @@ class ExamController extends AbstractController
     }
 
     /**
-     * @Route("/exam/action/start", name="start_exam", methods={"GET"})
+     * @Route("/exam/action/start", name="start_exam", methods={"POST"})
      * @ParamConverter("message", class=StartExamMessage::class, converter="message_converter")
      * @throws ApiException
      * @throws ExceptionInterface
@@ -141,7 +141,7 @@ class ExamController extends AbstractController
     }
 
     /**
-     * @Route("/exam/action/validate", name="validate_exam", methods={"GET"})
+     * @Route("/exam/action/validate", name="validate_exam", methods={"POST"})
      * @ParamConverter("message", class=ValidateExamMessage::class, converter="message_converter")
      */
     public function validateExamAction(ValidateExamMessage $message)
