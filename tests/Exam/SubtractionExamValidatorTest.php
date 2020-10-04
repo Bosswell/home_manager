@@ -38,7 +38,7 @@ class SubtractionExamValidatorTest extends TestCase
 
         $this->assertEquals(7, $result['totalPoints']);
         $this->assertEquals(4, $result['correctPoints']);
-        $this->assertEquals(1, $result['inCorrectPoints']);
+        $this->assertEquals(1, $result['incorrectPoints']);
         $this->assertEquals(42.86, $result['percentage']);
     }
 }

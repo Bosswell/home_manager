@@ -19,12 +19,12 @@ class StandardExamValidatorTest extends TestCase
             ->setUserQuestionsSnippets([
                 new UserQuestionSnippet(['questionId' => 1, 'checkedOptions' => [2, 5]]),
                 new UserQuestionSnippet(['questionId' => 2, 'checkedOptions' => [2, 3]]),
-                new UserQuestionSnippet(['questionId' => 3, 'checkedOptions' => [1]]),
+                new UserQuestionSnippet(['questionId' => 5, 'checkedOptions' => [1]]),
             ])
             ->setCorrectOptions([
                 1 => [1, 2],
                 2 => [1, 4, 2, 3],
-                3 => [1],
+                5 => [1],
             ]);
 
         self::$examValidator = $examValidator;
@@ -38,7 +38,7 @@ class StandardExamValidatorTest extends TestCase
 
         $this->assertEquals(3, $result['totalPoints']);
         $this->assertEquals(1, $result['correctPoints']);
-        $this->assertEquals(2, $result['inCorrectPoints']);
+        $this->assertEquals(2, $result['incorrectPoints']);
         $this->assertEquals(33.33, $result['percentage']);
     }
 }

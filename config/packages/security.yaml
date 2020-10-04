@@ -14,16 +14,10 @@ security:
             stateless: true
             anonymous: true
 
-        start_exam:
-            pattern: ^/exam/action/start
+        front_exam:
+            pattern: ^/exam/front
             stateless: true
             anonymous: true
-
-        validate_exam:
-            pattern: ^/exam/action/validate
-            stateless: true
-            anonymous: true
-
 
         login:
             pattern:  ^/login

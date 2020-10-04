@@ -41,10 +41,16 @@ class ExamFacade
             throw new ApiException('Exam has already be validated', Response::HTTP_BAD_REQUEST);
         }
 
+        if ($message->getExamId() === 0) {
+            throw new ApiException('Your exam id is not specified', Response::HTTP_NOT_FOUND);
+        }
+
         $normalizer = new CorrectOptionsNormalizer();
         $correctOptions = $normalizer->normalizeArray(
             $this->examRepository->getCorrectOptions($message->getExamId())
         );
+
+        // $history->getValidationMode() ...
 
         $examValidator = new StandardValidator();
         $examValidator->setCorrectOptions($correctOptions);

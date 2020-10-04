@@ -30,7 +30,7 @@ class ExamResult
         return [
             'totalPoints'       => $this->totalPoints,
             'correctPoints'     => $this->correctPoints,
-            'inCorrectPoints'    => $this->incorrectPoints,
+            'incorrectPoints'    => $this->incorrectPoints,
             'percentage'        => $this->percentage,
             'correctOptions'    => $this->correctOptions,
         ];

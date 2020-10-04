@@ -12,11 +12,7 @@ class StandardValidator extends AbstractExamValidator
         $correctPoints = 0;
 
         foreach ($this->userQuestionsSnippets as $question) {
-            if (!$correctOptions = $this->correctOptions[$question->getQuestionId()] ?? null) {
-                throw new \LogicException(
-                    sprintf('Correct question for question with [ id = %d ] does not exist', $question->getQuestionId())
-                );
-            }
+            $correctOptions = $this->correctOptions[$question->getQuestionId()] ?? [];
 
             $correctAnswers = count(array_intersect($question->getCheckedOptions(), $correctOptions));
             $totalCorrectAnswers = count($correctOptions);
