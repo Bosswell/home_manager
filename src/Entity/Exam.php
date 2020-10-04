@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -26,11 +27,23 @@ class Exam implements \JsonSerializable
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"default"})
+     * @Assert\Length(
+     *     min= 1,
+     *     max = 255,
+     *     maxMessage = "Exam name cannot be longer than {{ limit }} characters",
+     *     minMessage = "Exam name cannot be empty"
+     * )
      */
     private string $name;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\Length(
+     *     min= 1,
+     *     max = 20,
+     *     maxMessage = "Exam code cannot be longer than {{ limit }} characters",
+     *     minMessage = "Exam code cannot be empty"
+     * )
      */
     private string $code;
 
@@ -63,6 +76,10 @@ class Exam implements \JsonSerializable
     /**
      * @ORM\Column(type="integer")
      * @Groups({"default"})
+     * @Assert\GreaterThan(
+     *     value=0,
+     *     message="Message need to be grater then 0"
+     * )
      */
     private int $timeout;
 
@@ -77,8 +94,29 @@ class Exam implements \JsonSerializable
      */
     private Collection $examHistories;
 
-    public function __construct(string $name, string $code, bool $isAvailable, int $timeout, UserInterface $user)
-    {
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private bool $hasVisibleResult;
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     * @Assert\Choice(
+     *     {"standard", "subtraction"},
+     *     message="Invalid exam mode."
+     *)
+     */
+    private string $mode;
+
+    public function __construct(
+        string $name,
+        string $code,
+        bool $isAvailable,
+        int $timeout,
+        bool $hasVisibleResult,
+        string $mode,
+        UserInterface $user
+    ) {
         $this->name = $name;
         $this->code = $code;
         $this->createdAt = new \DateTime();
@@ -94,15 +132,25 @@ class Exam implements \JsonSerializable
         $this->timeout = $timeout;
         $this->questions = new ArrayCollection();
         $this->examHistories = new ArrayCollection();
+        $this->hasVisibleResult = $hasVisibleResult;
+        $this->mode = $mode;
     }
 
-    public function update(string $name, string $code, bool $isAvailable, int $timeout)
-    {
+    public function update(
+        string $name,
+        string $code,
+        bool $isAvailable,
+        int $timeout,
+        bool $hasVisibleResult,
+        string $mode
+    ): void {
         $this->name = $name;
         $this->code = $code;
         $this->isAvailable = $isAvailable;
         $this->timeout = $timeout;
         $this->updatedAt = new \DateTime();
+        $this->hasVisibleResult = $hasVisibleResult;
+        $this->mode = $mode;
     }
 
     public function delete()
@@ -227,5 +275,29 @@ class Exam implements \JsonSerializable
         return [
 
         ];
+    }
+
+    public function getHasVisibleResult(): ?bool
+    {
+        return $this->hasVisibleResult;
+    }
+
+    public function setHasVisibleResult(bool $hasVisibleResult): self
+    {
+        $this->hasVisibleResult = $hasVisibleResult;
+
+        return $this;
+    }
+
+    public function getMode(): ?string
+    {
+        return $this->mode;
+    }
+
+    public function setMode(string $mode): self
+    {
+        $this->mode = $mode;
+
+        return $this;
     }
 }

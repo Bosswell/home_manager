@@ -23,7 +23,7 @@ class ExamFixtures extends Fixture implements DependentFixtureInterface
             ->findOneBy(['email' => 'demo@demo.com']);
 
         for ($i = 0; $i < 3; $i++) {
-            $exam = new Exam($faker->name, uniqid(), true, 20, $user);
+            $exam = new Exam($faker->name, uniqid(), true, 20, (bool)rand(0,1), 'standard', $user);
             $manager->persist($exam);
         }
 

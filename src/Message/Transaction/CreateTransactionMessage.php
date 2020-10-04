@@ -3,13 +3,13 @@
 namespace App\Message\Transaction;
 
 
-final class CreateTransactionMessage
+class CreateTransactionMessage
 {
-    private float $amount;
-    private ?int $transactionTypeId;
-    private ?string $description;
-    private bool $isIncome;
-    private ?int $taxPercentage;
+    protected float $amount;
+    protected ?int $transactionTypeId;
+    protected ?string $description;
+    protected bool $isIncome;
+    protected ?int $taxPercentage;
 
     public function __construct(?array $data = null)
     {

@@ -5,8 +5,8 @@ namespace App\Message\Recipe;
 
 class CreateRecipeMessage
 {
-    private string $name;
-    private string $content;
+    protected string $name;
+    protected string $content;
 
     public function __construct(?array $data = null)
     {

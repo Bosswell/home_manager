@@ -41,8 +41,8 @@ class ExamFacade
             throw new ApiException('Exam has already be validated', Response::HTTP_BAD_REQUEST);
         }
 
-        if ($message->getExamId() === 0) {
-            throw new ApiException('Your exam id is not specified', Response::HTTP_NOT_FOUND);
+        if (!$message->getExamId()) {
+            throw new ApiException('Exam is not specified', Response::HTTP_NOT_FOUND);
         }
 
         $normalizer = new CorrectOptionsNormalizer();
