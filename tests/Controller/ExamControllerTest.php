@@ -4,6 +4,7 @@ namespace Tests\Controller;
 
 use App\Entity\Exam;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Uid\Uuid;
 use Tests\FunctionalTestCase;
 
 
@@ -15,7 +16,11 @@ class ExamControllerTest extends FunctionalTestCase
 
         $this->client->request('POST', '/exam', [], [], [], json_encode([
             'name' => 'First exam',
-            'code' => 'OKON'
+            'code' => 'OKON',
+            'mode' => 'standard',
+            'hasVisibleResult' => false,
+            'isAvailable' => true,
+            'timeout' => 20
         ]));
         $response = $this->client->getResponse();
 
@@ -38,6 +43,10 @@ class ExamControllerTest extends FunctionalTestCase
             'id' => $exam->getId(),
             'name' => 'Updated exam',
             'code' => 'HELLO',
+            'mode' => 'subtraction',
+            'hasVisibleResult' => true,
+            'isAvailable' => false,
+            'timeout' => 30
         ]));
         $response = $this->client->getResponse();
 
@@ -49,6 +58,10 @@ class ExamControllerTest extends FunctionalTestCase
         $examAfter = $examRepository->find($exam->getId());
         $this->assertEquals('Updated exam', $examAfter->getName());
         $this->assertEquals('HELLO', $examAfter->getCode());
+        $this->assertEquals('subtraction', $examAfter->getMode());
+        $this->assertEquals(true, $examAfter->hasVisibleResult());
+        $this->assertEquals(false, $examAfter->isAvailable());
+        $this->assertEquals(30, $examAfter->getTimeout());
     }
 
     public function testDeleteExam()
@@ -88,8 +101,9 @@ class ExamControllerTest extends FunctionalTestCase
         $examRepository = $this->entityManager->getRepository(Exam::class);
         $exam = $examRepository->findBy([], ['id' => 'DESC'],1,0)[0];
 
-        $this->client->request('POST', '/exam/action/start', [], [], [], json_encode([
+        $this->client->request('POST', '/exam/front/start', [], [], [], json_encode([
             'examId' => $exam->getId(),
+            'userId' => Uuid::v4()->toRfc4122(),
             'code' => $exam->getCode(),
             'username' => 'John Doe',
             'userNumber' => 1
@@ -100,7 +114,7 @@ class ExamControllerTest extends FunctionalTestCase
 
         $this->assertEmpty($content['errors']);
         $this->assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-        $this->assertArrayHasKey('userId', $content['data']);
+        $this->assertArrayHasKey('historyId', $content['data']);
         $this->assertArrayHasKey('exam', $content['data']);
         $this->assertResponseHeaderSame('Content-Type', 'application/json');
     }

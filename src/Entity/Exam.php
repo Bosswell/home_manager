@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ExamRepository::class)
  */
-class Exam implements \JsonSerializable
+class Exam
 {
     /**
      * @ORM\Id()
@@ -193,7 +193,7 @@ class Exam implements \JsonSerializable
         return $this->user;
     }
 
-    public function getIsAvailable(): ?bool
+    public function isAvailable(): ?bool
     {
         return $this->isAvailable;
     }
@@ -270,23 +270,9 @@ class Exam implements \JsonSerializable
         $this->user = $user;
     }
 
-    public function jsonSerialize()
-    {
-        return [
-
-        ];
-    }
-
-    public function getHasVisibleResult(): ?bool
+    public function hasVisibleResult(): ?bool
     {
         return $this->hasVisibleResult;
-    }
-
-    public function setHasVisibleResult(bool $hasVisibleResult): self
-    {
-        $this->hasVisibleResult = $hasVisibleResult;
-
-        return $this;
     }
 
     public function getMode(): ?string
