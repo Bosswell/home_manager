@@ -5,20 +5,11 @@ namespace App\Message\Transaction;
 
 class CreateTransactionMessage
 {
-    protected float $amount;
-    protected ?int $transactionTypeId;
-    protected ?string $description;
-    protected bool $isIncome;
-    protected ?int $taxPercentage;
-
-    public function __construct(?array $data = null)
-    {
-        $this->amount = $data['amount'] ?? 0;
-        $this->transactionTypeId = $data['transactionTypeId'] ?? 0;
-        $this->isIncome = $data['isIncome'] ?? false;
-        $this->description = $data['description'] ?? null;
-        $this->taxPercentage = $data['taxPercentage'] ?? null;
-    }
+    protected float $amount = 0;
+    protected ?int $transactionTypeId = null;
+    protected ?string $description = null;
+    protected bool $isIncome = false;
+    protected ?int $taxPercentage = null;
 
     public function getAmount(): float
     {

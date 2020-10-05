@@ -7,24 +7,21 @@ use App\Entity\Exam;
 use App\Message\Exam\CreateExamMessage;
 use App\Message\Exam\UpdateExamMessage;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
-class ExamService
+class ExamManager
 {
     private EntityManagerInterface $em;
     private ObjectValidator $validator;
     private ?TokenInterface $token;
 
-    public function __construct(EntityManagerInterface $entityManager, ObjectValidator $validator, ContainerInterface $container)
+    public function __construct(EntityManagerInterface $entityManager, ObjectValidator $validator, TokenStorageInterface $storage)
     {
         $this->em = $entityManager;
         $this->validator = $validator;
-        /** @var TokenStorageInterface $tokenStorage */
-        $tokenStorage = $container->get('security.token_storage');
-        $this->token = $tokenStorage ? $tokenStorage->getToken() : null;
+        $this->token = $storage->getToken();
     }
 
     /**
@@ -35,6 +32,10 @@ class ExamService
         $exam = new Exam(
             $message->getName(),
             $message->getCode(),
+            $message->isAvailable(),
+            $message->getTimeout(),
+            $message->hasVisibleResult(),
+            $message->getMode(),
             $this->token->getUser()
         );
 
@@ -49,7 +50,7 @@ class ExamService
     public function updateExam(UpdateExamMessage $message): void
     {
         $user = $this->token->getUser();
-        /** @var Exam $recipe */
+        /** @var Exam $exam */
         $exam = $this->em
             ->getRepository(Exam::class)
             ->findOneBy(['id' => $message->getId(), 'user' => $user]);
@@ -62,7 +63,14 @@ class ExamService
             );
         }
 
-        $exam->update($message->getName(), $message->getCode());
+        $exam->update(
+            $message->getName(),
+            $message->getCode(),
+            $message->isAvailable(),
+            $message->getTimeout(),
+            $message->hasVisibleResult(),
+            $message->getMode()
+        );
         $this->validator->validate($exam);
         $this->em->flush();
     }

@@ -5,18 +5,12 @@ namespace App\Message\Exam;
 
 class CreateExamMessage
 {
-    protected string $name;
-    protected string $code;
-    protected string $mode;
-    protected bool $hasVisibleMode;
-
-    public function __construct(?array $data = null)
-    {
-        $this->name = $data['name'] ?? '';
-        $this->code = $data['code'] ?? '';
-        $this->mode = $data['mode'] ?? '';
-        $this->hasVisibleMode = $data['hasVisibleMode'] ?? '';
-    }
+    protected string $name = '';
+    protected string $code = '';
+    protected string $mode = '';
+    protected bool $hasVisibleResult = false;
+    protected bool $isAvailable = true;
+    protected int $timeout = 20;
 
     public function getName(): string
     {
@@ -48,13 +42,33 @@ class CreateExamMessage
         $this->mode = $mode;
     }
 
-    public function getHasVisibleMode(): bool
+    public function hasVisibleResult(): bool
     {
-        return $this->hasVisibleMode;
+        return $this->hasVisibleResult;
     }
 
-    public function setHasVisibleMode($hasVisibleMode): void
+    public function setHasVisibleResult($hasVisibleResult): void
     {
-        $this->hasVisibleMode = $hasVisibleMode;
+        $this->hasVisibleResult = (bool)$hasVisibleResult;
+    }
+
+    public function isAvailable(): bool
+    {
+        return $this->isAvailable;
+    }
+
+    public function setIsAvailable($isAvailable): void
+    {
+        $this->isAvailable = (bool)$isAvailable;
+    }
+
+    public function getTimeout(): int
+    {
+        return $this->timeout;
+    }
+
+    public function setTimeout(int $timeout): void
+    {
+        $this->timeout = $timeout;
     }
 }

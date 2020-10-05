@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\ExamHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=ExamHistoryRepository::class)
@@ -13,10 +15,9 @@ class ExamHistory
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="guid")
      */
-    private int $id;
+    private string $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Exam::class, inversedBy="examHistories")
@@ -42,7 +43,7 @@ class ExamHistory
     /**
      * @ORM\Column(type="guid")
      */
-    private string $userId;
+    private string $examUserId;
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -54,13 +55,35 @@ class ExamHistory
      */
     private bool $isActive;
 
-    public function __construct(Exam $exam, string $username, string $userNumber)
+    /**
+     * @ORM\Column(type="array")
+     */
+    private array $normalizedExam = [];
+
+    /**
+     * @ORM\Column(type="string", length=20)
+     * @Assert\Choice(
+     *     {"standard", "subtraction"},
+     *     message="Invalid exam mode."
+     *)
+     */
+    private string $mode;
+
+
+    public function __construct(Exam $exam, string $examUserId, string $username, string $userNumber, array $normalizedExam, string $mode)
     {
-        $this->userId = Uuid::v4()->toRfc4122();
+        if (!Uuid::isValid($examUserId)) {
+            throw new \InvalidArgumentException('Invalid user id');
+        }
+
+        $this->id = Uuid::v4()->toRfc4122();
+        $this->examUserId = $examUserId;
         $this->exam = $exam;
         $this->isActive = true;
         $this->username = $username;
         $this->userNumber = $userNumber;
+        $this->normalizedExam = $normalizedExam;
+        $this->mode = $mode;
     }
 
     public function isActive(): bool
@@ -73,7 +96,7 @@ class ExamHistory
         $this->isActive = false;
     }
 
-    public function getId(): ?int
+    public function getId(): string
     {
         return $this->id;
     }
@@ -105,9 +128,9 @@ class ExamHistory
         return $this->userNumber;
     }
 
-    public function getUserId(): string
+    public function getExamUserId(): string
     {
-        return $this->userId;
+        return $this->examUserId;
     }
 
     public function getResult(): ?array
@@ -125,5 +148,15 @@ class ExamHistory
     public function setExam(Exam $exam): void
     {
         $this->exam = $exam;
+    }
+
+    public function getNormalizedExam(): array
+    {
+        return $this->normalizedExam;
+    }
+
+    public function getMode(): string
+    {
+        return $this->mode;
     }
 }

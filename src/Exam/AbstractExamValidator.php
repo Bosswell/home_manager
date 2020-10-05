@@ -8,6 +8,9 @@ use App\Message\Exam\Model\UserQuestionSnippet;
 
 abstract class AbstractExamValidator
 {
+    const STANDARD_MODE = 'standard';
+    const SUBTRACTION_MODE = 'subtraction';
+
     /** @var UserQuestionSnippet[] */
     protected array $userQuestionsSnippets;
     protected array $correctOptions;
@@ -27,4 +30,5 @@ abstract class AbstractExamValidator
     }
 
     abstract function validate(): ExamResult;
+    abstract static function getMode(): string;
 }

@@ -25,6 +25,11 @@ class SubtractionExamValidator extends AbstractExamValidator
         );
     }
 
+    public static function getMode(): string
+    {
+        return self::SUBTRACTION_MODE;
+    }
+
     private function getPercentage(int $totalCorrect, int $totalCorrectOptions, int $totalIncorrectAnswers): float
     {
         if ($totalIncorrectAnswers === 0) {

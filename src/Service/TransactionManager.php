@@ -8,25 +8,21 @@ use App\Entity\TransactionType;
 use App\Message\Transaction\CreateTransactionMessage;
 use App\Message\Transaction\UpdateTransactionMessage;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
-class TransactionService
+class TransactionManager
 {
     private EntityManagerInterface $em;
     private ObjectValidator $validator;
     private ?TokenInterface $token;
 
-    public function __construct(EntityManagerInterface $entityManager, ObjectValidator $validator, ContainerInterface $container)
+    public function __construct(EntityManagerInterface $entityManager, ObjectValidator $validator, TokenStorageInterface $storage)
     {
         $this->em = $entityManager;
         $this->validator = $validator;
-        /** @var TokenStorageInterface $tokenStorage */
-        $tokenStorage = $container->get('security.token_storage');
-        $this->token = $tokenStorage ? $tokenStorage->getToken() : null;
+        $this->token = $storage->getToken();
     }
 
     /**

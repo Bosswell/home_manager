@@ -33,4 +33,9 @@ class StandardValidator extends AbstractExamValidator
             $correctPoints ? $correctPoints / $totalPoints * 100 : 0
         );
     }
+
+    public static function getMode(): string
+    {
+        return self::STANDARD_MODE;
+    }
 }

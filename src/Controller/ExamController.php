@@ -13,35 +13,20 @@ use App\Message\Exam\StartExamMessage;
 use App\Message\Exam\UpdateExamMessage;
 use App\Message\Exam\ValidateExamMessage;
 use App\Repository\ExamRepository;
-use App\Serializer\SerializerFactory;
-use App\Service\ExamService;
+use App\Service\ExamManager;
 use App\Service\ObjectValidator;
-use App\Transformer\ExamTransformer;
-use Doctrine\Common\Annotations\AnnotationReader;
-use League\Fractal\Manager;
-use League\Fractal\Resource\Item;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Encoder\JsonEncoder;
-use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
-use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
-use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Normalizer\ProblemNormalizer;
-use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 
 class ExamController extends AbstractController
 {
-    private ExamService $examService;
+    private ExamManager $examService;
     private ExamFacade $examFacade;
 
-    public function __construct(ExamService $examService, ExamFacade $examFacade)
+    public function __construct(ExamManager $examService, ExamFacade $examFacade)
     {
         $this->examService = $examService;
         $this->examFacade = $examFacade;
@@ -123,20 +108,18 @@ class ExamController extends AbstractController
      * @Route("/exam/front/start", name="start_exam", methods={"POST"})
      * @ParamConverter("message", class=StartExamMessage::class, converter="message_converter")
      * @throws ApiException
-     * @throws ExceptionInterface
      */
-    public function startExamAction(StartExamMessage $message, Serializer $serializer)
+    public function startExamAction(StartExamMessage $message)
     {
         $history = $this->examFacade->startExam($message);
-        $data = $serializer->normalize($history->getExam(), null, [
-            'groups' => 'default',
-            ObjectNormalizer::ENABLE_MAX_DEPTH => true
-        ]);
 
         return new ApiResponse(
             'Exam has been started',
             Response::HTTP_CREATED,
-            ['userId' => $history->getUserId(), 'exam' => $data]
+            [
+                'historyId' => $history->getId(),
+                'exam' => $history->getNormalizedExam()
+            ]
         );
     }
 

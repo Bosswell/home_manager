@@ -5,18 +5,11 @@ namespace App\Message\Exam;
 
 class StartExamMessage
 {
-    private int $examId;
-    private string $code;
-    private string $username;
-    private ?int $userNumber;
-
-    public function __construct(?array $data = null)
-    {
-        $this->examId = $data['examId'] ?? 0;
-        $this->code = $data['code'] ?? '';
-        $this->username = $data['username'] ?? '';
-        $this->userNumber = $data['userNumber'] ?? null;
-    }
+    private int $examId = 0;
+    private string $userId = '';
+    private string $code = '';
+    private string $username = '';
+    private ?int $userNumber = null;
 
     public function getExamId(): int
     {
@@ -61,5 +54,15 @@ class StartExamMessage
     public function setUserNumber($userNumber): void
     {
         $this->userNumber = (int)$userNumber;
+    }
+
+    public function getUserId(): string
+    {
+        return $this->userId;
+    }
+
+    public function setUserId($userId): void
+    {
+        $this->userId = (string)$userId;
     }
 }

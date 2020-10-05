@@ -11,7 +11,7 @@ use App\Message\Recipe\ListRecipesMessage;
 use App\Message\Recipe\UpdateRecipeMessage;
 use App\Repository\RecipeRepository;
 use App\Service\ObjectValidator;
-use App\Service\RecipeService;
+use App\Service\RecipeManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,9 +20,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class RecipeController extends AbstractController
 {
-    private RecipeService $recipeService;
+    private RecipeManager $recipeService;
 
-    public function __construct(RecipeService $recipeService)
+    public function __construct(RecipeManager $recipeService)
     {
         $this->recipeService = $recipeService;
     }

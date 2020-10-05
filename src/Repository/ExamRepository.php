@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @method Exam|null find($id, $lockMode = null, $lockVersion = null)
  * @method Exam|null findOneBy(array $criteria, array $orderBy = null)
