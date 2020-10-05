@@ -48,7 +48,12 @@ services:
         arguments: [!tagged serializer.normalizer]
         public: true
 
-    acme_api.event.authentication_success_listener:
-        class: App\EventListener\AuthenticationSuccessListener
-        tags:
-            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+    Symfony\Component\Serializer\Serializer:
+        factory: ['@App\Serializer\SerializerFactory', 'getInstance']
+
+    _instanceof:
+        App\Exam\AbstractExamValidator:
+            tags: [ exam.validator ]
+
+    App\Exam\ExamValidatorContainer:
+        arguments: [!tagged_locator { tag: 'exam.validator', index_by: 'key', default_index_method: 'getMode' }]

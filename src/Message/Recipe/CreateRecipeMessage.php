@@ -5,14 +5,8 @@ namespace App\Message\Recipe;
 
 class CreateRecipeMessage
 {
-    private string $name;
-    private string $content;
-
-    public function __construct(?array $data = null)
-    {
-        $this->name = $data['name'] ?? '';
-        $this->content = $data['content'] ?? '';
-    }
+    protected string $name = '';
+    protected string $content = '';
 
     public function getName(): string
     {

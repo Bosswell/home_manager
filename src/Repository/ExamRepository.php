@@ -7,6 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
+
 /**
  * @method Exam|null find($id, $lockMode = null, $lockVersion = null)
  * @method Exam|null findOneBy(array $criteria, array $orderBy = null)
@@ -35,5 +36,42 @@ class ExamRepository extends ServiceEntityRepository
         $qb->orderBy($orderBy, $orderDirection);
 
         return $qb;
+    }
+
+    /**
+     * Output:
+     * [
+     *     [
+     *         'questionId' => 1,
+     *         'correctOptions' => '1, 2',
+     *         'nbOptions' => 5
+     *     ],
+     *     ....
+     * ]
+     */
+    public function getCorrectOptions(int $examId): array
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $subQuery = $connection->createQueryBuilder()
+            ->select('GROUP_CONCAT(oo.id SEPARATOR ",")')
+            ->from('option', 'oo')
+            ->where('oo.is_correct = 1')
+            ->andWhere('oo.question_id = q.id');
+
+        $qb = $connection->createQueryBuilder()
+            ->select('q.id, ('. $subQuery->getSQL() .') as `correctOptions`')
+            ->from('exam', 'e')
+            ->innerJoin('e', 'question', 'q', 'e.id = q.exam_id')
+            ->innerJoin('q', 'option', 'o', 'o.question_id = q.id')
+            ->where('e.id = :id')
+            ->andWhere('e.is_deleted = 0')
+            ->setParameter(':id', $examId)
+            ->groupBy('q.id')
+        ;
+
+        return $qb
+            ->execute()
+            ->fetchAll();
     }
 }

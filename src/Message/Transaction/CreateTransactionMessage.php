@@ -3,22 +3,13 @@
 namespace App\Message\Transaction;
 
 
-final class CreateTransactionMessage
+class CreateTransactionMessage
 {
-    private float $amount;
-    private ?int $transactionTypeId;
-    private ?string $description;
-    private bool $isIncome;
-    private ?int $taxPercentage;
-
-    public function __construct(?array $data = null)
-    {
-        $this->amount = $data['amount'] ?? 0;
-        $this->transactionTypeId = $data['transactionTypeId'] ?? 0;
-        $this->isIncome = $data['isIncome'] ?? false;
-        $this->description = $data['description'] ?? null;
-        $this->taxPercentage = $data['taxPercentage'] ?? null;
-    }
+    protected float $amount = 0;
+    protected ?int $transactionTypeId = null;
+    protected ?string $description = null;
+    protected bool $isIncome = false;
+    protected ?int $taxPercentage = null;
 
     public function getAmount(): float
     {

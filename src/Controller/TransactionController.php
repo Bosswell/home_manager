@@ -14,7 +14,7 @@ use App\Message\Transaction\ListTransactionsMessage;
 use App\Message\Transaction\UpdateTransactionMessage;
 use App\Repository\TransactionRepository;
 use App\Service\ObjectValidator;
-use App\Service\TransactionService;
+use App\Service\TransactionManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,9 +27,9 @@ use Tests\Controller\TransactionControllerTest;
  */
 class TransactionController extends AbstractController
 {
-    private TransactionService $transactionService;
+    private TransactionManager $transactionService;
 
-    public function __construct(TransactionService $transactionService)
+    public function __construct(TransactionManager $transactionService)
     {
         $this->transactionService = $transactionService;
     }

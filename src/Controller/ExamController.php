@@ -4,13 +4,16 @@ namespace App\Controller;
 
 use App\ApiException;
 use App\Entity\User;
+use App\Exam\ExamFacade;
 use App\Factory\PagerfantaFactory;
 use App\Http\ApiResponse;
 use App\Message\Exam\CreateExamMessage;
 use App\Message\Exam\ListExamsMessage;
+use App\Message\Exam\StartExamMessage;
 use App\Message\Exam\UpdateExamMessage;
+use App\Message\Exam\ValidateExamMessage;
 use App\Repository\ExamRepository;
-use App\Service\ExamService;
+use App\Service\ExamManager;
 use App\Service\ObjectValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,11 +23,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExamController extends AbstractController
 {
-    private ExamService $examService;
+    private ExamManager $examService;
+    private ExamFacade $examFacade;
 
-    public function __construct(ExamService $examService)
+    public function __construct(ExamManager $examService, ExamFacade $examFacade)
     {
         $this->examService = $examService;
+        $this->examFacade = $examFacade;
     }
 
     /**
@@ -32,7 +37,7 @@ class ExamController extends AbstractController
      * @ParamConverter("message", class=CreateExamMessage::class, converter="message_converter")
      * @throws ApiException
      */
-    public function createRecipeAction(CreateExamMessage $message)
+    public function createExamAction(CreateExamMessage $message)
     {
         $this->examService->createExam($message);
 
@@ -43,7 +48,7 @@ class ExamController extends AbstractController
      * @Route("/exam/delete/{id}", name="delete_exam", methods={"DELETE"})
      * @throws ApiException
      */
-    public function deleteRecipeAction(string $id)
+    public function deleteExamAction(string $id)
     {
         $this->examService->deleteExam((int)$id);
 
@@ -58,7 +63,7 @@ class ExamController extends AbstractController
      * @ParamConverter("message", class=UpdateExamMessage::class, converter="message_converter")
      * @throws ApiException
      */
-    public function updateRecipeAction(UpdateExamMessage $message)
+    public function updateExamAction(UpdateExamMessage $message)
     {
         $this->examService->updateExam($message);
 
@@ -97,5 +102,40 @@ class ExamController extends AbstractController
             'currentPage' => $pagerfanta->getCurrentPage(),
             'results' => $pagerfanta->getCurrentPageResults()
         ]);
+    }
+
+    /**
+     * @Route("/exam/front/start", name="start_exam", methods={"POST"})
+     * @ParamConverter("message", class=StartExamMessage::class, converter="message_converter")
+     * @throws ApiException
+     */
+    public function startExamAction(StartExamMessage $message)
+    {
+        $history = $this->examFacade->startExam($message);
+
+        return new ApiResponse(
+            'Exam has been started',
+            Response::HTTP_CREATED,
+            [
+                'historyId' => $history->getId(),
+                'exam' => $history->getNormalizedExam()
+            ]
+        );
+    }
+
+    /**
+     * @Route("/exam/front/validate", name="validate_exam", methods={"POST"})
+     * @ParamConverter("message", class=ValidateExamMessage::class, converter="message_converter")
+     * @throws ApiException
+     */
+    public function validateExamAction(ValidateExamMessage $message)
+    {
+        $result = $this->examFacade->validateExam($message);
+
+        return new ApiResponse(
+            'Exam has been validated',
+            Response::HTTP_OK,
+            $result->toArray()
+        );
     }
 }

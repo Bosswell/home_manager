@@ -17,6 +17,9 @@ class ObjectValidator
         $this->validator = $validator;
     }
 
+    /**
+     * @throws ApiException
+     */
     public function validate(object $object)
     {
         $violations = $this->validator->validate($object);

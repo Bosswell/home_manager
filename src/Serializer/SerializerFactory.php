@@ -2,26 +2,29 @@
 
 namespace App\Serializer;
 
+use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\ProblemNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use Symfony\Component\Serializer\SerializerInterface;
 
 class SerializerFactory
 {
-    private ?SerializerInterface $serializer = null;
+    private ?Serializer $serializer = null;
 
-    public function getInstance(): SerializerInterface
+    public function getInstance(): Serializer
     {
         if ($this->serializer !== null) {
             return $this->serializer;
         }
 
-        $encoders = [new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer(), new ProblemNormalizer()];
-        $this->serializer = new Serializer($normalizers, $encoders);
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
 
-        return $this->serializer;
+        $encoders = [new JsonEncoder()];
+        $normalizers = [new ObjectNormalizer($classMetadataFactory), new ProblemNormalizer()];
+        
+        return new Serializer($normalizers, $encoders);
     }
 }

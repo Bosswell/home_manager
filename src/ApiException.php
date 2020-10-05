@@ -12,7 +12,7 @@ class ApiException extends Exception
 
     private array $errors = [];
 
-    public function __construct($message, $code, $errors)
+    public function __construct($message, $code, $errors = [])
     {
         $this->errors = $errors;
 

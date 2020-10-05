@@ -3,18 +3,9 @@
 namespace App\Message\Exam;
 
 
-class UpdateExamMessage
+class UpdateExamMessage extends CreateExamMessage
 {
-    private int $id;
-    private string $name;
-    private string $code;
-
-    public function __construct(?array $data = null)
-    {
-        $this->id = $data['id'] ?? 0;
-        $this->name = $data['name'] ?? '';
-        $this->code = $data['code'] ?? '';
-    }
+    private int $id = 0;
 
     public function getId(): ?int
     {
@@ -24,25 +15,5 @@ class UpdateExamMessage
     public function setId($id): void
     {
         $this->id = $id;
-    }
-
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    public function setName($name): void
-    {
-        $this->name = (string)$name;
-    }
-
-    public function getCode(): string
-    {
-        return $this->code;
-    }
-
-    public function setCode($code): void
-    {
-        $this->code = $code;
     }
 }
