@@ -32,6 +32,12 @@ class ExamHistory
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Assert\Length(
+     *     min= 4,
+     *     max = 20,
+     *     maxMessage = "Your name cannot be longer than {{ limit }} characters",
+     *     minMessage = "Your name must contain at least {{ limit }} characters"
+     * )
      */
     private string $username;
 

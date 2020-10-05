@@ -86,7 +86,7 @@ class ExamFacade
         ]);
 
         if (is_null($exam)) {
-            throw ApiException::entityNotFound($message->getExamId(), 'Exam');
+            throw new ApiException('Exam has not been found', Response::HTTP_NOT_FOUND);
         }
 
         try {
@@ -94,23 +94,23 @@ class ExamFacade
                 'groups' => 'default',
                 ObjectNormalizer::ENABLE_MAX_DEPTH => true
             ]);
-
-            $history = new ExamHistory(
-                $exam,
-                $message->getUserId(),
-                $message->getUsername(),
-                $message->getUserNumber(),
-                $normalizedExam,
-                $exam->getMode()
-            );
-            $this->validator->validate($history);
-            $this->entityManager->persist($history);
-            $this->entityManager->flush();
-
-            return $history;
         } catch (\Throwable $ex) {
             throw new ApiException($ex->getMessage(), $ex->getCode());
         }
+
+        $history = new ExamHistory(
+            $exam,
+            $message->getUserId(),
+            $message->getUsername(),
+            $message->getUserNumber(),
+            $normalizedExam,
+            $exam->getMode()
+        );
+        $this->validator->validate($history);
+        $this->entityManager->persist($history);
+        $this->entityManager->flush();
+
+        return $history;
     }
 
     /**

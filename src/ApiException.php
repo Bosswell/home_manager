@@ -10,7 +10,7 @@ class ApiException extends Exception
     const INVALID_ENTITY_MESS = 'Invalid entity';
     const ENTITY_NOT_FOUND_MESS = 'Entity %s with [id = %d] has not been found';
 
-    private array $errors = [];
+    private array $errors;
 
     public function __construct($message, $code, $errors = [])
     {
