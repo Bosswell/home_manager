@@ -122,12 +122,6 @@ class Exam
         $this->createdAt = new \DateTime();
         $this->isDeleted = false;
         $this->user = $user;
-    }
-
-    public function update(string $name, string $code)
-    {
-        $this->name = $name;
-        $this->code = $code;
         $this->isAvailable = $isAvailable;
         $this->timeout = $timeout;
         $this->questions = new ArrayCollection();

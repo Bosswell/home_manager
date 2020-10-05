@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb3bcf03-548f-4579-8cfb-0dab2e18a83e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ApiException.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/ApiException.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Message/Recipe/ListRecipesMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/Recipe/ListRecipesMessage.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/RecipeService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/RecipeService.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Service/TransactionService.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Service/TransactionService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Exam.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Exam.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -139,6 +134,8 @@
       <path value="$PROJECT_DIR$/vendor/phpstan/phpstan" />
       <path value="$PROJECT_DIR$/vendor/jms/serializer" />
       <path value="$PROJECT_DIR$/vendor/jms/metadata" />
+      <path value="$PROJECT_DIR$/vendor/symfony/uid" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-uuid" />
     </include_path>
   </component>
   <component name="ProjectId" id="1f5kKIwqPyUTMccfr8NOR4vwmUD" />
@@ -161,19 +158,19 @@
     <property name="vue.rearranger.settings.migration" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\xampp\htdocs\cash_manager\src\Message\Transaction" />
-      <recent name="C:\xampp\htdocs\cash_manager\tests" />
-      <recent name="C:\xampp\htdocs\cash_manager\src\Serializer\Normalizer" />
-      <recent name="C:\xampp\htdocs\cash_manager\src\Http" />
-      <recent name="C:\xampp\htdocs\cash_manager\src\Serializer" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\xampp\htdocs\cash_manager\tests\Controller" />
       <recent name="C:\xampp\htdocs\cash_manager\src\Message\Exam" />
       <recent name="C:\xampp\htdocs\cash_manager\src\Service" />
       <recent name="C:\xampp\htdocs\cash_manager\src\Controller" />
       <recent name="C:\xampp\htdocs\cash_manager\src\Message\Recipe" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\cash_manager\src\Message\Transaction" />
+      <recent name="C:\xampp\htdocs\cash_manager\tests" />
+      <recent name="C:\xampp\htdocs\cash_manager\src\Serializer\Normalizer" />
+      <recent name="C:\xampp\htdocs\cash_manager\src\Http" />
+      <recent name="C:\xampp\htdocs\cash_manager\src\Serializer" />
     </key>
   </component>
   <component name="RunManager" selected="PHPUnit.ExamControllerTest.testGetRecipeAction">
@@ -386,10 +383,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="859" y="461" key="com.intellij.database.run.ParametersPanel.Standalone/0.0.1920.1040@0.0.1920.1040" timestamp="1599486870891" />
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1600953915694">
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1601931066873">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1600953915694" />
+    <state x="92" y="92" width="1736" height="856" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1601931066873" />
     <state x="667" y="119" width="641" height="801" key="find.popup" timestamp="1601586130176">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
