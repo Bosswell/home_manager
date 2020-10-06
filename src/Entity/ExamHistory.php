@@ -75,6 +75,16 @@ class ExamHistory
      */
     private string $mode;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTime $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private \DateTime $finishedAt;
+
 
     public function __construct(Exam $exam, string $examUserId, string $username, string $userNumber, array $normalizedExam, string $mode)
     {
@@ -90,6 +100,7 @@ class ExamHistory
         $this->userNumber = $userNumber;
         $this->normalizedExam = $normalizedExam;
         $this->mode = $mode;
+        $this->createdAt = new \DateTime();
     }
 
     public function isActive(): bool
@@ -97,9 +108,10 @@ class ExamHistory
         return $this->isActive;
     }
 
-    public function deactivate(): void
+    public function finish(): void
     {
         $this->isActive = false;
+        $this->finishedAt = new \DateTime();
     }
 
     public function getId(): string
@@ -164,5 +176,15 @@ class ExamHistory
     public function getMode(): string
     {
         return $this->mode;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function getFinishedAt(): ?\DateTimeInterface
+    {
+        return $this->finishedAt;
     }
 }

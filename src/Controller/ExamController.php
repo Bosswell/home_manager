@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\ApiException;
+use App\Entity\Exam;
 use App\Entity\User;
 use App\Exam\ExamFacade;
 use App\Factory\PagerfantaFactory;
@@ -19,6 +20,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Serializer;
 
 
 class ExamController extends AbstractController
@@ -30,6 +32,27 @@ class ExamController extends AbstractController
     {
         $this->examService = $examService;
         $this->examFacade = $examFacade;
+    }
+
+    /**
+     * @Route("/exam/{id}", name="get_exam", methods={"GET"})
+     * @throws ApiException
+     */
+    public function getExamAction(string $id, ExamRepository $repository, Serializer $serializer)
+    {
+        $exam = $repository->find($id);
+
+        if (is_null($exam)) {
+            throw ApiException::entityNotFound($id, Exam::class);
+        }
+
+        try {
+            $data = $serializer->normalize($exam, null, ['groups' => 'details']);
+        } catch (\Throwable $ex) {
+            throw new ApiException($ex->getMessage(), $ex->getCode());
+        }
+
+        return new ApiResponse('Exam has been found', Response::HTTP_OK, $data);
     }
 
     /**

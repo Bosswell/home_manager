@@ -66,7 +66,7 @@ class ExamFacade
         $history
             ->setResult($result->toArray())
             ->setSnippet($message->getUserQuestionsSnippets())
-            ->deactivate();
+            ->finish();
 
         $this->entityManager->flush();
 

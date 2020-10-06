@@ -20,13 +20,13 @@ class Exam
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"default"})
+     * @Groups({"default", "details"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"default"})
+     * @Groups({"default", "details"})
      * @Assert\Length(
      *     min= 1,
      *     max = 255,
@@ -38,6 +38,7 @@ class Exam
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"details"})
      * @Assert\Length(
      *     min= 1,
      *     max = 20,
@@ -70,15 +71,16 @@ class Exam
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"details"})
      */
     private bool $isAvailable;
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups({"default"})
+     * @Groups({"default", "details"})
      * @Assert\GreaterThan(
      *     value=0,
-     *     message="Message need to be grater then 0"
+     *     message="Timeout need to be grater then 0"
      * )
      */
     private int $timeout;
@@ -96,11 +98,13 @@ class Exam
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"details"})
      */
     private bool $hasVisibleResult;
 
     /**
      * @ORM\Column(type="string", length=20)
+     * @Groups({"details"})
      * @Assert\Choice(
      *     {"standard", "subtraction"},
      *     message="Invalid exam mode."
