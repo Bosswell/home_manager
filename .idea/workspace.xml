@@ -4,9 +4,8 @@
     <list default="true" id="eb3bcf03-548f-4579-8cfb-0dab2e18a83e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExamController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExamController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Exam.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Exam.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/ExamHistory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/ExamHistory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Exam/ExamFacade.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Exam/ExamFacade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Message/Exam/ListExamsMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/Exam/ListExamsMessage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Message/Recipe/ListRecipesMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/Recipe/ListRecipesMessage.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,11 +176,7 @@
       <recent name="C:\xampp\htdocs\cash_manager\src\Serializer" />
     </key>
   </component>
-  <component name="RunManager" selected="PHPUnit.ExamControllerTest.testGetRecipeAction">
-    <configuration name="Controller" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
-      <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" directory="$PROJECT_DIR$/tests/Controller" />
-      <method v="2" />
-    </configuration>
+  <component name="RunManager" selected="PHPUnit.SubtractionExamValidatorTest.testGetExamResult2">
     <configuration name="ExamControllerTest" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
       <TestRunner class="Tests\Controller\ExamControllerTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Controller/ExamControllerTest.php" scope="Class" />
       <method v="2" />
@@ -198,13 +193,17 @@
       <TestRunner class="Tests\Controller\ExamControllerTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Controller/ExamControllerTest.php" method="testListTRecipesAction" scope="Method" />
       <method v="2" />
     </configuration>
+    <configuration name="SubtractionExamValidatorTest.testGetExamResult2" type="PHPUnitRunConfigurationType" factoryName="PHPUnit" temporary="true">
+      <TestRunner class="Tests\Exam\SubtractionExamValidatorTest" configuration_file="$PROJECT_DIR$/phpunit.xml" file="$PROJECT_DIR$/tests/Exam/SubtractionExamValidatorTest.php" method="testGetExamResult2" scope="Method" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="PHPUnit.SubtractionExamValidatorTest.testGetExamResult2" />
         <item itemvalue="PHPUnit.ExamControllerTest.testGetRecipeAction" />
         <item itemvalue="PHPUnit.ExamControllerTest.testListTRecipesAction" />
         <item itemvalue="PHPUnit.ExamControllerTest" />
         <item itemvalue="PHPUnit.ExamControllerTest.testCreateRecipeAction" />
-        <item itemvalue="PHPUnit.Controller" />
       </list>
     </recent_temporary>
   </component>
@@ -283,7 +282,12 @@
       <workItem from="1601932287085" duration="936000" />
       <workItem from="1601975916058" duration="2518000" />
       <workItem from="1601999878273" duration="22000" />
-      <workItem from="1601999921046" duration="1948000" />
+      <workItem from="1601999921046" duration="2079000" />
+      <workItem from="1602081219411" duration="410000" />
+      <workItem from="1602094218424" duration="464000" />
+      <workItem from="1602095462804" duration="377000" />
+      <workItem from="1602100847290" duration="3000" />
+      <workItem from="1602101450204" duration="245000" />
     </task>
     <servers />
   </component>
@@ -351,22 +355,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1600988422567" />
-    <state width="1877" height="368" key="GridCell.Tab.0.bottom" timestamp="1601932225496">
+    <state width="1877" height="368" key="GridCell.Tab.0.bottom" timestamp="1602095839479">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="368" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1601932225496" />
-    <state width="1877" height="368" key="GridCell.Tab.0.center" timestamp="1601932225496">
+    <state width="1877" height="368" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1602095839479" />
+    <state width="1877" height="368" key="GridCell.Tab.0.center" timestamp="1602095839479">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="368" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1601932225496" />
-    <state width="1877" height="368" key="GridCell.Tab.0.left" timestamp="1601932225496">
+    <state width="1877" height="368" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1602095839479" />
+    <state width="1877" height="368" key="GridCell.Tab.0.left" timestamp="1602095839479">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="368" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1601932225496" />
-    <state width="1877" height="368" key="GridCell.Tab.0.right" timestamp="1601932225496">
+    <state width="1877" height="368" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1602095839479" />
+    <state width="1877" height="368" key="GridCell.Tab.0.right" timestamp="1602095839479">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="368" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1601932225496" />
+    <state width="1877" height="368" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1602095839479" />
     <state x="751" y="243" key="NewPhpClassDialog" timestamp="1600953528737">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

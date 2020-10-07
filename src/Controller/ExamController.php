@@ -40,7 +40,7 @@ class ExamController extends AbstractController
      */
     public function getExamAction(string $id, ExamRepository $repository, Serializer $serializer)
     {
-        $exam = $repository->find($id);
+        $exam = $repository->findOneBy(['id' => $id, 'user' => $this->getUser(), 'isDeleted' => false]);
 
         if (is_null($exam)) {
             throw ApiException::entityNotFound($id, Exam::class);

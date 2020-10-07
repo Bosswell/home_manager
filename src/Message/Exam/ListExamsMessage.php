@@ -3,11 +3,14 @@
 namespace App\Message\Exam;
 
 use App\Message\Exam\Model\ExamListSortBy;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class ListExamsMessage
 {
     private int $nbPage;
+
+    /** @Assert\Valid */
     private ExamListSortBy $sortBy;
 
     public function __construct(?array $data = null)

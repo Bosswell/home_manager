@@ -3,12 +3,15 @@
 namespace App\Message\Recipe;
 
 use App\Message\Recipe\Model\RecipeListSortBy;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 class ListRecipesMessage
 {
     private int $nbPage;
     private ?string $searchBy;
+
+    /** @Assert\Valid */
     private RecipeListSortBy $sortBy;
 
     public function __construct(?array $data = null)
