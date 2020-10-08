@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 /**
@@ -26,6 +27,10 @@ class Question
     /**
      * @ORM\Column(type="text")
      * @Groups({"default", "question-details", "details"})
+     * @Assert\Length(
+     *     min= 12,
+     *     minMessage = "Question query have to contain at least 5 characters"
+     * )
      */
     private string $query;
 

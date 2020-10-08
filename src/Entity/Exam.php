@@ -213,7 +213,6 @@ class Exam
     {
         if (!$this->questions->contains($question)) {
             $this->questions[] = $question;
-            $question->setExam($this);
         }
 
         return $this;
@@ -224,9 +223,6 @@ class Exam
         if ($this->questions->contains($question)) {
             $this->questions->removeElement($question);
             // set the owning side to null (unless already changed)
-            if ($question->getExam() === $this) {
-                $question->setExam(null);
-            }
         }
 
         return $this;

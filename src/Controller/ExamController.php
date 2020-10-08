@@ -97,7 +97,7 @@ class ExamController extends AbstractController
     }
 
     /**
-     * @Route("/exam/action/list", name="list_exams", methods={"GET"})
+     * @Route("/exam/list/exams", name="list_exams", methods={"GET"})
      * @ParamConverter("message", class=ListExamsMessage::class, converter="query_message_converter")
      * @throws ApiException
      */
