@@ -56,11 +56,7 @@ class ExamManager
             ->findOneBy(['id' => $message->getId(), 'user' => $user]);
 
         if (is_null($exam)) {
-            throw ApiException::entityNotFound(
-                $message->getId(),
-                get_class($this),
-                ['Exam that you try to update does not exists']
-            );
+            throw ApiException::entityNotFound($message->getId(), get_class($this));
         }
 
         $exam->update(
@@ -86,11 +82,7 @@ class ExamManager
             ->findOneBy(['id' => $id, 'user' => $user]);
 
         if (is_null($exam)) {
-            throw ApiException::entityNotFound(
-                $id,
-                get_class($this),
-                ['Exam that you try to update does not exists']
-            );
+            throw ApiException::entityNotFound($id, get_class($this));
         }
 
         $exam->delete();

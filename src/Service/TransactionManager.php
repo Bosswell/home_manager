@@ -69,11 +69,7 @@ class TransactionManager
             ->findOneBy(['id' => $id, 'user' => $user]);
 
         if (is_null($transaction)) {
-            throw ApiException::entityNotFound(
-                $id,
-                get_class($this),
-                ['Transaction that you try to remove does not exists']
-            );
+            throw ApiException::entityNotFound($id, get_class($this));
         }
 
         $transaction->delete();
@@ -94,8 +90,7 @@ class TransactionManager
         if (is_null($transaction)) {
             throw ApiException::entityNotFound(
                 $message->getId(),
-                get_class($this),
-                ['Transaction that you try to update does not exists']
+                get_class($this)
             );
         }
 

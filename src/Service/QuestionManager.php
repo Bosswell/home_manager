@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\ApiException;
+use App\Entity\Question;
 use App\Entity\Recipe;
 use App\Message\Recipe\CreateRecipeMessage;
 use App\Message\Recipe\UpdateRecipeMessage;
@@ -11,7 +12,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 
-class RecipeManager
+class QuestionManager
 {
     private EntityManagerInterface $em;
     private ObjectValidator $validator;
@@ -30,7 +31,7 @@ class RecipeManager
      */
     public function createRecipe(CreateRecipeMessage $message): void
     {
-        $transaction = new Recipe(
+        $transaction = new Question(
             $message->getName(),
             $message->getContent(),
             $this->token->getUser()
@@ -54,7 +55,11 @@ class RecipeManager
             ->findOneBy(['id' => $message->getId(), 'user' => $user]);
 
         if (is_null($recipe)) {
-            throw ApiException::entityNotFound($message->getId(), get_class($this));
+            throw ApiException::entityNotFound(
+                $message->getId(),
+                get_class($this),
+                ['Recipe that you try to update does not exists']
+            );
         }
 
         $recipe->update($message->getName(), $message->getContent());
@@ -73,7 +78,11 @@ class RecipeManager
             ->findOneBy(['id' => $id, 'user' => $user]);
 
         if (is_null($recipe)) {
-            throw ApiException::entityNotFound($id, get_class($this));
+            throw ApiException::entityNotFound(
+                $id,
+                get_class($this),
+                ['Recipe that you try to update does not exists']
+            );
         }
 
         $recipe->delete();
