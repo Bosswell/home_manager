@@ -7,9 +7,11 @@ use App\Entity\Exam;
 use App\Entity\Question;
 use App\Http\ApiResponse;
 use App\Message\Question\CreateQuestionMessage;
+use App\Message\Question\LinkQuestionMessage;
 use App\Message\Question\UpdateQuestionMessage;
 use App\Repository\QuestionRepository;
 use App\Service\ObjectValidator;
+use App\Service\QuestionManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -23,12 +25,18 @@ class QuestionController extends AbstractController
     private EntityManagerInterface $entityManager;
     private ObjectValidator $validator;
     private QuestionRepository $questionRepository;
+    private QuestionManager $questionManager;
 
-    public function __construct(EntityManagerInterface $entityManager, ObjectValidator $validator, QuestionRepository $questionRepository)
-    {
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ObjectValidator $validator,
+        QuestionRepository $questionRepository,
+        QuestionManager $questionManager
+    ) {
         $this->entityManager = $entityManager;
         $this->validator = $validator;
         $this->questionRepository = $questionRepository;
+        $this->questionManager = $questionManager;
     }
 
     /**
@@ -124,6 +132,36 @@ class QuestionController extends AbstractController
 
         return new ApiResponse(
             'Question has been successfully updated',
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @Route("/question/unlink", name="unlink_question", methods={"POST"})
+     * @ParamConverter("message", class=LinkQuestionMessage::class, converter="message_converter")
+     * @throws ApiException
+     */
+    public function unlinkQuestionAction(LinkQuestionMessage $message)
+    {
+        $this->questionManager->unlinkQuestionAction($message);
+
+        return new ApiResponse(
+            'Question has been successfully unlinked',
+            Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @Route("/question/link", name="link_question", methods={"POST"})
+     * @ParamConverter("message", class=LinkQuestionMessage::class, converter="message_converter")
+     * @throws ApiException
+     */
+    public function linkQuestionAction(LinkQuestionMessage $message)
+    {
+        $this->questionManager->linkQuestionAction($message);
+
+        return new ApiResponse(
+            'Question has been successfully linked',
             Response::HTTP_CREATED
         );
     }

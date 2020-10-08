@@ -13,6 +13,7 @@ security:
             pattern:   ^/user
             stateless: true
             anonymous: true
+            methods: [ POST ]
 
         front_exam:
             pattern: ^/exam/front
