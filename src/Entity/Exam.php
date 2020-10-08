@@ -86,12 +86,6 @@ class Exam
     private int $timeout;
 
     /**
-     * @ORM\OneToMany(targetEntity=Question::class, mappedBy="exam")
-     * @Groups({"default"})
-     */
-    private Collection $questions;
-
-    /**
      * @ORM\OneToMany(targetEntity=ExamHistory::class, mappedBy="exam")
      */
     private Collection $examHistories;
@@ -111,6 +105,12 @@ class Exam
      *)
      */
     private string $mode;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Question::class, inversedBy="exams")
+     * @Groups({"details"})
+     */
+    private Collection $questions;
 
     public function __construct(
         string $name,

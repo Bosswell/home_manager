@@ -6,6 +6,7 @@ use App\Repository\QuestionRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 
@@ -18,31 +19,45 @@ class Question
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"default"})
+     * @Groups({"default", "question-details", "details"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"default"})
+     * @Groups({"default", "question-details", "details"})
      */
     private string $query;
 
-    /**
-     * @ORM\ManyToOne(targetEntity=Exam::class, inversedBy="questions")
-     */
-    private Exam $exam;
 
     /**
      * @ORM\OneToMany(targetEntity=Option::class, mappedBy="question")
-     * @Groups({"default"})
+     * @Groups({"default", "question-details"})
      */
     private Collection $options;
 
-    public function __construct(string $query)
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private UserInterface $user;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Exam::class, mappedBy="questions")
+     */
+    private Collection $exams;
+
+    public function __construct(string $query, UserInterface $user)
     {
         $this->query = $query;
         $this->options = new ArrayCollection();
+        $this->user = $user;
+        $this->exams = new ArrayCollection();
+    }
+
+    public function update(string $query): void
+    {
+        $this->query = $query;
     }
 
     public function getId(): ?int
@@ -53,11 +68,6 @@ class Question
     public function getQuery(): ?string
     {
         return $this->query;
-    }
-
-    public function getExam(): ?Exam
-    {
-        return $this->exam;
     }
 
     /**
@@ -91,8 +101,31 @@ class Question
         return $this;
     }
 
-    public function setExam(Exam $exam): void
+    /**
+     * @return Collection|Exam[]
+     */
+    public function getExams(): Collection
     {
-        $this->exam = $exam;
+        return $this->exams;
+    }
+
+    public function addExam(Exam $exam): self
+    {
+        if (!$this->exams->contains($exam)) {
+            $this->exams[] = $exam;
+            $exam->addQuestion($this);
+        }
+
+        return $this;
+    }
+
+    public function removeExam(Exam $exam): self
+    {
+        if ($this->exams->contains($exam)) {
+            $this->exams->removeElement($exam);
+            $exam->removeQuestion($this);
+        }
+
+        return $this;
     }
 }

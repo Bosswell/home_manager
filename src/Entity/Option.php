@@ -15,13 +15,13 @@ class Option
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Groups({"default"})
+     * @Groups({"default", "question-details"})
      */
     private int $id;
 
     /**
      * @ORM\Column(type="text")
-     * @Groups({"default"})
+     * @Groups({"default", "question-details"})
      */
     private string $content;
 
