@@ -46,7 +46,7 @@ class QuestionController extends AbstractController
     public function getQuestionAction(string $id, Serializer $serializer)
     {
         $question = $this->questionRepository
-            ->findOneBy(['id' => $id, 'user' => $this->getUser(), 'isDeleted' => false]);
+            ->findOneBy(['id' => $id, 'user' => $this->getUser()]);
 
         if (is_null($question)) {
             throw ApiException::entityNotFound($id, Question::class);

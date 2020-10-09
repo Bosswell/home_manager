@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\OptionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass=OptionRepository::class)
@@ -22,11 +24,16 @@ class Option
     /**
      * @ORM\Column(type="text")
      * @Groups({"default", "question-details"})
+     * @Assert\Length(
+     *     min= 1,
+     *     minMessage = "Option content have to contain at least 1 characters"
+     * )
      */
     private string $content;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups({"question-details"})
      */
     private bool $isCorrect;
 
@@ -36,6 +43,12 @@ class Option
     private Question $question;
 
     public function __construct(string $content, bool $isCorrect)
+    {
+        $this->content = $content;
+        $this->isCorrect = $isCorrect;
+    }
+
+    public function update(string $content, bool $isCorrect)
     {
         $this->content = $content;
         $this->isCorrect = $isCorrect;
@@ -52,7 +65,7 @@ class Option
     }
 
 
-    public function getIsCorrect(): ?bool
+    public function isCorrect(): bool
     {
         return $this->isCorrect;
     }
