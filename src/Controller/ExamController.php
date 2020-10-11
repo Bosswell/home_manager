@@ -167,29 +167,12 @@ class ExamController extends AbstractController
      * @Route("/exam/check/validity/{id}", name="check_exam_validity", methods={"GET"})
      * @throws ApiException
      */
-    public function checkExamValidityAction(string $id, EntityManagerInterface $em)
+    public function checkExamValidityAction(string $id)
     {
-        /** @var ExamRepository $repository */
-        $repository = $em->getRepository(Exam::class);
-
-        $validityInfo = $repository->getExamValidityInfo((int)$id);
-
-        if (empty($validityInfo)) {
-            throw new ApiException('Invalid exam', 0, [
-                'Exam does not contain questions.'
-            ]);
-        }
-
-        [$totalValidQuestions, $totalQuestions] = $validityInfo;
-
-        if ($totalQuestions !== $totalValidQuestions) {
-            throw new ApiException('Invalid exam', 0, [
-                'Exam contain invalid questions. There are questions without correct options.'
-            ]);
-        }
+        $this->examFacade->checkExamValidity((int)$id);
 
         return new ApiResponse(
-            'The exam is valid',
+            'Exam is valid',
             Response::HTTP_OK
         );
     }

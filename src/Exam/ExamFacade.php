@@ -3,6 +3,7 @@
 namespace App\Exam;
 
 use App\ApiException;
+use App\Entity\Exam;
 use App\Entity\ExamHistory;
 use App\Message\Exam\StartExamMessage;
 use App\Message\Exam\ValidateExamMessage;
@@ -85,9 +86,7 @@ class ExamFacade
             'code' => $message->getCode()
         ]);
 
-        if (is_null($exam)) {
-            throw new ApiException('Exam has not been found', Response::HTTP_NOT_FOUND);
-        }
+        $this->handleExamStartExceptions($exam);
 
         try {
             $normalizedExam = $this->serializer->normalize($exam, null, [
@@ -111,6 +110,40 @@ class ExamFacade
         $this->entityManager->flush();
 
         return $history;
+    }
+
+    /**
+     * @throws ApiException
+     */
+    public function checkExamValidity(int $examId): void
+    {
+        $validityInfo = $this->examRepository->getExamValidityInfo($examId);
+
+        if (empty($validityInfo)) {
+            throw new ApiException( 'Exam does not contain questions.', 0);
+        }
+
+        [$totalValidQuestions, $totalQuestions] = $validityInfo;
+
+        if ($totalQuestions !== $totalValidQuestions) {
+            throw new ApiException('Exam contain invalid questions. There are questions without correct options.', 0);
+        }
+    }
+
+    /**
+     * @throws ApiException
+     */
+    private function handleExamStartExceptions(?Exam $exam): void
+    {
+        if (is_null($exam)) {
+            throw new ApiException('Exam has not been found', Response::HTTP_NOT_FOUND);
+        }
+
+        if ($exam->getQuestions()) {
+            throw new ApiException('Exam does not contain any questions', Response::HTTP_NOT_FOUND);
+        }
+
+        $this->checkExamValidity($exam->getId());
     }
 
     /**

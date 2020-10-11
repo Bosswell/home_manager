@@ -11,7 +11,7 @@ class ValidateExamMessage
     private string $historyId;
 
     /** @var UserQuestionSnippet[] */
-    private ?array $snippets = null;
+    private array $snippets;
 
     public function getExamId(): int
     {
@@ -23,7 +23,7 @@ class ValidateExamMessage
      */
     public function getUserQuestionsSnippets(): array
     {
-        return $this->snippets;
+        return $this->snippets ?? [];
     }
 
     public function setExamId($examId): void

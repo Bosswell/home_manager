@@ -58,17 +58,17 @@ class ExamRepository extends ServiceEntityRepository
             ->select('GROUP_CONCAT(oo.id SEPARATOR ",")')
             ->from('option', 'oo')
             ->where('oo.is_correct = 1')
-            ->andWhere('oo.question_id = q.id');
+            ->andWhere('oo.question_id = eq.question_id');
 
         $qb = $connection->createQueryBuilder()
-            ->select('q.id, ('. $subQuery->getSQL() .') as `correctOptions`')
+            ->select('eq.question_id as `id`, ('. $subQuery->getSQL() .') as `correctOptions`')
             ->from('exam', 'e')
-            ->innerJoin('e', 'question', 'q', 'e.id = q.exam_id')
-            ->innerJoin('q', 'option', 'o', 'o.question_id = q.id')
+            ->innerJoin('e', 'exam_question', 'eq', 'e.id = eq.exam_id')
+            ->innerJoin('eq', 'option', 'o', 'o.question_id = eq.question_id AND o.is_correct = 1')
             ->where('e.id = :id')
             ->andWhere('e.is_deleted = 0')
             ->setParameter(':id', $examId)
-            ->groupBy('q.id')
+            ->groupBy('eq.question_id')
         ;
 
         return $qb
