@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Exam;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\FetchMode;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -73,5 +74,32 @@ class ExamRepository extends ServiceEntityRepository
         return $qb
             ->execute()
             ->fetchAll();
+    }
+
+    public function getExamValidityInfo(int $examId): array
+    {
+        $connection = $this->getEntityManager()->getConnection();
+
+        $subQuery = $connection->createQueryBuilder()
+            ->select('COUNT(*)')
+            ->from('exam_question', 'eqs')
+            ->where('eqs.exam_id = :examId')
+            ->setParameter(':examId', $examId);
+
+        $qb = $connection->createQueryBuilder()
+            ->select('count(eq.question_id) as `totalValidQuestions`, ('. $subQuery->getSQL() .') as `totalQuestions`')
+            ->from('exam', 'e')
+            ->innerJoin('e', 'exam_question', 'eq', 'e.id = eq.exam_id')
+            ->innerJoin('eq', 'option', 'o', 'o.question_id = eq.question_id AND o.is_correct = 1')
+            ->where('e.id = :examId')
+            ->setParameter(':examId', $examId)
+            ->groupBy(' e.id')
+        ;
+
+        $data =  $qb
+            ->execute()
+            ->fetch(FetchMode::NUMERIC);
+
+        return $data ?: [] ;
     }
 }

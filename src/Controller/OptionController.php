@@ -55,7 +55,7 @@ class OptionController extends AbstractController
             throw ApiException::entityNotFound((int)$id, Option::class);
         }
 
-        return new ApiResponse('Option has been successfully created', Response::HTTP_CREATED, [
+        return new ApiResponse('Option has been successfully created', Response::HTTP_OK, [
             'id' => $option->getId(),
             'content' => $option->getContent(),
             'isCorrect' => $option->isCorrect()
@@ -88,7 +88,8 @@ class OptionController extends AbstractController
 
         return new ApiResponse('Option has been successfully created', Response::HTTP_CREATED, [
             'id' => $option->getId(),
-            'content' => $option->getContent()
+            'content' => $option->getContent(),
+            'isCorrect' => $option->isCorrect()
         ]);
     }
 

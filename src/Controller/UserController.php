@@ -39,6 +39,6 @@ class UserController extends AbstractController
             $data = $repository->getQuestions($this->getUser()->getId(), $searchBy);
         }
 
-        return new ApiResponse('User has been crated successfully.', Response::HTTP_CREATED, $data);
+        return new ApiResponse('User has been crated successfully.', Response::HTTP_OK, $data);
     }
 }

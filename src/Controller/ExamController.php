@@ -16,6 +16,7 @@ use App\Message\Exam\ValidateExamMessage;
 use App\Repository\ExamRepository;
 use App\Service\ExamManager;
 use App\Service\ObjectValidator;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -159,6 +160,37 @@ class ExamController extends AbstractController
             'Exam has been validated',
             Response::HTTP_OK,
             $result->toArray()
+        );
+    }
+
+    /**
+     * @Route("/exam/check/validity/{id}", name="check_exam_validity", methods={"GET"})
+     * @throws ApiException
+     */
+    public function checkExamValidityAction(string $id, EntityManagerInterface $em)
+    {
+        /** @var ExamRepository $repository */
+        $repository = $em->getRepository(Exam::class);
+
+        $validityInfo = $repository->getExamValidityInfo((int)$id);
+
+        if (empty($validityInfo)) {
+            throw new ApiException('Invalid exam', 0, [
+                'Exam does not contain questions.'
+            ]);
+        }
+
+        [$totalValidQuestions, $totalQuestions] = $validityInfo;
+
+        if ($totalQuestions !== $totalValidQuestions) {
+            throw new ApiException('Invalid exam', 0, [
+                'Exam contain invalid questions. There are questions without correct options.'
+            ]);
+        }
+
+        return new ApiResponse(
+            'The exam is valid',
+            Response::HTTP_OK
         );
     }
 }
