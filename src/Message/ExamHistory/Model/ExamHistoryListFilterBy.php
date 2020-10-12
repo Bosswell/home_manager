@@ -9,6 +9,7 @@ class ExamHistoryListFilterBy
 {
     private ?string $username;
     private ?int $userNumber;
+    private ?string $userGroup;
     private ?bool $isActive;
     private \DateTime $startDate;
 
@@ -17,9 +18,10 @@ class ExamHistoryListFilterBy
         $this->username = $data['username'] ?? null;
         $this->userNumber = $data['userNumber'] ?? null;
         $this->isActive = $data['isActive'] ?? null;
+        $this->userGroup = $data['userGroup'] ?? null;
 
         try {
-            $this->startDate = (new DateTime())->setTimestamp($data['dateStart']);
+            $this->startDate = new DateTime($data['dateStart']);
         } catch (\Throwable $ex) {
             $this->startDate = new DateTime('first day of this month');
         }
@@ -43,5 +45,10 @@ class ExamHistoryListFilterBy
     public function getStartDate(): DateTime
     {
         return $this->startDate;
+    }
+
+    public function getUserGroup(): ?string
+    {
+        return $this->userGroup;
     }
 }

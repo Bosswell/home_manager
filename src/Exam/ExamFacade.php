@@ -103,7 +103,8 @@ class ExamFacade
             $message->getUsername(),
             $message->getUserNumber(),
             $normalizedExam,
-            $exam->getMode()
+            $exam->getMode(),
+            $message->getUserGroup()
         );
         $this->validator->validate($history);
         $this->entityManager->persist($history);

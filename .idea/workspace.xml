@@ -4,11 +4,10 @@
     <list default="true" id="eb3bcf03-548f-4579-8cfb-0dab2e18a83e" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExamHistoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExamHistoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/Exam.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Exam.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/ExamHistory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/ExamHistory.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Exam/ExamFacade.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Exam/ExamFacade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Message/ExamHistory/ExamHistoryListFilterBy.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/ExamHistory/Model/ExamHistoryListFilterBy.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Message/ExamHistory/ExamHistoryListSortBy.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/ExamHistory/Model/ExamHistoryListSortBy.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Message/ExamHistory/ListExamHistoryMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/ExamHistory/ListExamHistoryMessage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Message/Exam/StartExamMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/Exam/StartExamMessage.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Message/ExamHistory/Model/ExamHistoryListFilterBy.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/ExamHistory/Model/ExamHistoryListFilterBy.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/ExamHistoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ExamHistoryRepository.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -300,7 +299,7 @@
       <workItem from="1602411100806" duration="6697000" />
       <workItem from="1602443649976" duration="598000" />
       <workItem from="1602498226436" duration="1144000" />
-      <workItem from="1602499467317" duration="10824000" />
+      <workItem from="1602499467317" duration="16751000" />
     </task>
     <servers />
   </component>
@@ -344,10 +343,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="726" y="322" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1600118858073" />
-    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1602501101212">
+    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser" timestamp="1602515296886">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1602501101212" />
+    <state x="765" y="236" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1602515296886" />
     <state x="729" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1601585928803">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

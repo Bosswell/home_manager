@@ -42,9 +42,18 @@ class ExamHistory
     private string $username;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private int $userNumber;
+    private ?int $userNumber;
+
+    /**
+     * @Assert\Length(
+     *     max = 20,
+     *     maxMessage = "Your group id cannot be longer than {{ limit }} characters"
+     * )
+     * @ORM\Column(type="string", length=20, nullable=true)
+     */
+    private ?string $userGroup;
 
     /**
      * @ORM\Column(type="guid")
@@ -86,8 +95,15 @@ class ExamHistory
     private \DateTime $finishedAt;
 
 
-    public function __construct(Exam $exam, string $examUserId, string $username, string $userNumber, array $normalizedExam, string $mode)
-    {
+    public function __construct(
+        Exam $exam,
+        string $examUserId,
+        string $username,
+        ?string $userNumber,
+        array $normalizedExam,
+        string $mode,
+        ?string $userGroup
+    ) {
         if (!Uuid::isValid($examUserId)) {
             throw new \InvalidArgumentException('Invalid user id');
         }
@@ -100,6 +116,7 @@ class ExamHistory
         $this->userNumber = $userNumber;
         $this->normalizedExam = $normalizedExam;
         $this->mode = $mode;
+        $this->userGroup = $userGroup;
         $this->startedAt = new \DateTime();
     }
 
@@ -186,5 +203,10 @@ class ExamHistory
     public function getFinishedAt(): ?\DateTimeInterface
     {
         return $this->finishedAt;
+    }
+
+    public function getUserGroup(): ?string
+    {
+        return $this->userGroup;
     }
 }

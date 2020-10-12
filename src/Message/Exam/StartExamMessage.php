@@ -10,6 +10,7 @@ class StartExamMessage
     private string $code = '';
     private string $username = '';
     private ?int $userNumber = null;
+    private ?string $userGroup = null;
 
     public function getExamId(): int
     {
@@ -53,7 +54,7 @@ class StartExamMessage
     
     public function setUserNumber($userNumber): void
     {
-        $this->userNumber = (int)$userNumber;
+        $this->userNumber = $userNumber;
     }
 
     public function getUserId(): string
@@ -64,5 +65,15 @@ class StartExamMessage
     public function setUserId($userId): void
     {
         $this->userId = (string)$userId;
+    }
+
+    public function getUserGroup(): ?string
+    {
+        return $this->userGroup;
+    }
+
+    public function setUserGroup($userGroup): void
+    {
+        $this->userGroup = $userGroup;
     }
 }
