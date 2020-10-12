@@ -27,6 +27,7 @@ class ExamHistoryRepository extends ServiceEntityRepository
         ?bool $isActive = null,
         ?\DateTime $dateStart = null,
         ?int $userGroup = null,
+        ?int $examId = null,
         string $orderBy = 'eh.id',
         string $orderDirection = 'DESC'
     ): QueryBuilder {
@@ -63,6 +64,11 @@ class ExamHistoryRepository extends ServiceEntityRepository
         if (!is_null($dateStart)) {
             $qb->andWhere('eh.started_at >= :dateStart');
             $qb->setParameter(':dateStart', $dateStart->format('Y/m/d H:i:s'));
+        }
+
+        if (!is_null($examId)) {
+            $qb->andWhere('e.id = :examId');
+            $qb->setParameter(':examId', $examId);
         }
 
         $qb->orderBy($orderBy, $orderDirection);

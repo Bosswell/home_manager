@@ -9,6 +9,7 @@ class ExamHistoryListFilterBy
 {
     private ?string $username;
     private ?int $userNumber;
+    private ?int $examId;
     private ?string $userGroup;
     private ?bool $isActive;
     private \DateTime $startDate;
@@ -17,6 +18,7 @@ class ExamHistoryListFilterBy
     {
         $this->username = $data['username'] ?? null;
         $this->userNumber = $data['userNumber'] ?? null;
+        $this->examId = $data['examId'] ?? null;
         $this->isActive = $data['isActive'] ?? null;
         $this->userGroup = $data['userGroup'] ?? null;
 
@@ -50,5 +52,10 @@ class ExamHistoryListFilterBy
     public function getUserGroup(): ?string
     {
         return $this->userGroup;
+    }
+
+    public function getExamId(): ?int
+    {
+        return $this->examId;
     }
 }

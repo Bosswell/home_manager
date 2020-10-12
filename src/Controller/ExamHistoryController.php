@@ -38,6 +38,7 @@ class ExamHistoryController extends AbstractController
             $filterBy->isActive(),
             $filterBy->getStartDate(),
             $filterBy->getUserGroup(),
+            $filterBy->getExamId(),
             $sortBy->getName(),
             $sortBy->getDirection()
         );

@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="eb3bcf03-548f-4579-8cfb-0dab2e18a83e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/ExamHistoryController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/ExamHistoryController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/ExamHistory.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/ExamHistory.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Exam/ExamFacade.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Exam/ExamFacade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Message/Exam/StartExamMessage.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/Exam/StartExamMessage.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Message/ExamHistory/Model/ExamHistoryListFilterBy.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Message/ExamHistory/Model/ExamHistoryListFilterBy.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Repository/ExamHistoryRepository.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Repository/ExamHistoryRepository.php" afterDir="false" />
     </list>
@@ -299,7 +295,7 @@
       <workItem from="1602411100806" duration="6697000" />
       <workItem from="1602443649976" duration="598000" />
       <workItem from="1602498226436" duration="1144000" />
-      <workItem from="1602499467317" duration="16751000" />
+      <workItem from="1602499467317" duration="18481000" />
     </task>
     <servers />
   </component>
