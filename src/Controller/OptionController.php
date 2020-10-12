@@ -123,8 +123,9 @@ class OptionController extends AbstractController
      */
     public function updateOptionAction(UpdateOptionMessage $message)
     {
+        // TODO add voter
         $option = $this->optionRepository
-            ->findOneBy(['id' => $message->getOptionId(), 'user' => $this->getUser()]);
+            ->findOneBy(['id' => $message->getOptionId()]);
 
         if (is_null($option)) {
             throw ApiException::entityNotFound($message->getOptionId(), Option::class);

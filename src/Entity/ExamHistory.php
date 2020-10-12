@@ -78,7 +78,7 @@ class ExamHistory
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $createdAt;
+    private \DateTime $startedAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -100,7 +100,7 @@ class ExamHistory
         $this->userNumber = $userNumber;
         $this->normalizedExam = $normalizedExam;
         $this->mode = $mode;
-        $this->createdAt = new \DateTime();
+        $this->startedAt = new \DateTime();
     }
 
     public function isActive(): bool
@@ -178,9 +178,9 @@ class ExamHistory
         return $this->mode;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getStartedAt(): \DateTime
     {
-        return $this->createdAt;
+        return $this->startedAt;
     }
 
     public function getFinishedAt(): ?\DateTimeInterface
