@@ -108,7 +108,7 @@ class Exam
 
     /**
      * @ORM\ManyToMany(targetEntity=Question::class, inversedBy="exams")
-     * @Groups({"details"})
+     * @Groups({"details", "default"})
      */
     private Collection $questions;
 

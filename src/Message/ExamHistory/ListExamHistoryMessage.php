@@ -2,6 +2,8 @@
 
 namespace App\Message\ExamHistory;
 
+use App\Message\ExamHistory\Model\ExamHistoryListFilterBy;
+use App\Message\ExamHistory\Model\ExamHistoryListSortBy;
 use Symfony\Component\Validator\Constraints as Assert;
 
 

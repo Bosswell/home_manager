@@ -3,20 +3,15 @@
 namespace App\Controller;
 
 use App\ApiException;
-use App\Entity\Exam;
 use App\Entity\User;
 use App\Factory\PagerfantaFactory;
 use App\Http\ApiResponse;
 use App\Message\ExamHistory\ListExamHistoryMessage;
-use App\Message\Transaction\ListTransactionsMessage;
 use App\Repository\ExamHistoryRepository;
-use App\Repository\ExamRepository;
-use App\Repository\TransactionRepository;
 use App\Service\ObjectValidator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Serializer;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 
@@ -42,7 +37,6 @@ class ExamHistoryController extends AbstractController
             $filterBy->getUserNumber(),
             $filterBy->isActive(),
             $filterBy->getStartDate(),
-            $filterBy->getEndDate(),
             $sortBy->getName(),
             $sortBy->getDirection()
         );

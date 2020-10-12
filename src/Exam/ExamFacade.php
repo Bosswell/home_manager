@@ -135,11 +135,15 @@ class ExamFacade
      */
     private function handleExamStartExceptions(?Exam $exam): void
     {
-        if (is_null($exam)) {
+        if (is_null($exam) || $exam->isDeleted()) {
             throw new ApiException('Exam has not been found', Response::HTTP_NOT_FOUND);
         }
 
-        if ($exam->getQuestions()) {
+        if (!$exam->isAvailable()) {
+            throw new ApiException('Exam is not available', Response::HTTP_NOT_FOUND);
+        }
+
+        if ($exam->getQuestions()->isEmpty()) {
             throw new ApiException('Exam does not contain any questions', Response::HTTP_NOT_FOUND);
         }
 

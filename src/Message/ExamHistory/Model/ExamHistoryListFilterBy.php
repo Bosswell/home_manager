@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message\ExamHistory;
+namespace App\Message\ExamHistory\Model;
 
 use DateTime;
 
@@ -11,7 +11,6 @@ class ExamHistoryListFilterBy
     private ?int $userNumber;
     private ?bool $isActive;
     private \DateTime $startDate;
-    private \DateTime $endDate;
 
     public function __construct(?array $data = null)
     {
@@ -20,29 +19,23 @@ class ExamHistoryListFilterBy
         $this->isActive = $data['isActive'] ?? null;
 
         try {
-            $this->startDate = DateTime::createFromFormat('d.m.Y', $data['startDate']);
+            $this->startDate = (new DateTime())->setTimestamp($data['dateStart']);
         } catch (\Throwable $ex) {
             $this->startDate = new DateTime('first day of this month');
         }
-
-        try {
-            $this->endDate = DateTime::createFromFormat('d.m.Y', $data['endDate']);
-        } catch (\Throwable $ex) {
-            $this->endDate = new DateTime();
-        }
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    public function getUserNumber(): string
+    public function getUserNumber(): ?string
     {
         return $this->userNumber;
     }
 
-    public function isActive(): bool
+    public function isActive(): ?bool
     {
         return $this->isActive;
     }
@@ -50,10 +43,5 @@ class ExamHistoryListFilterBy
     public function getStartDate(): DateTime
     {
         return $this->startDate;
-    }
-
-    public function getEndDate(): DateTime
-    {
-        return $this->endDate;
     }
 }

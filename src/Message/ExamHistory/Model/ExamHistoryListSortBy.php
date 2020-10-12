@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message\ExamHistory;
+namespace App\Message\ExamHistory\Model;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -9,7 +9,7 @@ class ExamHistoryListSortBy
 {
     /**
      * @Assert\Choice(
-     *     {"th.id", "th.userNumber", "th.started_at"},
+     *     {"eh.user_number", "eh.started_at", "eh.finished_at"},
      *     message="Invalid sorting name value."
      *)
      */
@@ -25,7 +25,7 @@ class ExamHistoryListSortBy
 
     public function __construct(?array $data = null)
     {
-        $this->name = $data['name'] ?? 'th.started_at';
+        $this->name = $data['name'] ?? 'eh.started_at';
         $this->direction = $data['direction'] ?? 'desc';
     }
 
