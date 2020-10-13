@@ -95,9 +95,9 @@ class ExamHistory
     private \DateTime $finishedAt;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="float", nullable=true)
      */
-    private string $percentage;
+    private float $percentage;
 
 
     public function __construct(
@@ -215,12 +215,12 @@ class ExamHistory
         return $this->userGroup;
     }
 
-    public function getPercentage(): ?string
+    public function getPercentage(): ?float
     {
         return $this->percentage;
     }
 
-    public function setPercentage(string $percentage): self
+    public function setPercentage(float $percentage): self
     {
         $this->percentage = $percentage;
 

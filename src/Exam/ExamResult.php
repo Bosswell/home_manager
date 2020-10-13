@@ -25,6 +25,11 @@ class ExamResult
         $this->correctOptions = $correctOptions;
     }
 
+    public function getPercentage(): float
+    {
+        return $this->percentage;
+    }
+
     public function toArray(): array
     {
         return [

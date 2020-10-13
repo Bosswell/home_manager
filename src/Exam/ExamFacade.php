@@ -67,6 +67,7 @@ class ExamFacade
         $history
             ->setResult($result->toArray())
             ->setSnippet($message->getUserQuestionsSnippets())
+            ->setPercentage($result->getPercentage())
             ->finish();
 
         $this->entityManager->flush();

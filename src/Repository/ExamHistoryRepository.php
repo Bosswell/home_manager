@@ -26,7 +26,7 @@ class ExamHistoryRepository extends ServiceEntityRepository
         ?int $userNumber = null,
         ?bool $isActive = null,
         ?\DateTime $dateStart = null,
-        ?int $userGroup = null,
+        ?string $userGroup = null,
         ?int $examId = null,
         string $orderBy = 'eh.id',
         string $orderDirection = 'DESC'
