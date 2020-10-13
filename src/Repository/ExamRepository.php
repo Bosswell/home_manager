@@ -93,7 +93,7 @@ class ExamRepository extends ServiceEntityRepository
             ->innerJoin('eq', 'option', 'o', 'o.question_id = eq.question_id AND o.is_correct = 1')
             ->where('e.id = :examId')
             ->setParameter(':examId', $examId)
-            ->groupBy('eq.question_id')
+            ->groupBy('e.id')
         ;
 
         $data =  $qb
