@@ -87,13 +87,13 @@ class ExamRepository extends ServiceEntityRepository
             ->setParameter(':examId', $examId);
 
         $qb = $connection->createQueryBuilder()
-            ->select('count(eq.question_id) as `totalValidQuestions`, ('. $subQuery->getSQL() .') as `totalQuestions`')
+            ->select('SUM(distinct o.is_correct) as `totalValidQuestions`, ('. $subQuery->getSQL() .') as `totalQuestions`')
             ->from('exam', 'e')
             ->innerJoin('e', 'exam_question', 'eq', 'e.id = eq.exam_id')
             ->innerJoin('eq', 'option', 'o', 'o.question_id = eq.question_id AND o.is_correct = 1')
             ->where('e.id = :examId')
             ->setParameter(':examId', $examId)
-            ->groupBy(' e.id')
+            ->groupBy('eq.question_id')
         ;
 
         $data =  $qb
