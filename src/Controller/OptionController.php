@@ -99,13 +99,14 @@ class OptionController extends AbstractController
      */
     public function deleteOptionAction(string $id)
     {
-        // TODO implement voter
         $option = $this->optionRepository
             ->findOneBy(['id' => $id]);
 
         if (is_null($option)) {
             throw ApiException::entityNotFound((int)$id, Option::class);
         }
+
+        $this->denyAccessUnlessGranted('delete', $option);
 
         $this->entityManager->remove($option);
         $this->entityManager->flush();
@@ -123,13 +124,14 @@ class OptionController extends AbstractController
      */
     public function updateOptionAction(UpdateOptionMessage $message)
     {
-        // TODO add voter
         $option = $this->optionRepository
             ->findOneBy(['id' => $message->getOptionId()]);
 
         if (is_null($option)) {
             throw ApiException::entityNotFound($message->getOptionId(), Option::class);
         }
+
+        $this->denyAccessUnlessGranted('edit', $option);
 
         $option->update($message->getContent(), $message->isCorrect());
         $this->entityManager->flush();

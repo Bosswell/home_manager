@@ -94,6 +94,11 @@ class ExamHistory
      */
     private \DateTime $finishedAt;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $percentage;
+
 
     public function __construct(
         Exam $exam,
@@ -208,5 +213,17 @@ class ExamHistory
     public function getUserGroup(): ?string
     {
         return $this->userGroup;
+    }
+
+    public function getPercentage(): ?string
+    {
+        return $this->percentage;
+    }
+
+    public function setPercentage(string $percentage): self
+    {
+        $this->percentage = $percentage;
+
+        return $this;
     }
 }

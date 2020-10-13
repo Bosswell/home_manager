@@ -133,4 +133,9 @@ class Question
 
         return $this;
     }
+
+    public function getUser(): UserInterface
+    {
+        return $this->user;
+    }
 }

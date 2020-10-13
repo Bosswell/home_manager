@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\OptionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -52,6 +53,11 @@ class Option
     {
         $this->content = $content;
         $this->isCorrect = $isCorrect;
+    }
+
+    public function getOwner(): UserInterface
+    {
+        return $this->getQuestion()->getUser();
     }
 
     public function getId(): ?int
