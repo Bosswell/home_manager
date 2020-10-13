@@ -84,7 +84,7 @@ class ExamRepository extends ServiceEntityRepository
             ->select('COUNT(o.id) as `totalValidOptions`, eq.question_id as `questionId`')
             ->from('exam', 'e')
             ->innerJoin('e', 'exam_question', 'eq', 'e.id = eq.exam_id')
-            ->innerJoin('eq', 'option', 'o', 'o.question_id = eq.question_id AND o.is_correct = 1')
+            ->leftJoin('eq', 'option', 'o', 'o.question_id = eq.question_id AND o.is_correct = 1')
             ->where('e.id = :examId')
             ->setParameter(':examId', $examId)
             ->groupBy('eq.question_id')
