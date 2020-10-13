@@ -125,10 +125,15 @@ class ExamFacade
             throw new ApiException( 'Exam does not contain questions.', 0);
         }
 
-        [$totalValidQuestions, $totalQuestions] = $validityInfo;
+        foreach ($validityInfo as [$totalValidOptions, $questionId]) {
+            if ($totalValidOptions) {
+                continue;
+            }
 
-        if ($totalQuestions !== $totalValidQuestions) {
-            throw new ApiException('Exam contain invalid questions. There are questions without correct options.', 0);
+            throw new ApiException(
+                sprintf('Exam contain invalid questions. Question [ id = %s ] does not contain correct options.', $questionId),
+                0
+            );
         }
     }
 

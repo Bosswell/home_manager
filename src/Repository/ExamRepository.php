@@ -80,25 +80,19 @@ class ExamRepository extends ServiceEntityRepository
     {
         $connection = $this->getEntityManager()->getConnection();
 
-        $subQuery = $connection->createQueryBuilder()
-            ->select('COUNT(*)')
-            ->from('exam_question', 'eqs')
-            ->where('eqs.exam_id = :examId')
-            ->setParameter(':examId', $examId);
-
         $qb = $connection->createQueryBuilder()
-            ->select('SUM(distinct o.is_correct) as `totalValidQuestions`, ('. $subQuery->getSQL() .') as `totalQuestions`')
+            ->select('COUNT(o.id) as `totalValidOptions`, eq.question_id as `questionId`')
             ->from('exam', 'e')
             ->innerJoin('e', 'exam_question', 'eq', 'e.id = eq.exam_id')
             ->innerJoin('eq', 'option', 'o', 'o.question_id = eq.question_id AND o.is_correct = 1')
             ->where('e.id = :examId')
             ->setParameter(':examId', $examId)
-            ->groupBy('e.id')
+            ->groupBy('eq.question_id')
         ;
 
         $data =  $qb
             ->execute()
-            ->fetch(FetchMode::NUMERIC);
+            ->fetchAll(FetchMode::NUMERIC);
 
         return $data ?: [] ;
     }
