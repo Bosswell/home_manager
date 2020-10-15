@@ -141,7 +141,8 @@ class ExamController extends AbstractController
             Response::HTTP_CREATED,
             [
                 'historyId' => $history->getId(),
-                'exam' => $history->getNormalizedExam()
+                'exam' => $history->getNormalizedExam(),
+                'mode' => $history->getMode()
             ]
         );
     }
