@@ -54,7 +54,7 @@ class StartExamMessage
     
     public function setUserNumber($userNumber): void
     {
-        $this->userNumber = $userNumber;
+        $this->userNumber = (int)$userNumber;
     }
 
     public function getUserId(): string

@@ -3,17 +3,12 @@
 namespace App\Controller;
 
 use App\ApiException;
-use App\Entity\Exam;
 use App\Entity\Option;
 use App\Entity\Question;
 use App\Http\ApiResponse;
 use App\Message\Option\CreateOptionMessage;
 use App\Message\Option\UpdateOptionMessage;
-use App\Message\Question\CreateQuestionMessage;
-use App\Message\Question\LinkQuestionMessage;
-use App\Message\Question\UpdateQuestionMessage;
 use App\Repository\OptionRepository;
-use App\Repository\QuestionRepository;
 use App\Service\ObjectValidator;
 use App\Service\QuestionManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +16,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Serializer;
 
 
 class OptionController extends AbstractController
