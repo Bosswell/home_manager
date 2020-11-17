@@ -5,5 +5,5 @@ stages:
 build_develop:
   stage: build
   script: 
-    - ls -a
-    - exit  
+    - exit 0
+    - ls -a 
