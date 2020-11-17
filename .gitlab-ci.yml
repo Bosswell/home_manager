@@ -6,4 +6,4 @@ build_develop:
   stage: build
   script: 
     - ls -a
-  
+    - exit  
